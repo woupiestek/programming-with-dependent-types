@@ -1,0 +1,64 @@
+research log programming-with-dependent-types
+
+*** 5/6/15 ***
+Laten we om beginnen eens kijken wat de talen op wikipeda beloven.
+
+Promises and warnings:
+
+Adga - Haskell-like syntax, Emacs interface, gebaseerd op UTT-
+UTT 
+
+pattern matching in plaats van recursie...
+
+
+*** Korte beschrijving van mogelijk interessante talen ***
+Applied Type System (ATS) - performance comparable to C and C++
+compiler prevents division by zero, memory corruption. ML-like syntax.
+
+Coq - interactive theorem prover. Tactic automatiseren het bewijswerk 
+voor een deel. The syntax is weerzinwekkend, weet ik uit ervaring.
+
+Idris - Haskell-like syntax. tries to be both a proof assistent and a
+ practicle programming language.
+ 
+Matita - Coq-like experimental interactive theorem prover
+
+NuPrl - ML-like logic based tools to support programming and implementing
+ formal computational mathematics.
+ Theories as systems...
+
+F* - based on F#, also system F-omega. OCaml and non light F# syntax. Program verification
+ in mind.
+
+Prototype Verification System - specification and automated theorem proving
+
+Sage - hybrid type checking, wat een verdeling tussen static en 
+ dynamic type checking betekent.
+  
+Twelf - een logic programming variant, met beperkte praktische capaciteiten
+
+*** Idee ***
+Gebruik dependent types of unittests te integreren in het type systeem.
+Dat is het niet precies: unit tests garanderen normaal gesproken geen
+type-lidmaatschap.
+
+Authorizatie toepassingen: typen kunnen afhangen van gebruikersrechten.
+
+Vooralsnog zie ik separation, en monades. Maar de monades kun je ook
+opvatten als autorisaties.
+
+Platform afhankelijke datatypen--dat lijkt me een serieuze toepassing.
+
+Uiteraard zou het beter zijn als complier errors al tijdens het 
+programmeren zichtbaar worden. Real time static type checking dus
+
+Ik begin met F* -- ATS volgende?
+
+De tutorial gaat meteen richting theorie. Niet zo leuk dus.
+
+
+--- via via kom ik terecht op 
+Gegeneralizeerde algebraische datatypen (GADTs)
+Wat ik zie staan lijkt op de inductive defintie van een type-functie 
+
+
