@@ -1,0 +1,43 @@
+package nl.woupiestek.andrej
+
+/**
+ * @author Wouter
+ */
+object Substitute {
+  def apply(record: Map[Variable, Expression], expression: Expression): Expression = {
+    expression match {
+      case x: Variable       => record.getOrElse(x, expression)
+      case u: Universe       => u
+      case Product(a)        => Product(substituteAbstraction(record, a))
+      case a: Abstraction    => substituteAbstraction(record, a)
+      case Application(t, u) => Application(apply(record, t), apply(record, u))
+    }
+  }
+
+  private case class Gensym(number: Int) extends Variable {
+    val prettyPrint = "var#" + number
+  }
+
+  //variable generator
+  private object Fresh {
+    var count = 0;
+    def apply(): Variable = {
+      count += 1
+      Gensym(count)
+    }
+  }
+
+  private def substituteAbstraction(record: Map[Variable, Expression], abstraction: Abstraction): Abstraction = {
+    abstraction match {
+      case Abstraction(x, d, t) => Abstraction(x, Substitute.apply(record, d), Substitute.apply(avoidCapture(record, x), t))
+    }
+  }
+
+  private def avoidCapture(record: Map[Variable, Expression], variable: Variable): Map[Variable, Expression] = {
+    val alternative = Map(variable -> Fresh())
+    for ((vari, expr) <- record if vari != variable) yield {
+      (vari, Substitute.apply(alternative, expr))
+    }
+  }
+
+}

@@ -1,0 +1,9 @@
+package nl.woupiestek.andrej
+
+/**
+ * @author Wouter
+ */
+object Infer {
+  type context = List[(Variable,Expression)]
+
+}

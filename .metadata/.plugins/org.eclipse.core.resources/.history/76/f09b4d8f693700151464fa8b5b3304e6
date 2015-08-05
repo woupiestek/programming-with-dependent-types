@@ -1,0 +1,37 @@
+package nl.woupiestek.andrej
+
+/**
+ * @author Wouter
+ */
+object Infer {
+  type Context = Map[Variable, Expression]
+
+  def apply(context: Context, expression: Expression): Option[Expression] = {
+    expression match {
+      case x: Variable => Some(context(x)) //exception intended
+      case Universe(n) => Some(Universe(n + 1))
+      case Product(Abstraction(v, d, t)) => {
+        for (
+          k1 <- inferUniverse(context, d);
+          k2 <- inferUniverse(context + (v -> d), t)
+        ) yield {
+          Universe(Math.max(k1, k2))
+        }
+
+      }
+    }
+  }
+
+  private def inferUniverse(context: Context, expression: Expression) = {
+    Infer.apply(context, expression).flatMap { u =>
+      normalize(context, u) match {
+        case Universe(n) => Some(n)
+        case _           => None
+      }
+    }
+  }
+
+  //TODO
+  def normalize(context: Context, expression: Expression) = { expression }
+
+}

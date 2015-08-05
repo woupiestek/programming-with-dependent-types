@@ -1,0 +1,1444 @@
+2015-07-31 09:15:59,759  WARN [ModalContext] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:15:59,761  WARN [ModalContext] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:05,629  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:05,630  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:25,576  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:25,576  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:28,441  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:28,441  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:28,472  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:28,472  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:30,976  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:30,976  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:31,039  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:31,039  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:31,429  WARN [Java indexing] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:31,429  WARN [Java indexing] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:31,750  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:31,750  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:32,918  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:32,918  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:33,074  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:33,074  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:16:33,621  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:16:33,621  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:17:26,674  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:17:26,674  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:17:27,753  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:17:27,753  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:17:59,124  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 114
+2015-07-31 09:17:59,124  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 114
+2015-07-31 09:18:05,329  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:18:05,329  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 64
+2015-07-31 09:20:32,151  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 209
+2015-07-31 09:20:32,151  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 209
+2015-07-31 09:20:39,489  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 209
+2015-07-31 09:20:41,616  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 209
+2015-07-31 09:20:52,876  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:20:52,876  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:20:56,126  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:20:56,126  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:20:59,238  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:21:00,865  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:21:02,568  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 277
+2015-07-31 09:24:45,226  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 362
+2015-07-31 09:24:45,226  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 362
+2015-07-31 09:24:46,819  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 362
+2015-07-31 09:24:46,819  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 362
+2015-07-31 09:25:56,408  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 411
+2015-07-31 09:25:56,408  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 411
+2015-07-31 09:26:00,011  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 411
+2015-07-31 09:26:00,011  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 411
+2015-07-31 09:26:06,668  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 411
+2015-07-31 09:33:12,195  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 256
+2015-07-31 09:33:12,195  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 256
+2015-07-31 09:33:12,195  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 333
+2015-07-31 09:33:12,195  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 333
+2015-07-31 09:33:14,334  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 257
+2015-07-31 09:33:14,334  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 257
+2015-07-31 09:33:14,334  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 334
+2015-07-31 09:33:14,334  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 334
+2015-07-31 09:33:34,016  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:34,016  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:33:34,078  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:34,078  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:33:39,478  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:39,478  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:33:40,540  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:40,540  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:33:40,571  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:40,571  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:33:42,763  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:33:42,763  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:34:30,367  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:34:30,367  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:34:30,399  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:34:30,399  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:37:56,034  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:37:56,034  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:37:56,081  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:37:56,081  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:38:26,045  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:38:26,045  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:38:26,076  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:38:26,076  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:40:38,040  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 522
+2015-07-31 09:40:38,040  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 522
+2015-07-31 09:40:51,806  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 522
+2015-07-31 09:40:51,806  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 522
+2015-07-31 09:42:01,437  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:42:01,437  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:42:01,499  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:42:01,499  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:42:47,754  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:42:47,754  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:42:47,785  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:42:47,785  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:46:06,752  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:46:06,768  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:46:06,823  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:46:06,824  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:46:27,992  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:46:28,008  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:46:28,070  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:46:28,070  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:46:46,582  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:47:21,104  WARN [Worker-14] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:47:21,104  WARN [Worker-14] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:47:21,151  WARN [Worker-14] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:47:21,151  WARN [Worker-14] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:47:23,181  WARN [Worker-14] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:47:23,181  WARN [Worker-14] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:47:54,571  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:49:27,132  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:49:27,132  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:49:27,186  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:49:27,186  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:49:32,706  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:49:32,706  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:50:17,867  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:47,989  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:48,192  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:48,595  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:51,425  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:58,585  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:58,785  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:50:58,985  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:09,920  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:22,274  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:22,555  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:45,855  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:46,057  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:53,005  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:53,275  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:51:53,489  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:00,453  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:00,690  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:00,947  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:07,290  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:07,491  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:07,691  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:19,327  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:52:19,527  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:00,254  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:26,716  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:26,916  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:27,117  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:33,662 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:33,679 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:33,680 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:33,680 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:35,859  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:53:35,935 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:35,939 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:35,942 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 09:53:42,557  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:53:42,557  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:53:42,612  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:53:42,612  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:53:48,614  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:53:48,614  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:54:15,327  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:54:15,610  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:54:33,486  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:54:55,274  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:54:56,434  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:54:56,465  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:54:56,512  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:54:56,512  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:55:02,301  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 09:55:02,301  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 09:57:51,652  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:57:51,857  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:57:58,960  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:00,052  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:00,286  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:26,281  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:26,482  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:26,683  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:46,097  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:58:48,817  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:59:39,027  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:59:40,517  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 09:59:49,312  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:01,538  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:01,740  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:01,953  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:03,474  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:03,758  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:00:42,382  WARN [Worker-24] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:00:42,382  WARN [Worker-24] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:00:42,445  WARN [Worker-24] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:00:42,445  WARN [Worker-24] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:00:49,108  WARN [Worker-24] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:00:49,108  WARN [Worker-24] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:01:38,360  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:01:38,569  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:01:39,842  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:01:40,044  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:01:40,244  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:00,132  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:12,835  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:13,037  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:13,237  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:37,431  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:03:56,653  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:03:56,654  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:03:56,706  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:03:56,707  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:04:06,007  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:02,044  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:26,681  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:26,882  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:27,082  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:31,545  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:31,746  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:31,946  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:05:54,977  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:05:54,977  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:05:55,008  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:05:55,008  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:05:59,574  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:05:59,574  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:06:34,302  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:34,502  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:34,712  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:40,705  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:41,186  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:41,386  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:06:56,115  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:07:30,660  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:09:59,646  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:09:59,646  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:09:59,697  WARN [Worker-23] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:09:59,697  WARN [Worker-23] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:16:26,027  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:16:26,278  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:16:26,485  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:16:29,753  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:17:12,143  WARN [Worker-28] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:17:12,143  WARN [Worker-28] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:17:12,175  WARN [Worker-28] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:17:12,175  WARN [Worker-28] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:17:26,583  WARN [Worker-32] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:17:26,583  WARN [Worker-32] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:17:26,633  WARN [Worker-32] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:17:26,633  WARN [Worker-32] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:17:31,324  WARN [Worker-32] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:17:31,324  WARN [Worker-32] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:28:00,754  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:00,989  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:01,189  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:08,890  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:09,092  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:23,699  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:32,051  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:28:51,571  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:29:03,461  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:29:03,664  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:29:03,864  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:30:10,693  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:30:20,816  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2141
+2015-07-31 10:30:22,053  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2143
+2015-07-31 10:30:22,053  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2143
+2015-07-31 10:30:25,189  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2143
+2015-07-31 10:30:25,190  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2143
+2015-07-31 10:30:27,289  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2148
+2015-07-31 10:30:28,403  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2150
+2015-07-31 10:30:30,626  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2151
+2015-07-31 10:30:30,626  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2151
+2015-07-31 10:30:33,617  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:30:33,818  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:30:34,028  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:30:35,148  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2134
+2015-07-31 10:30:35,148  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2134
+2015-07-31 10:30:58,628  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2130
+2015-07-31 10:30:58,628  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2130
+2015-07-31 10:31:00,211  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2131
+2015-07-31 10:31:00,211  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 2131
+2015-07-31 10:33:39,943  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 713
+2015-07-31 10:34:49,272  WARN [Worker-41] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:34:49,272  WARN [Worker-41] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:34:49,335  WARN [Worker-41] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:34:49,335  WARN [Worker-41] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:36:03,281  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:38:32,252  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:38:32,252  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:38:32,284  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:38:32,284  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:38:38,142  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:38:38,142  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:40:02,620  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:40:02,822  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:00,461  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:00,661  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:00,861  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:18,055  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:18,257  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:18,457  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:22,775  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:23,043  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:31,589  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:31,838  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:32,038  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:37,062  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:37,360  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:41:37,597  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:17,749  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:17,949  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:18,150  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:21,705  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:21,905  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:42:22,105  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:22,149  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:22,351  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:22,551  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:30,373  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:30,644  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:30,857  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:41,849  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:43:54,518  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:19,010  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:22,134  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:22,335  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:23,929  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:31,283  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:44:31,483  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:45:35,007  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:45:35,241  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:45:35,464  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:45:49,840 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:45:49,840 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:45:49,840 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:46:48,833  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:46:48,833  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:46:48,880  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:46:48,880  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:46:55,061  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:46:55,061  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:47:01,339  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:47:18,043  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:47:18,043  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:47:18,074  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:47:18,074  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:47:21,011  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:47:21,011  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:48:51,675  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:48:51,875  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:48:52,075  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:49:50,953  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 94
+2015-07-31 10:49:50,955  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 94
+2015-07-31 10:49:50,992  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 94
+2015-07-31 10:49:51,048  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 720
+2015-07-31 10:49:51,051  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 720
+2015-07-31 10:50:05,709  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:05,710  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:05,768  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:05,768  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:12,205  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:12,205  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:23,711  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:23,711  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:23,914  WARN [Worker-44] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:23,914  WARN [Worker-44] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:23,976  WARN [Worker-44] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:23,976  WARN [Worker-44] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:50:24,850  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:50:25,076  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:50:27,695  WARN [Worker-44] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:50:27,697  WARN [Worker-44] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:11,364  WARN [Worker-44] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:11,364  WARN [Worker-44] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:11,462  WARN [Worker-44] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:11,463  WARN [Worker-44] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:16,681  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:16,681  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:16,712  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:16,712  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:19,709  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:19,709  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:36,957  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:36,958  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:37,037  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:37,037  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:37,084  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:37,084  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:37,584  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:37,584  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:47,461  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:47,461  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:49,248  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:49,248  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:49,331  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:49,332  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:52,327  WARN [Worker-46] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:51:52,327  WARN [Worker-46] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:51:52,468 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:51:52,468 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:51:52,468 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:52:55,993  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:52:55,993  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:52:56,056  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:52:56,057  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:52:57,757  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:52:57,757  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:53:59,893  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:53:59,893  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:53:59,940  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:53:59,940  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:54:06,214  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:54:06,214  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:55:18,560  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:55:18,560  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:55:18,591  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:55:18,591  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:55:24,414  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:55:24,430  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:56:10,016  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:56:10,016  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:56:10,063  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:56:10,063  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:56:23,842 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 10:57:36,601  WARN [Worker-57] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:57:36,601  WARN [Worker-57] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:57:36,633  WARN [Worker-57] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:57:36,633  WARN [Worker-57] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:57:38,533  WARN [Worker-57] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:57:38,533  WARN [Worker-57] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:58:24,740  WARN [Worker-56] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:58:24,740  WARN [Worker-56] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:58:24,756  WARN [Worker-56] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:58:24,756  WARN [Worker-56] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:58:24,787  WARN [Worker-56] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:58:24,787  WARN [Worker-56] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:58:25,505  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:58:25,505  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:58:30,516  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:58:30,735  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 10:58:31,555  WARN [Worker-56] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:58:31,555  WARN [Worker-56] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:59:20,224  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:59:20,224  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:59:20,271  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:59:20,271  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 10:59:26,759  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 10:59:26,759  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:43,386  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:43,386  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:43,621  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:43,621  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:43,689  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:43,690  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:47,483  WARN [Worker-47] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:47,483  WARN [Worker-47] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:55,315  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:55,315  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:55,346  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:55,346  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:01:59,144  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:01:59,144  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:04,374  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:04,374  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:04,437  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:04,437  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:08,854  WARN [Worker-52] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:08,854  WARN [Worker-52] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:09,650  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:09,650  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:09,931  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:09,931  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:09,946  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:09,946  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:09,978  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:09,978  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:02:14,028  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:02:14,028  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:03:18,324  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:03:18,324  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:03:18,371  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:03:18,371  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:03:22,411  WARN [Worker-53] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:03:22,411  WARN [Worker-53] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:04:53,421  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:04:53,421  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:04:53,452  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:04:53,452  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:04:56,691  WARN [Worker-55] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:04:56,691  WARN [Worker-55] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:17:40,696  WARN [Worker-60] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:17:40,696  WARN [Worker-60] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:17:40,774  WARN [Worker-60] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:17:40,774  WARN [Worker-60] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:17:55,340  WARN [Worker-60] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:17:55,341  WARN [Worker-60] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:28:07,934  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:11,483  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:35,218  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:35,418  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:51,666  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:51,866  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:28:53,826  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:28:53,826  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:28:53,858  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:28:53,858  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:29:21,145  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:29:21,414  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:29:21,646  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:29:29,167  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:29:34,408  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:29:34,408  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:29:34,461  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:29:34,461  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:29:44,742  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:29:44,742  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:29:44,794  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:29:44,794  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:29:46,989  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:29:46,989  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:30:35,107  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:30:35,307  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:32:36,390  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:32:36,590  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:32:52,398 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:32:52,415 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:32:52,415 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:32:53,341  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:32:53,572  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:32:53,777  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:12,050  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:12,250  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:12,451  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:35,075  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:35,275  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:58,743  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:58,943  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:33:59,156  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:34:34,674  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:34:35,144  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:34:35,422  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:37:00,951  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:37:01,152  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:38:28,367  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:38:29,086  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:38:29,086  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:38:29,140  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:38:29,140  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:39:22,445  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 773
+2015-07-31 11:39:22,445  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 773
+2015-07-31 11:39:23,782  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 773
+2015-07-31 11:39:23,783  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 773
+2015-07-31 11:39:42,699  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:40:19,890 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:40:19,920 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:40:19,920 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:40:19,920 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:40:53,324  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:40:53,324  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:40:53,375  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:40:53,375  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:41:20,772  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:41:20,772  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:41:20,787  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:41:20,787  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:42:18,057  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:42:18,057  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:42:18,102  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:42:18,102  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:42:20,625  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:42:20,625  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:44:44,836 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:45:14,174  WARN [Worker-69] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:45:14,174  WARN [Worker-69] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:45:14,221  WARN [Worker-69] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:45:14,221  WARN [Worker-69] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:45:31,285  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:45:31,285  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:45:31,385  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:45:31,385  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:45:34,898  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:45:34,899  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:48:26,669 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:48:26,670 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:48:26,670 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:48:55,958  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 675
+2015-07-31 11:48:55,958  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 684
+2015-07-31 11:49:37,906 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:49:37,906 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:49:37,906 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 11:50:20,882  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:50:21,083  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:50:22,171  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:50:22,171  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:50:22,186  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:50:22,186  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:52:10,334  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:52:46,725  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:52:47,061  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:53:25,345  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:53:25,583  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:53:25,789  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:53:44,075  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:53:57,353  WARN [Worker-70] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:53:57,353  WARN [Worker-70] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:53:57,385  WARN [Worker-70] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:53:57,385  WARN [Worker-70] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:55:32,809  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:55:32,810  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:55:32,871  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:55:32,871  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:55:35,352  WARN [Worker-73] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 11:55:35,352  WARN [Worker-73] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 11:56:19,780  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:56:20,032  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:56:33,155  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 11:56:40,846  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 613
+2015-07-31 11:56:48,905  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 613
+2015-07-31 11:57:05,751  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 653
+2015-07-31 11:57:09,467  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 654
+2015-07-31 11:57:12,860  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 663
+2015-07-31 11:57:14,416  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 664
+2015-07-31 11:57:17,014  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 667
+2015-07-31 11:57:17,014  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 667
+2015-07-31 11:57:30,429  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 661
+2015-07-31 11:57:31,429  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 661
+2015-07-31 11:58:17,275  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:00:14,208  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:00:14,208  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:00:14,271  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:00:14,271  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:00:19,114  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:00:19,114  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:00:42,421  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 799
+2015-07-31 12:00:42,421  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 799
+2015-07-31 12:01:13,178  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:01:13,178  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:01:13,225  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:01:13,225  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:01:14,949  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:01:14,949  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:04:26,202  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:04:39,308  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:04:39,543  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:04:55,361  WARN [Worker-69] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:04:55,361  WARN [Worker-69] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:04:55,407  WARN [Worker-69] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:04:55,408  WARN [Worker-69] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:05:00,396  WARN [Worker-69] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:05:00,396  WARN [Worker-69] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:05:06,762 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 12:05:06,825 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 12:05:06,825 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 12:05:06,825 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 12:05:13,029  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:05:45,046  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:06:33,694  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:06:33,694  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:06:33,725  WARN [Worker-74] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:06:33,725  WARN [Worker-74] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:52:52,673  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:52:52,673  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:52:52,732  WARN [Worker-75] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:52:52,733  WARN [Worker-75] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:53:02,247  WARN [Worker-78] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:53:02,247  WARN [Worker-78] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:53:02,278  WARN [Worker-78] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:53:02,278  WARN [Worker-78] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:53:05,266  WARN [Worker-78] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 12:53:05,266  WARN [Worker-78] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 12:55:47,776  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:55:47,985  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:55:48,185  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:20,766  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:20,994  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:21,194  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:24,663  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:25,178  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:32,539  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 12:56:34,657  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:04:29,259  WARN [Worker-83] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:04:29,259  WARN [Worker-83] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:04:29,305  WARN [Worker-83] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:04:29,305  WARN [Worker-83] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:04:31,213  WARN [Worker-83] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:04:31,213  WARN [Worker-83] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:12:54,716  WARN [Worker-87] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:12:54,717  WARN [Worker-87] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:12:55,140  WARN [Worker-87] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:12:55,140  WARN [Worker-87] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:12:57,656  WARN [Worker-87] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:12:57,657  WARN [Worker-87] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:19:51,077  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 876
+2015-07-31 13:19:52,083  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 876
+2015-07-31 13:19:54,615  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 878
+2015-07-31 13:19:54,615  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 878
+2015-07-31 13:19:59,284  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 777
+2015-07-31 13:20:08,835  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 903
+2015-07-31 13:20:10,424  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 912
+2015-07-31 13:20:18,073  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 828
+2015-07-31 13:20:20,719  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 827
+2015-07-31 13:20:22,893  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 836
+2015-07-31 13:20:35,390  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 836
+2015-07-31 13:20:37,204  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:20:37,405  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:20:39,670  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 823
+2015-07-31 13:21:29,582  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:21:30,192  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:21:30,393  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:23:55,067  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:29:00,939  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 13:29:22,333  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:29:22,333  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:29:22,383  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:29:22,383  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 13:29:25,476  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 13:29:25,476  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:05:19,711  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:05:19,911  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:05:20,112  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:06:46,049  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:06:46,252  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:06:46,452  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:07:00,060  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:07:01,871  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:07:18,210  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:07:18,412  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:07:18,612  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:08:00,729  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:08:00,729  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:08:00,760  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:08:00,760  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:08:11,273  WARN [Worker-90] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:08:11,273  WARN [Worker-90] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:14:33,746  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:14:33,950  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:14:34,151  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:15:52,539 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 14:17:05,215  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:17:05,415  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 14:19:10,040  WARN [Worker-100] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:19:10,040  WARN [Worker-100] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:19:10,103  WARN [Worker-100] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:19:10,103  WARN [Worker-100] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:22:00,435 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 14:22:00,444 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 14:22:00,444 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 14:22:00,444 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 14:23:14,058  WARN [Worker-99] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:14,058  WARN [Worker-99] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:14,120  WARN [Worker-99] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:14,120  WARN [Worker-99] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:26,241  WARN [Worker-100] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:26,241  WARN [Worker-100] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:26,301  WARN [Worker-100] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:26,301  WARN [Worker-100] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:51,857  WARN [Worker-99] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:51,857  WARN [Worker-99] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:51,903  WARN [Worker-99] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:51,904  WARN [Worker-99] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:23:55,667  WARN [Worker-99] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:23:55,667  WARN [Worker-99] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:53:15,866  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:15,866  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:21,188  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:41,701  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:43,454  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:45,569  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:53:53,228  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:54:02,529  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1077
+2015-07-31 14:55:51,323  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:55:51,324  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:55:51,391  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:55:51,391  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:56:06,914  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:56:06,914  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:56:38,104  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:56:38,104  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:56:38,245  WARN [Worker-111] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:56:38,245  WARN [Worker-111] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:56:38,307  WARN [Worker-111] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:56:38,307  WARN [Worker-111] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 14:56:39,295  WARN [Worker-111] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 14:56:39,295  WARN [Worker-111] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:03:25,843  WARN [Worker-114] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:03:25,843  WARN [Worker-114] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:03:25,874  WARN [Worker-114] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:03:25,874  WARN [Worker-114] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:03:31,398  WARN [Worker-114] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:03:31,398  WARN [Worker-114] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:04:04,439  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 399
+2015-07-31 15:04:04,454  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 399
+2015-07-31 15:04:07,023  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 400
+2015-07-31 15:04:07,023  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 400
+2015-07-31 15:04:13,098  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 399
+2015-07-31 15:04:13,114  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 399
+2015-07-31 15:04:16,692  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 402
+2015-07-31 15:05:40,943  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 435
+2015-07-31 15:05:41,997  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 434
+2015-07-31 15:10:16,835  WARN [Worker-116] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:10:16,835  WARN [Worker-116] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:10:16,867  WARN [Worker-116] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:10:16,867  WARN [Worker-116] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:11:00,764  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:11:00,764  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:11:00,811  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:11:00,811  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:11:03,597  WARN [Worker-108] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:11:03,597  WARN [Worker-108] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:14:06,945  WARN [Worker-117] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:14:06,945  WARN [Worker-117] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:14:07,039  WARN [Worker-117] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:14:07,039  WARN [Worker-117] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:16:13,875  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 608
+2015-07-31 15:16:17,953  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 615
+2015-07-31 15:16:17,953  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 615
+2015-07-31 15:16:25,067  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 627
+2015-07-31 15:16:25,067  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 627
+2015-07-31 15:20:57,177  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:20:57,177  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:20:57,224  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:20:57,224  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:20:59,654  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:20:59,654  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:21:22,861  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:21:22,861  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:21:22,908  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:21:22,908  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:21:24,170  WARN [Worker-119] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:21:24,170  WARN [Worker-119] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:24:32,828  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:32,828  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:34,883  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:34,883  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:41,012  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:41,012  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:46,130  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:46,130  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:47,219  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:47,219  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:50,290  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:50,290  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:51,865  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:51,865  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:52,943  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:24:52,943  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1048
+2015-07-31 15:36:25,207  WARN [Worker-116] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:36:25,207  WARN [Worker-116] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:36:25,254  WARN [Worker-116] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:36:25,254  WARN [Worker-116] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:36:46,675  WARN [Worker-128] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:36:46,675  WARN [Worker-128] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:36:46,706  WARN [Worker-128] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:36:46,706  WARN [Worker-128] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:36:49,163  WARN [Worker-128] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:36:49,163  WARN [Worker-128] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:38:28,699  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 471
+2015-07-31 15:41:54,661  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:41:54,661  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:41:54,693  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:41:54,693  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:42:21,928  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:42:21,928  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:42:21,943  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:42:21,943  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:42:24,931  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:42:24,931  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:48:58,624  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 611
+2015-07-31 15:48:58,624  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 611
+2015-07-31 15:50:08,082  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:50:08,082  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:50:08,113  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:50:08,113  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:50:12,233  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:50:12,233  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:53:15,202  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 428
+2015-07-31 15:53:15,202  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 428
+2015-07-31 15:53:20,296  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 429
+2015-07-31 15:53:20,296  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 429
+2015-07-31 15:53:21,374  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 430
+2015-07-31 15:53:21,374  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 430
+2015-07-31 15:58:18,186  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 509
+2015-07-31 15:59:26,088  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:59:26,088  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:59:26,104  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:59:26,104  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 15:59:30,694  WARN [Worker-127] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 15:59:30,694  WARN [Worker-127] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:01:11,395  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 744
+2015-07-31 16:01:11,395  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 744
+2015-07-31 16:01:11,410  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1076
+2015-07-31 16:01:11,410  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 1076
+2015-07-31 16:01:17,815  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:01:17,815  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:01:17,846  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:01:17,846  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:01:30,945  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:01:30,945  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:05:26,881  WARN [Worker-137] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:05:26,881  WARN [Worker-137] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:05:26,897  WARN [Worker-137] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:05:26,897  WARN [Worker-137] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:06:12,088  WARN [Worker-139] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:06:12,088  WARN [Worker-139] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:06:12,104  WARN [Worker-139] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:06:12,104  WARN [Worker-139] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:07:31,487  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:07:31,487  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:07:31,534  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:07:31,534  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:08:38,621  WARN [Worker-139] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:08:38,621  WARN [Worker-139] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:08:38,652  WARN [Worker-139] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:08:38,652  WARN [Worker-139] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:08:41,276  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-07-31 16:08:42,103  WARN [Worker-139] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:08:42,103  WARN [Worker-139] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:09:36,978  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 325
+2015-07-31 16:09:39,556  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 325
+2015-07-31 16:09:43,176  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 325
+2015-07-31 16:09:43,176  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 333
+2015-07-31 16:09:46,244  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 325
+2015-07-31 16:09:46,244  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 333
+2015-07-31 16:11:33,235  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:11:33,235  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:11:33,266  WARN [Worker-134] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:11:33,266  WARN [Worker-134] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:20,218  WARN [Worker-137] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:20,218  WARN [Worker-137] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:20,234  WARN [Worker-137] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:20,234  WARN [Worker-137] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:22,796  WARN [Worker-137] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:22,796  WARN [Worker-137] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:40,096  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:40,096  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:40,143  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:40,143  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:12:41,932  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:12:41,933  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:16,853  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:16,853  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:16,900  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:16,900  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:20,776  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:20,776  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:30,427  WARN [Worker-143] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:30,427  WARN [Worker-143] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:30,459  WARN [Worker-143] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:30,459  WARN [Worker-143] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:13:33,270  WARN [Worker-143] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:13:33,270  WARN [Worker-143] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:15:36,885  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:15:36,885  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:15:36,901  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:15:36,901  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:15:41,964  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:15:41,964  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:16:34,386  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:16:34,386  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:16:34,432  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:16:34,432  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:16:39,481  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:16:39,485  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:17:23,380  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:17:23,395  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:17:23,442  WARN [Worker-144] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:17:23,442  WARN [Worker-144] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:17:29,042  WARN [Worker-146] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:17:29,042  WARN [Worker-146] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:17:29,105  WARN [Worker-146] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:17:29,105  WARN [Worker-146] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:18:11,855  WARN [Worker-146] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:18:11,855  WARN [Worker-146] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:18:11,871  WARN [Worker-146] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:18:11,871  WARN [Worker-146] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:18:16,628  WARN [Worker-146] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:18:16,628  WARN [Worker-146] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:21:37,441  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:21:37,441  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:21:37,472  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:21:37,472  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:28:33,391  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:28:33,391  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:28:33,406  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:28:33,406  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:28:37,578  WARN [Worker-141] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:28:37,578  WARN [Worker-141] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:29:08,289  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:29:08,289  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:29:08,336  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:29:08,336  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:29:13,381  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:29:13,381  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:32:03,223  WARN [Worker-154] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:32:03,223  WARN [Worker-154] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:32:03,255  WARN [Worker-154] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:32:03,255  WARN [Worker-154] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:32:03,286  WARN [Worker-154] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:32:03,286  WARN [Worker-154] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:18,051  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:18,051  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:18,067  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:18,082  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:23,330  WARN [Worker-149] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:23,331  WARN [Worker-149] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:24,435  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:24,435  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:24,469  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:24,469  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:33:26,309  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:33:26,309  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:38:12,273  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - TraverserImpl$ - Skipping annotation, position length = 0, position offset = 814
+2015-07-31 16:39:04,000  WARN [Worker-152] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:39:04,000  WARN [Worker-152] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:39:04,016  WARN [Worker-152] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:39:04,016  WARN [Worker-152] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:39:09,165  WARN [Worker-152] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:39:09,165  WARN [Worker-152] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:45:21,694  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:45:21,694  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:45:21,709  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:45:21,709  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:45:25,429  WARN [Worker-156] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:45:25,429  WARN [Worker-156] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:45:36,187 ERROR [Text Viewer Hover Presenter] - IScalaPresentationCompiler$ - Ignoring InterruptException
+2015-07-31 16:59:28,006  WARN [Worker-166] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:59:28,006  WARN [Worker-166] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:59:28,037  WARN [Worker-166] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:59:28,037  WARN [Worker-166] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:59:52,470  WARN [Worker-169] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:59:52,470  WARN [Worker-169] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:59:52,485  WARN [Worker-169] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:59:52,485  WARN [Worker-169] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 16:59:56,087  WARN [Worker-169] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 16:59:56,087  WARN [Worker-169] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:00:05,452  WARN [Worker-168] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:00:05,453  WARN [Worker-168] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:00:05,517  WARN [Worker-168] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:00:05,517  WARN [Worker-168] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:00:05,549  WARN [Worker-168] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:00:05,549  WARN [Worker-168] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:01:57,011  WARN [Worker-166] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:01:57,012  WARN [Worker-166] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:01:57,031  WARN [Worker-166] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:01:57,031  WARN [Worker-166] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:02:02,404  WARN [Worker-166] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:02:02,404  WARN [Worker-166] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:17:14,407  WARN [Worker-174] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:17:14,407  WARN [Worker-174] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:17:14,423  WARN [Worker-174] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:17:14,423  WARN [Worker-174] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:17:19,790  WARN [Worker-174] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:17:19,790  WARN [Worker-174] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:20:25,412  WARN [Worker-177] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:20:25,412  WARN [Worker-177] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:20:25,428  WARN [Worker-177] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:20:25,428  WARN [Worker-177] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:20:25,459  WARN [Worker-177] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:20:25,459  WARN [Worker-177] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:20:25,990  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:20:25,990  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-07-31 17:20:31,825  WARN [Worker-177] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-07-31 17:20:31,825  WARN [Worker-177] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 20:57:27,568  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 20:57:27,583  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 20:57:27,583  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 20:57:27,583  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:28:36,175  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:28:36,175  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:28:36,673  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:28:36,674  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:28:36,723  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:28:36,723  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:28:36,898  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:28:36,898  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:28:37,306  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:28:37,588  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:28:37,799  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CallByNameParamAtCreationPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:28:40,782  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:28:40,782  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:43:02,518  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:43:02,518  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:43:38,511  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:43:38,511  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:53:52,302  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:53:52,302  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:14,899  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:14,899  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:26,954  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:26,954  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:27,154  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:39,939  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:39,939  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:39,970  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:39,970  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:41,189  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:41,189  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:42,795  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:42,795  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:42,826  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:42,826  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:42,955  WARN [Worker-25] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:42,955  WARN [Worker-25] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:42,986  WARN [Worker-25] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:42,986  WARN [Worker-25] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:43,002  WARN [Worker-25] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:43,002  WARN [Worker-25] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:43,486  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 21:54:43,486  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 21:54:44,721  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 21:54:44,924  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - CustomSemanticAction - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 22:08:35,792  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:08:35,792  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:11:48,226  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:11:48,226  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:46,272  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:46,275  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:47,080  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:47,081  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:47,221  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:47,221  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:47,423  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:47,423  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:47,641  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:47,641  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:15:49,095  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:15:49,096  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:25:35,851  WARN [Worker-8] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:25:35,867  WARN [Worker-8] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:25:35,908  WARN [Worker-8] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:25:35,908  WARN [Worker-8] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:25:35,972  WARN [Worker-8] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:25:35,972  WARN [Worker-8] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:26:19,489  WARN [Worker-11] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:26:19,489  WARN [Worker-11] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:26:19,536  WARN [Worker-11] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:26:19,536  WARN [Worker-11] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:26:19,567  WARN [Worker-11] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:26:19,567  WARN [Worker-11] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:27:40,193  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:27:40,209  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:27:40,209  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:27:40,209  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:27:40,240  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:27:40,240  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:27:41,146  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:27:41,148  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:27:46,817  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:27:46,817  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:32:33,876  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:32:33,876  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:32:33,908  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:32:33,908  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:32:33,923  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:32:33,923  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:40:37,486  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:40:37,486  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:40:51,440 ERROR [main] - System.err - SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+2015-08-02 22:40:51,440 ERROR [main] - System.err - SLF4J: Defaulting to no-operation (NOP) logger implementation
+2015-08-02 22:40:51,440 ERROR [main] - System.err - SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+2015-08-02 22:44:01,084  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:01,084  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:01,912  WARN [Worker-31] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:01,912  WARN [Worker-31] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:01,943  WARN [Worker-31] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:01,943  WARN [Worker-31] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:01,975  WARN [Worker-31] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:01,975  WARN [Worker-31] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:02,100  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:02,100  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:07,865  WARN [Worker-24] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:07,865  WARN [Worker-24] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:44:07,881  WARN [Worker-24] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:44:07,881  WARN [Worker-24] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:45:00,610  WARN [Worker-30] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:45:00,610  WARN [Worker-30] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:45:00,616  WARN [Worker-30] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:45:00,616  WARN [Worker-30] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:45:00,631  WARN [Worker-30] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:45:00,631  WARN [Worker-30] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:45:01,303  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:45:01,303  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:45:20,857  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:45:20,857  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:39,154  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:39,154  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:39,186  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:39,186  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:39,336  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:39,336  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:39,389  WARN [Worker-31] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:39,389  WARN [Worker-31] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:39,412  WARN [Worker-31] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:39,412  WARN [Worker-31] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:40,338  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:40,338  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:51,369  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:51,369  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:51,384  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:51,384  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:51,478  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:51,478  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:51,525  WARN [Worker-26] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:51,525  WARN [Worker-26] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:51,541  WARN [Worker-26] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:51,541  WARN [Worker-26] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:46:52,396  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:46:52,396  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:20,451  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:20,451  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:20,467  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:20,467  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:20,561  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:20,561  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:20,608  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:20,608  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:20,639  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:20,639  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:47:21,162  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:47:21,162  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:22,496  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:22,496  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:22,512  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:22,512  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:22,590  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:22,590  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:22,637  WARN [Worker-27] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:22,637  WARN [Worker-27] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:22,668  WARN [Worker-27] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:22,668  WARN [Worker-27] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:23,281  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:48:23,281  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:48:24,255  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ImplicitHighlightingPresenter - Timeout while waiting for `askLoadedTyped` during semantic highlighting.
+2015-08-02 22:49:06,430  WARN [Worker-27] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:49:06,430  WARN [Worker-27] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:49:06,441  WARN [Worker-27] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:49:06,441  WARN [Worker-27] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:49:06,458  WARN [Worker-27] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:49:06,458  WARN [Worker-27] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:49:07,265  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:49:07,265  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:50:52,747  WARN [Worker-18] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:50:52,747  WARN [Worker-18] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:50:52,856  WARN [Worker-34] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:50:52,856  WARN [Worker-34] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:50:52,872  WARN [Worker-34] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:50:52,872  WARN [Worker-34] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:50:53,659  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:50:53,659  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:51:15,229  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:51:15,229  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:51:35,044  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:51:35,044  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:57:33,289  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:57:33,289  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 22:57:44,364  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 22:57:44,364  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,045  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,045  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,060  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,060  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,154  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,154  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,201  WARN [Worker-40] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,201  WARN [Worker-40] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,217  WARN [Worker-40] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,217  WARN [Worker-40] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:05:48,762  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:05:48,763  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:46,364  WARN [Worker-48] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:46,364  WARN [Worker-48] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:46,582  WARN [Worker-48] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:46,582  WARN [Worker-48] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:46,596  WARN [Worker-48] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:46,596  WARN [Worker-48] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:47,073  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:47,074  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:56,597  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:56,597  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:56,597  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:56,597  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:56,612  WARN [Worker-51] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:56,612  WARN [Worker-51] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:15:57,347  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:15:57,347  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:21:07,859  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:21:07,859  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:03,042  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:26:03,044  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:03,986  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:26:03,987  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:04,060  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:26:04,060  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:04,266  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:26:04,266  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:06,416  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:26:06,422  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:26:35,290 ERROR [Worker-7] - System.err - SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+2015-08-02 23:26:35,290 ERROR [Worker-7] - System.err - SLF4J: Defaulting to no-operation (NOP) logger implementation
+2015-08-02 23:26:35,290 ERROR [Worker-7] - System.err - SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+2015-08-02 23:27:32,952  WARN [Worker-3] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:27:32,952  WARN [Worker-3] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:27:32,983  WARN [Worker-3] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:27:32,983  WARN [Worker-3] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:33:48,731  WARN [Worker-3] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:33:48,736  WARN [Worker-3] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:33:50,079  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:33:50,095  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:33:50,126  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:33:50,126  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:33:50,220  WARN [Worker-2] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:33:50,220  WARN [Worker-2] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:34:50,713  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:34:50,713  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:34:50,744  WARN [Worker-1] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:34:50,744  WARN [Worker-1] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:34:58,519  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:34:58,519  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:40:06,758  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:40:06,758  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:40:06,758  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:40:06,758  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:40:06,789  WARN [Worker-4] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:40:06,789  WARN [Worker-4] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:43:56,419  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:43:56,419  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:43:56,450  WARN [Worker-13] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:43:56,450  WARN [Worker-13] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:45:01,012  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:45:01,012  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:45:01,027  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:45:01,027  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:46:24,159  WARN [Worker-14] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:46:24,159  WARN [Worker-14] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:46:24,348  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:46:24,348  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:46:24,364  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:46:24,364  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:46:24,395  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:46:24,395  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:46:49,200  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:46:49,200  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:48:55,617  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:48:55,617  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:48:55,624  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:48:55,625  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:48:55,641  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:48:55,641  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:48:55,657  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:48:55,657  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-02 23:48:56,053  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-02 23:48:56,053  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-03 23:15:15,091  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-03 23:15:15,107  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-03 23:15:15,138  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-03 23:15:15,138  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 09:34:41,292  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 09:34:41,323  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 09:34:41,323  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 09:34:41,323  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 22:54:06,657  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 22:54:06,676  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 22:54:06,681  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 22:54:06,681  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:21:19,354  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:21:19,354  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:21:19,370  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:21:19,370  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:21:19,526  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:21:19,526  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:21:19,542  WARN [Worker-9] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:21:19,542  WARN [Worker-9] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:21:20,088  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:21:20,088  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:25:31,029  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:25:31,029  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:25:31,060  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:25:31,060  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:25:31,076  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:25:31,076  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:17,626  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:17,626  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:17,641  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:17,642  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:17,659  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:17,660  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:24,762  WARN [Worker-10] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:24,762  WARN [Worker-10] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:24,809  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:24,809  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:24,809  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:24,809  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:24,840  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:24,840  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:26:24,856  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:26:24,856  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:28:50,849  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:28:50,849  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:28:50,889  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:28:50,890  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:28:50,907  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:28:50,907  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:25,257  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:25,257  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:25,302  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:25,303  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:25,323  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:25,323  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:39,790  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:39,791  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:39,799  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:39,799  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:39,821  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:39,821  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:39,839  WARN [Worker-12] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:39,839  WARN [Worker-12] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:29:40,596  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:29:40,597  WARN [org.scalaide.ui.internal.reconciliation.ScalaReconciler] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:32:27,911  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:32:27,911  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:32:27,942  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:32:27,942  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:32:27,958  WARN [Worker-16] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:32:27,958  WARN [Worker-16] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:14,133  WARN [Worker-19] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:14,133  WARN [Worker-19] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:14,149  WARN [Worker-19] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:14,149  WARN [Worker-19] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:14,164  WARN [Worker-19] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:14,164  WARN [Worker-19] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:44,009  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:44,009  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:44,040  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:44,040  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:34:44,056  WARN [Worker-15] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:34:44,056  WARN [Worker-15] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:36:39,911  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:36:39,913  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.
+2015-08-04 23:36:39,919  WARN [main] - ScalaProject - Project Andrej has platform default sourceLevel.
+2015-08-04 23:36:39,920  WARN [main] - ScalaProject - Project Andrej runs on platform default installation.

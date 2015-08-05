@@ -1,0 +1,24 @@
+package nl.woupiestek.andrej
+
+/**
+ * @author Wouter
+ */
+object Infer {
+  type Context = Map[Variable, Expression]
+
+  def apply(context: Context, expression: Expression): Expression = {
+    expression match {
+      case x: Variable => context(x) //exception intended
+      case Universe(n) => Universe(n + 1)
+    }
+  }
+
+  def inferUniverse(context: Context, expression: Expression) = {
+    val u = normalize(context, Infer.apply(context, expression))
+    u match {
+      case Universe(n) => Some(n)
+      case _           => None
+    }
+  }
+
+}

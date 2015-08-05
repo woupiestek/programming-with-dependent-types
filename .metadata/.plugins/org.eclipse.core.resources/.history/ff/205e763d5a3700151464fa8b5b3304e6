@@ -1,0 +1,42 @@
+
+
+/**
+ * @author Wouter
+ *
+ */
+trait Expression { val prettyPrint: String }
+case class Application(t: Expression, u: Expression) extends Expression {
+  //Applications easily become ambiguous
+  val prettyPrint = {
+    val term1 = t match {
+      case _: Abstraction => "(%s)".format(t.prettyPrint)
+      case _: Expression  => t.prettyPrint
+    }
+    val term2 = u match {
+      case _: Application => "(%s)".format(u.prettyPrint)
+      case _: Expression  => u.prettyPrint
+    }
+    "%s %s".format(term1, term2)
+  }
+}
+case class Universe(level: Int) extends Expression { val prettyPrint = "Type(%d)".format(level) }
+trait Variable extends Expression
+case class Abstraction(x: Variable, t: Expression, u: Expression) extends Expression {
+  val prettyPrint = "(\\%s:%s.%s)".format(x.prettyPrint, t.prettyPrint, u.prettyPrint)
+}
+case class Product(a: Abstraction) extends Expression {
+  val prettyPrint = "Product(%s)".format(a.prettyPrint)
+}
+
+/* subtypes of Variable */
+case class Named(name: String) extends Variable {
+  val prettyPrint = name
+}
+case class Gensym(name: String, number: Int) extends Variable {
+  val prettyPrint = name + number
+}
+case class Dummy() extends Variable {
+  val prettyPrint = "_"
+}
+
+

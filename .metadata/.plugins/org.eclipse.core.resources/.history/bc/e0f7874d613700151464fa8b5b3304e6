@@ -1,0 +1,78 @@
+package nl.woupiestek.andrej
+
+/**
+ * @author Wouter
+ *
+ */
+trait Expression { val prettyPrint: String }
+case class Application(operator: Expression, operand: Expression) extends Expression {
+  //Applications easily become ambiguous
+  val prettyPrint = {
+    val term1 = operator match {
+      case _: Abstraction => "(%s)".format(operator.prettyPrint)
+      case _: Expression  => operator.prettyPrint
+    }
+    val term2 = operand match {
+      case _: Application => "(%s)".format(operand.prettyPrint)
+      case _: Expression  => operand.prettyPrint
+    }
+    "%s %s".format(term1, term2)
+  }
+}
+case class Universe(level: Int) extends Expression { val prettyPrint = "Type(%d)".format(level) }
+trait Variable extends Expression
+case class Abstraction(variable: Variable, domain: Expression, term: Expression) extends Expression {
+  val prettyPrint = "(\\%s:%s.%s)".format(variable.prettyPrint, domain.prettyPrint, term.prettyPrint)
+}
+case class Product(typeMap: Abstraction) extends Expression {
+  val prettyPrint = "Product(%s)".format(typeMap.prettyPrint)
+}
+
+/* subtypes of Variable */
+case class Named(name: String) extends Variable {
+  val prettyPrint = name
+}
+case class Dummy() extends Variable {
+  val prettyPrint = "_"
+}
+
+//substitution
+object Substitute {
+  def apply(record: Map[Variable, Expression], expression: Expression): Expression = {
+    expression match {
+      case x: Variable       => record.getOrElse(x, expression)
+      case u: Universe       => u
+      case Product(a)        => Product(substituteAbstraction(record, a))
+      case a: Abstraction    => substituteAbstraction(record, a)
+      case Application(t, u) => Application(Substitute(record, t), Substitute(record, u))
+    }
+  }
+
+  private case class Gensym(name: String, number: Int) extends Variable {
+    val prettyPrint = name + number
+  }
+
+  //variable generator
+  private object Fresh {
+    var count = 0;
+    def apply(): Variable = {
+      val freshVariable = Gensym("x", count)
+      count += 1
+      freshVariable
+    }
+  }
+
+  private def substituteAbstraction(record: Map[Variable, Expression], abstraction: Abstraction): Abstraction = {
+    abstraction match {
+      case Abstraction(x, d, t) => Abstraction(x, Substitute(record, d), Substitute(avoidCapture(record, x), t))
+    }
+  }
+
+  private def avoidCapture(record: Map[Variable, Expression], variable: Variable): Map[Variable, Expression] = {
+    val alternative = Map(variable -> Fresh())
+    for ((vari, expr) <- record if vari != variable) yield {
+      (vari, Substitute(alternative, expr))
+    }
+  }
+}
+

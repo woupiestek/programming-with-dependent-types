@@ -1,4 +1,106 @@
 research log programming-with-dependent-types
+*** 4/8/15 ***
+https://poundblog.wordpress.com/2013/06/06/a-scala-parser-combinator-grammar-for-csv/
+
+Kijk naar Antlr voor parsers--antlr heeft hoeger performance, lagere integratie met scala.
+
+
+*** 2/8/15 ***
+
+Expression ::= Terminal | Application | Abstraction | Product | Cut
+Terminal ::= Universe | Variable
+Variable ::= Named | "#"Variable
+Application ::= "(" Expression* ")"
+Universe ::= "(U" number ")"
+Abstraction ::= "(\" (Variable*) "Expression)"
+Product ::= "(Pi" "Abstraction)"
+Cut ::= (let x Expression Expression)
+Named ::= String
+
+
+*** 31/7/15 ***
+Vermijd problemen met type checking door apparte statische en dynamische equivalentierelaties te definieren. 
+Dus in plaats van te controleren dat twee type functies extentieel gelijk zijn, controleer je of de definities voldoende op elkaar lijken.
+
+
+
+variable capture: [x=N](\y.M) -> \y.[x=#y.N](M) -> blokeer y rechtstreeks
+
+volgende substitutie: [y=P](\y. [x= [#y=y]N] M) -> we kijken nu verder.
+
+Dit is hetzelfde. Voeg gewoon een let binding aan de taal toe.
+
+
+cut(x,M,\y:T.N) -> \y:cut(x,M,T).cut(x,y=#y.M,N) 
+cut(x,M,y=N.P) -> y=cut(x,M,N).cut(x,y=#y.M,P)
+
+Ik werk met het voorbeeld van:
+http://math.andrej.com/2012/11/08/how-to-implement-dependent-type-theory-i/
+Daar staan ook voorbeelden van de rest
+
+Infor over parsers schrijven
+http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators
+
+
+
+*** 1/7/15 ***
+Depedent types in Scala: class A{ class B }, hier hebben we dan een klasse die afhankelijk is van een object.
+In java kan dit ook.
+
+De syntax is voor vectoren van lengte n.
+
+Nadeel: je kunt niet zomaar nieuwe dependent types definieren -- dat kan hooguit door betaande typen te extenden.
+
+
+
+------
+
+foreach A->type T. E(x,y)->T(x)->T(y)
+
+
+
+*** 19/6/15 ***
+
+De tweede taal die ik wil uitproberen is Idris. Deze is bovenop Haskell
+geïmplementeerd. 
+
+De tutorial is weereens door een linuxautist geschreven.
+
+--- terwijl mysys aan het downloaden/installeren is ---
+par en threading. misschien een raar verband, maar geeft een functie
+meerdere return types: A | B | C
+
+binnen de functie moet elke return een keer worden aangeroepen: 
+return[0] a;.... return[1] b;.... return[2] c;....
+
+na het aanroepen van de functie moeten meerdere continuaties gedefinieerd zijn:
+y = f(x);
+?(y){...}//eerste continuation, y heeft type A
+?(y){...}//tweede continuation, y heeft type B
+//laatste continuation, die de andere volgt
+
+Elke heeft toegang tot slecht één variabele.
+Evaluatie gaat parallel.
+
+Als een klasse zo wordt gedefinieerd, dan heeft hij 
+verschillende interfaces voor verschillende threads
+--- en nu verder ---
+
+Kunnen we hier iets interessants mee doen?
+
+Sudoku solver bijvoorbeeld.
+
+Mijn laaste idee was een backtracking algoritme dat 
+een lijst van constraints afstreept terwijl het een
+sudokubord invult. De implementatie in clojure lukte
+niet wegens fouten die ik niet kon achterhalen.
+
+Kan ik het typesysteem van Idris voor mijn wagen spannen?
+
+Zou het mogelijk zijn om de constraints in het datatype te stoppen?
+
+
+
 
 *** 5/6/15 ***
 Laten we om beginnen eens kijken wat de talen op wikipeda beloven.

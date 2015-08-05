@@ -1,0 +1,10 @@
+package nl.woupiestek.andrej
+
+import scala.util.parsers._
+
+/**
+ * @author Wouter
+ */
+class Parse extends Parsers {
+  
+}
