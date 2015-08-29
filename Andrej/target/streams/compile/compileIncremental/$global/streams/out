@@ -2,14 +2,35 @@
 [0m[[0mdebug[0m] [0mInitial source changes: [0m
 [0m[[0mdebug[0m] [0m	removed:Set()[0m
 [0m[[0mdebug[0m] [0m	added: Set()[0m
-[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0m	modified: Set(C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Expression.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Core.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Infer.scala)[0m
 [0m[[0mdebug[0m] [0mRemoved products: Set()[0m
 [0m[[0mdebug[0m] [0mExternal API changes: API Changes: Set()[0m
 [0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
-[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set()[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Expression.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Core.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Infer.scala)[0m
 [0m[[0mdebug[0m] [0m[0m
 [0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
 [0m[[0mdebug[0m] [0m	product: Set()[0m
 [0m[[0mdebug[0m] [0m	binary dep: Set()[0m
 [0m[[0mdebug[0m] [0m	external source: Set()[0m
-[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Expression.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Core.scala, C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Infer.scala)[0m
+[0m[[0minfo[0m] [0mCompiling 3 Scala sources to C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\scala-2.11\classes...[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.7[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.11.7[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 17dc628, interfacing (CompilerInterface) with Scala compiler version 2.11.7[0m
+[0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	C:\Program Files (x86)\Java\jre1.8.0_60\lib\resources.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\rt.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\sunrsasign.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\jsse.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\jce.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\charsets.jar;C:\Program Files (x86)\Java\jre1.8.0_60\lib\jfr.jar;C:\Program Files (x86)\Java\jre1.8.0_60\classes;C:\Users\Wouter\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.11.7.jar[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\scala-2.11\classes;C:\Users\Wouter\.ivy2\cache\org.scala-lang.modules\scala-parser-combinators_2.11\bundles\scala-parser-combinators_2.11-1.0.4.jar;C:\Users\Wouter\.ivy2\cache\org.parboiled\parboiled_2.11\jars\parboiled_2.11-2.1.0.jar;C:\Users\Wouter\.ivy2\cache\com.chuusai\shapeless_2.11\bundles\shapeless_2.11-2.1.0.jar[0m
+[0m[[31merror[0m] [0mC:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Core.scala:60: not found: value nd[0m
+[0m[[31merror[0m] [0mError occurred in an application involving default arguments.[0m
+[0m[[31merror[0m] [0m     WeakHeadNormalize(nd)[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0mC:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\main\scala\Core.scala:64: missing parameter type for expanded function[0m
+[0m[[31merror[0m] [0mThe argument types of an anonymous function must be fully known. (SLS 8.5)[0m
+[0m[[31merror[0m] [0mExpected type was: Option[nl.woupiestek.andrej.core2.Expr[I]][0m
+[0m[[31merror[0m] [0m  def apply[I](expr: Expr[I], context: Context): Option[Expr[I]] = {[0m
+[0m[[31merror[0m] [0m                                                                   ^[0m
+[0m[[31merror[0m] [0mtwo errors found[0m
+[0m[[0mdebug[0m] [0mCompilation failed (CompilerInterface)[0m
+[0m[[31merror[0m] [0m(compile:[31mcompileIncremental[0m) Compilation failed[0m

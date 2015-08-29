@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0d6cef7c-b5e6-45d2-9e86-2710d541cdb6" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/Core.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/Lexer.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules/andrej-build.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules/andrej.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\11\7006b1ca623700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\11\c0f17650723700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\15\70129d976b3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\22\20f0e5a38d3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\23\f0bad8518e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\25\b0853fe6673700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\25\d08131de613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\28\60ee14e08e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\2\1097a909873700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\2a\604f0dcc943700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\2c\70dc4e30893700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\33\601e5eae603700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\34\2070bbd7683700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\36\30797594563700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\36\5019d4338e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\37\c00a1939973700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\3c\9049d44a613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\3e\504adefc613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\3e\80986660613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\42\d0d279015f3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\45\6068c1f75a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\4b\c061925a8c3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\55\1055416e683700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\56\80d79faa583700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\59\b0be5cd26b3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\5\5076d016753700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\5c\e01c7a30623700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\5f\70689f4c683700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\62\b07ac1587e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\65\e094e696853700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\67\60c2bead663700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\6a\009553a1573700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\6e\c0f71ff8893700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\71\e0f352136b3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\76\f02766a7663700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\76\f09b4d8f693700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\77\506fd35f583700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\78\800ab515913700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\7\50069f318d3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\7c\30a90b6c903700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\7e\304e89476a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\7e\c0d529fe643700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\82\503d7f62773700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\82\50ff2cf06a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\87\c06af73e583700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\88\60ccd305863700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\89\f0f4fa278e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\8a\50acd880903700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\8c\a0468a23893700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\8d\8098c9d3943700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\8d\d01458fa863700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\90\70085f8f663700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\91\00eeee20573700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\91\40648933583700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\94\3048e172563700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\97\c0bf3f89613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\98\6011c24a723700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\9\900524fc623700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\9a\807af70b8e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\9b\90129401543700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\9d\40b14176563700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\9d\c06a0bd0623700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a1\60ff19748f3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a1\a0405860613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a3\10c70cc5923700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a3\70b1f40d8b3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a4\b0022d9d8c3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a4\c030c3fe7e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\a8\307e94895b3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\aa\40f5eae3913700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\aa\903f369d8e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ae\90c836b15a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b1\809767e0683700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b2\d0e63f7b8d3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b3\1080d842593700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b4\209b4816953700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b4\d01cc7c97c3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b5\f0f0cbbf603700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b6\00b1d934633700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\b8\10c5b487843700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\bc\906837a45b39001519b2ea9ab004c533" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\bc\e0f7874d613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\c2\906c5f60613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\c7\000350af613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\c9\40990319913700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\c9\d0c68e4c8d3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ca\a0898ef98e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\cd\a081dfe7893700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ce\108b67f17e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\d2\f0c427ea7e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\d3\60d77abd943700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\d9\50e9c978833700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\db\7087b07c853700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\dd\e07c8d0f6a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\e0\c0ca4e60613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\e2\c0c5ae23613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\e5\f0f1f6e9733700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\e7\10df61865f3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\e9\903f64bf8e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ea\504c406f593700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\eb\a098ef935c3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ef\b07b1de9903700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f0\50d8386e623700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f2\a08f183b683700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f3\b0855360613700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f4\6053090f573700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f5\b021698b5c3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f7\d08decbc573700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\f8\002a79dc8e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ff\205e763d5a3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.history\ff\900fbf498e3700151464fa8b5b3304e6" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.projects\Andrej\.indexes\e4\history.index" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\.metadata\.plugins\org.eclipse.core.resources\.root\9.tree" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.classpath" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.project" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.settings\org.eclipse.core.resources.prefs" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.settings\org.eclipse.jdt.core.prefs" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.settings\org.eclipse.ltk.core.refactoring.prefs" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\.settings\org.scala-ide.sdt.core.prefs" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$239948a8b3dda40dd0f9$$anonfun$$sbtdef$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$239948a8b3dda40dd0f9$.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$239948a8b3dda40dd0f9.cache" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$239948a8b3dda40dd0f9.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$525cc0ed5c83a2e46d0d$$anonfun$$sbtdef$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$525cc0ed5c83a2e46d0d$.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$525cc0ed5c83a2e46d0d.cache" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$525cc0ed5c83a2e46d0d.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$98d3c6506ce1ea1cd0d8$$anonfun$$sbtdef$1.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$98d3c6506ce1ea1cd0d8$.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$98d3c6506ce1ea1cd0d8.cache" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\project\target\config-classes\$98d3c6506ce1ea1cd0d8.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\nl\woupiestek\andrej\Evaluate.scala" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\nl\woupiestek\andrej\Expression.scala" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\nl\woupiestek\andrej\Infer.scala" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\src\nl\woupiestek\andrej\Parser.scala" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\default\andrej_2.10\0.1-SNAPSHOT\resolved.xml.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\default\andrej_2.10\0.1-SNAPSHOT\resolved.xml.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\default\andrej_2.11\0.2\resolved.xml.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\default\andrej_2.11\0.2\resolved.xml.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-compile-internal.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-compile.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-docs.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-optional.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-plugin.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-provided.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-runtime-internal.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-runtime.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-scala-tool.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-sources.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-test-internal.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\resolution-cache\reports\default-andrej_2.10-test.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\$global\dependencyPositions\$global\streams\update_cache_2.10\input_dsp" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\$global\dependencyPositions\$global\streams\update_cache_2.10\output_dsp" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\$global\update\$global\streams\update_cache_2.10\inputs" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\$global\update\$global\streams\update_cache_2.10\output" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\compile\mainClass\$global\streams\out" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\compile\run\$global\streams\out" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\runtime\dependencyClasspath\$global\streams\export" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\runtime\fullClasspath\$global\streams\export" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\target\streams\runtime\internalDependencyClasspath\$global\streams\export" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.projects/Andrej/.indexes/af/history.index" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.projects/Andrej/.indexes/af/history.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.projects/Andrej/.indexes/e4/be/16/a0/history.index" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.projects/Andrej/.indexes/e4/be/16/a0/history.index" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/input_dsp" afterPath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/input_dsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/inputs" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/inputs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/output" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/output" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/output_dsp" afterPath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/output_dsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/.history" afterPath="$PROJECT_DIR$/target/.history" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.log" afterPath="$PROJECT_DIR$/../.metadata/.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.pde.core/.cache/clean-cache.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-compile-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-compile-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-compile.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-compile.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-docs.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-docs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-optional.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-optional.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-plugin.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-pom.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-provided.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-provided.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-runtime-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-runtime-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-runtime.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-runtime.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-scala-tool.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-scala-tool.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-sources.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-sources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-test-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-test-internal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-test.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-andrej_2.11-test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.debug.ui/dialog_settings.xml" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.debug.ui/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.ui.workbench.texteditor/dialog_settings.xml" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.ui.workbench.texteditor/dialog_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/compileIncremental/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/compileIncremental/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/dependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/dependencyClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/exportedProducts/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/exportedProducts/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/externalDependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/externalDependencyClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/managedClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/compile/managedClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/runtime/exportedProducts/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/runtime/exportedProducts/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/runtime/externalDependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/runtime/externalDependencyClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/runtime/managedClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/runtime/managedClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/$global/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/$global/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/compile/compileIncremental/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/compile/compileIncremental/$global/streams/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../research log.txt" afterPath="$PROJECT_DIR$/../research log.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.scala-ide.sdt.core/scala-ide.log" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.scala-ide.sdt.core/scala-ide.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/version.ini" afterPath="$PROJECT_DIR$/../.metadata/version.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="$PROJECT_DIR$/../.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
+    </list>
+    <ignored path="andrej.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/project/project/target/" />
+    <ignored path="$PROJECT_DIR$/project/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="andrej" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="ParseTest.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/ParseTest.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Expression.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Expression.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Infer.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Infer.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Core.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Core.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7638889">
+              <caret line="94" column="29" selection-start-line="94" selection-start-column="29" selection-end-line="94" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/scala/Lexer.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/ParseTest.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/Expression.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/Infer.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/Core.scala" />
+      </list>
+    </option>
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-7" />
+    <option name="width" value="1370" />
+    <option name="height" value="735" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Andrej" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.lastSelected" value="preferences.sourceCode" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="FullScreen" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Specs2RunConfiguration" factoryName="Specs2">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="uTestRunConfiguration" factoryName="utest">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <extension name="scalaCoverage" />
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="searchForTest" value="Across module dependencies" />
+      <setting name="testName" value="" />
+      <setting name="testKind" value="Class" />
+      <setting name="showProgressMessages" value="true" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="lastUpdateTimestamp" value="1440747002806" />
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="andrej" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="andrej" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+              <ExternalProjectPojo>
+                <option name="name" value="andrej-build" />
+                <option name="path" value="$PROJECT_DIR$/project" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$" value="1439564044223" />
+        <entry key="$USER_HOME$/Downloads/dmarsh-scalakoansexercises-ebbe18119d70" value="1431798648000" />
+        <entry key="$USER_HOME$/Source/Workspaces/test-spray" value="1438759743584" />
+      </map>
+    </option>
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d6cef7c-b5e6-45d2-9e86-2710d541cdb6" name="Default" comment="" />
+      <created>1440746983449</created>
+      <option name="number" value="Default" />
+      <updated>1440746983449</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24961832" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24961832" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/test/scala/ParseTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Expression.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Infer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Core.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/ParseTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Expression.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Infer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Core.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Parboil.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="63" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Parse.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12869565">
+          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Lexer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11826087">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/ParseTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="10" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Evaluate.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0347826">
+          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Expression.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Infer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Core.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7638889">
+          <caret line="94" column="29" selection-start-line="94" selection-start-column="29" selection-end-line="94" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

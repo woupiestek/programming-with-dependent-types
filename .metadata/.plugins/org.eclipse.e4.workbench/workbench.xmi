@@ -3,7 +3,7 @@
   <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Parser.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Expression.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Expression.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/nl/woupiestek/andrej/Expression.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.ui.DefaultTextEditor&quot; name=&quot;build.sbt&quot; tooltip=&quot;Andrej/build.sbt&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/build.sbt&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.internal.JarEntryEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.PropertiesFileEditor&quot; name=&quot;scala-parser-combinators.properties&quot; tooltip=&quot;C:\Users\Wouter\Documents\GitHub\programming-with-dependent-types\Andrej\lib\scala-parser-combinators_2.11-1.0.4.jar\scala-parser-combinators.properties&quot;>&#xD;&#xA;&lt;persistable element=&quot;=Andrej/C:\/Users\/Wouter\/Documents\/GitHub\/programming-with-dependent-types\/Andrej\/lib\/scala-parser-combinators_2.11-1.0.4.jar&quot; path=&quot;scala-parser-combinators.properties&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Evaluate.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Evaluate.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/nl/woupiestek/andrej/Evaluate.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Infer.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Infer.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/nl/woupiestek/andrej/Infer.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Substitute.scala&quot; tooltip=&quot;Andrej/src/Substitute.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/Substitute.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Expression.scala&quot; tooltip=&quot;Andrej/src/Expression.scala&quot;>&#xD;&#xA;&lt;persistable path=&quot;/Andrej/src/Expression.scala&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_0RiS0jdTEeWpMeVrJa8NYg" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_07i5ITdTEeWpMeVrJa8NYg" label="%trimmedwindow.label.eclipseSDK" x="0" y="0" width="1024" height="660">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_0RiS0jdTEeWpMeVrJa8NYg" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_07i5ITdTEeWpMeVrJa8NYg" label="%trimmedwindow.label.eclipseSDK" x="0" y="0" width="955" height="735">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workingSets/>"/>
@@ -55,7 +55,7 @@
                   <children xsi:type="advanced:Placeholder" xmi:id="_1WrV-DdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.views.ContentOutline" ref="_1Wo5sDdTEeWpMeVrJa8NYg"/>
                 </children>
               </children>
-              <children xsi:type="basic:PartStack" xmi:id="_1WrV-TdTEeWpMeVrJa8NYg" elementId="problems" containerData="2500" selectedElement="_SL5BYTeOEeWpMeVrJa8NYg">
+              <children xsi:type="basic:PartStack" xmi:id="_1WrV-TdTEeWpMeVrJa8NYg" elementId="problems" containerData="2500" selectedElement="_1WrV-jdTEeWpMeVrJa8NYg">
                 <tags>newtablook</tags>
                 <tags>org.eclipse.e4.secondaryDataStack</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_1WrV-jdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.views.ProblemView" ref="_1WnrkDdTEeWpMeVrJa8NYg"/>
@@ -91,14 +91,8 @@
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
         <tags>active</tags>
-        <children xsi:type="basic:Part" xmi:id="_k3mIQDlfEeWlQ_6rEX4VOA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="build.sbt" iconURI="platform:/plugin/org.eclipse.ui.editors/icons/full/obj16/file_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.ui.DefaultTextEditor&quot; name=&quot;build.sbt&quot; partName=&quot;build.sbt&quot; title=&quot;build.sbt&quot; tooltip=&quot;Andrej/build.sbt&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Andrej/build.sbt&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;76&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
-          <tags>Editor</tags>
-          <tags>org.eclipse.ui.DefaultTextEditor</tags>
-          <tags>removeOnHide</tags>
-        </children>
         <children xsi:type="basic:Part" xmi:id="_-l4EUDlfEeWlQ_6rEX4VOA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Parser.scala" iconURI="platform:/plugin/org.scala-ide.sdt.core/icons/full/obj16/scu_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Parser.scala&quot; partName=&quot;Parser.scala&quot; title=&quot;Parser.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;138&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;scala.tools.eclipse.ScalaSourceFileEditor&quot; name=&quot;Parser.scala&quot; partName=&quot;Parser.scala&quot; title=&quot;Parser.scala&quot; tooltip=&quot;Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/Andrej/src/nl/woupiestek/andrej/Parser.scala&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;556&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>scala.tools.eclipse.ScalaSourceFileEditor</tags>
           <tags>removeOnHide</tags>
@@ -131,7 +125,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_1qUDoTdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.views.ProblemView" visible="false"/>
+      <toolbar xmi:id="_1qUDoTdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.views.ProblemView"/>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_1WoSoDdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.views.TaskList" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Tasks" iconURI="platform:/plugin/org.eclipse.ui.ide/icons/full/eview16/tasks_tsk.png" closeable="true">
       <tags>View</tags>
@@ -159,7 +153,7 @@
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
       </menus>
-      <toolbar xmi:id="_SMe3QTeOEeWpMeVrJa8NYg" elementId="org.eclipse.search.ui.views.SearchView"/>
+      <toolbar xmi:id="_SMe3QTeOEeWpMeVrJa8NYg" elementId="org.eclipse.search.ui.views.SearchView" visible="false"/>
     </sharedElements>
     <trimBars xmi:id="_0RiS0zdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.main.toolbar" contributorURI="platform:/plugin/org.eclipse.ui.workbench">
       <children xsi:type="menu:ToolBar" xmi:id="_08pFUDdTEeWpMeVrJa8NYg" elementId="group.file" toBeRendered="false">
@@ -168,7 +162,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_08qTcDdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_4Py80DrwEeWD6bXHBArp_Q" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_0SZOczdTEeWpMeVrJa8NYg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_DftakD1REeW8f6I49alhsg" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_0SZOczdTEeWpMeVrJa8NYg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_08qTcTdTEeWpMeVrJa8NYg" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -189,7 +183,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_08q6gDdTEeWpMeVrJa8NYg" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_4P4cYjrwEeWD6bXHBArp_Q" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_0SYAkzdTEeWpMeVrJa8NYg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_DfzhMj1REeW8f6I49alhsg" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_0SYAkzdTEeWpMeVrJa8NYg"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_08q6gTdTEeWpMeVrJa8NYg" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>

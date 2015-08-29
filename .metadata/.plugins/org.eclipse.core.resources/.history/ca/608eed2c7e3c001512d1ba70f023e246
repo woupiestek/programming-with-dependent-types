@@ -1,0 +1,19 @@
+package nl.woupiestek.andrej
+
+import util.parsing.combinator._
+import nl.woupiestek.andrej._
+
+/**
+ * @author Wouter
+ */
+object Parse extends RegexParsers {
+  def expression: Parser[Expression] = terminal | application | abstraction | product | cut
+  def terminal: Parser[Terminal] = universe | variable
+  def variable: Parser[Variable] = """^[a-zA-Z]*$""".r ^^ { Variable(_) }
+  def universe: Parser[Universe] = """Type\\d"""
+  def application: Parser[List[Expression]] = "(" ~ expression ~ (" " ~ expression) * ~")"
+  def abstraction: Parser[Abstraction] = "(\\" ~ variabele ~ "." ~ expression ~ ")"
+  def product: Parser[Product] = "Product " ~ abstraction
+  def cut: Parser[Cut] = "(Let " ~ variable ~ " be " ~ expression ~ ". " ~ expression ~ ")"
+
+}

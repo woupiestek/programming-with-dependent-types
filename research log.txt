@@ -1,8 +1,66 @@
-research log programming-with-dependent-types
+﻿research log programming-with-dependent-types
+
+*** 28/8/15 ***
+- lexer -- parser -- etc.
+Laat ik wel een aparte 'lexer' bouwen die bijvoorbeeld een boom van expressies bouwt door naar haakjes te kijken
+
+Kwestie van loose coupling, tight integration.
+
+Tree ::= Leaf(s:String) | Fork(List[Tree]) 
+
+Dan voor de rest: sommige aanpassingen aan het domein model kunnen geen kwaad lijkt me.
+
+- Andrej heeft een REPL toegevoegd. Ook interessant om een keer te doen.
+- Daar is o.a. een pretty printer nodig.
+
+Ik ben niet gelukkig met de opsplitsing in de lexer en de parser die ik nu heb.
+Parboil heeft een hoop foutmeldingen ingebouwd, die ik nu mis in de cruciale stap.
+Misschien dat Parboiled met eigen input formaten kan leven.
+Kennelijk gaat er iets fout tijdens lexen, wat tijdens parsen geen problemen meer oplevert.
+
+
+--- problemen ---
+We maken de termen generiek zodat een willekeurig type kan dienen als type van variabelesymbolen
+Gevolg: een elegantere manier om met abstracties om te gaan: we breiden het type van symbolen
+met een extra element uit. Deze nieuwe types stoppen we in abstracties.
+
+
+Nadeel: bij het afleiden van typen zit het wel een beetje in de weg.
+Een context bestaat uit dependent types. De dependencies zijn variabelen.
+Dus elk element van een context heeft een ander type in Scala...
+
+
+
+
+*** 14/8/15 ***
+
+Parboiled is een andere parserbibliotheek voor scala. Die met bepaalde voordelen hebben.
+
+- het plan voor vandaag is om zonder eclipse een werkende parser te bouwen.
+ - sbt continue testen laten draaien
+ - testen toevoegen voor het bouwen van eenvoudige expressies
+ - vervolgens net zo lang worstelen met de standaard parser bibliotheek tot hij werkt.
+
+Hoewel deze manier van werken uiteindelijk resultaat opleverde
+Hebben de vage foutmeldingen me danig gefrustreerd.
+Ik heb geen flauw benul waarom ze zijn verdwenen.
+
+
+Scala Parser Combinators -> CFG's 
+Parboiled -> PEG's
+Menhir -> LR(1)
+yacc -> LALR(1)
+
+
+- Ik denk dat het de moeite waard is dit nog eens te herhalen met parboiled
+
+http://www.decodified.com/parboiled/api/scala/#package
+ 
+
 *** 4/8/15 ***
 https://poundblog.wordpress.com/2013/06/06/a-scala-parser-combinator-grammar-for-csv/
 
-Kijk naar Antlr voor parsers--antlr heeft hoeger performance, lagere integratie met scala.
+Kijk naar Antlr voor parsers--antlr heeft hoger performance, lagere integratie met scala.
 
 
 *** 2/8/15 ***
@@ -17,6 +75,12 @@ Product ::= "(Pi" "Abstraction)"
 Cut ::= (let x Expression Expression)
 Named ::= String
 
+
+verbeteringen:
+
+Expression ::= Terminal | "("~Compound~")"
+Simple ::= Variable | Universe 
+Compound ::= Abstraction | Application | Product | Cut
 
 *** 31/7/15 ***
 Vermijd problemen met type checking door apparte statische en dynamische equivalentierelaties te definieren. 

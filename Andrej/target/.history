@@ -1,13 +1,14 @@
-sbt run
-run
 reload
-eclipe
-eclipse
-exit
-eclipse
-exit
-eclipse
-help
+test
 reload
-eclipse
+test
+~test
+reload
+~test
+exit
+~test
+exit
+~test
+exit
+~test
 exit

@@ -1,9 +1,0 @@
-package nl.woupiestek.andrej
-
-/**
- * @author Wouter
- */
-object Infer {
-  type context = Map[Variable, Expression]
-
-}
