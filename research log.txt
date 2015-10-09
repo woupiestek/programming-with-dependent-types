@@ -1,5 +1,29 @@
 ﻿research log programming-with-dependent-types
 
+*** 9/10/15 ***
+Misschien beter dan Andrej's versie:
+http://www.andres-loeh.de/LambdaPi/LambdaPi.pdf
+
+Het schrijven van de parser was weer lastig.
+
+Het lijken mij inverse operaties: parsen en serializen. Klopt niet helemaal, omdat
+serialize(parse(string)) bijvoorbeeld witruimte weglaat.
+parse(serialize(tree)) kan de identiteit zijn. Nu hebben we echter het probleem dat niet elke
+string de serializatie van een boom is.
+
+
+
+repl: read evaluate print loop
+-> het is gebruikelijk om de taal uit te breiden met extra instructies voor de repl
+want anders kun je er erg weinig mee.
+
+-> in eerste instantie mogen we het echter wel letterlijk nemen...
+
+asynchrone eval lijkt me aardig.
+daarnaast een manier om de loop te doorbreken.
+voor de rest letterlijk repl lijkt me goed.
+
+
 *** 28/8/15 ***
 - lexer -- parser -- etc.
 Laat ik wel een aparte 'lexer' bouwen die bijvoorbeeld een boom van expressies bouwt door naar haakjes te kijken
