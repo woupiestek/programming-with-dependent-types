@@ -4,7 +4,7 @@
 		module="andrej_2.11"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20150828093111"
+		publication="20151018183418"
 	>
 		<description>
 		andrej
@@ -27,9 +27,7 @@
 	</configurations>
 	<publications>
 		<artifact name="andrej_2.11" type="pom" ext="pom" conf="pom"/>
-		<artifact name="andrej_2.11" type="jar" ext="jar" conf="compile"/>
-		<artifact name="andrej_2.11" type="src" ext="jar" conf="sources" e:classifier="sources"/>
-		<artifact name="andrej_2.11" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
+		<artifact name="andrej_2.11" type="jar" ext="jar" conf="optional" e:classifier="download"/>
 	</publications>
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.11.7" conf="scala-tool->default,optional(default)"/>
@@ -37,5 +35,6 @@
 		<dependency org="org.scala-lang.modules" name="scala-parser-combinators_2.11" rev="1.0.4" conf="compile->default(compile)"/>
 		<dependency org="org.scalatest" name="scalatest_2.11" rev="2.2.5" conf="test->default(compile)"/>
 		<dependency org="org.parboiled" name="parboiled_2.11" rev="2.1.0" conf="compile->default(compile)"/>
+		<dependency org="org.scalaz" name="scalaz-core_2.11" rev="7.1.4" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

@@ -2,7 +2,7 @@ package nl.woupiestek.andrej
 
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{blocking, ExecutionContext, Future}
 import scala.io.StdIn.readLine
 import scala.util.{Failure, Success}
 
@@ -11,15 +11,17 @@ import scala.util.{Failure, Success}
  */
 object Repl extends App {
 
-  private def loop {
+  private def rep(input: String)(implicit ec: ExecutionContext): Future[String] = Future {
+    Parboil(input) match {
+      case Success(expr) => PrettyPrint(WeakHeadNormalize(expr))
+      case Failure(ex) => ex.getMessage
+    }
+  }
+
+  private def loop: Unit = {
     val input = readLine
     if ("exit" != input) {
-      Future {
-        Parboil(input) match {
-          case Success(expr) => println(PrettyPrint(WeakHeadNormalize(expr)))
-          case Failure(ex) => println(ex.getMessage)
-        }
-      }
+      rep(readLine) map println
       loop
     }
   }
@@ -27,4 +29,5 @@ object Repl extends App {
   println("Welcome to the Andrej REPL")
   loop
   println("bye bye")
+
 }
