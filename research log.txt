@@ -1,5 +1,28 @@
 ﻿research log programming-with-dependent-types
 
+
+*** 7/11/15 ***
+De Bruijns notatie suggesteert voor producten: 
+  A -> ... -> t(n)
+Geen Pi, maar gewone pijlen.
+
+
+-> heen en weer vertalen
+in de REPL gebruiken we een taal met gewonen variablen die verwijzen naar de context
+achter de schermen mag het er compleet anders uitzien.
+met name het gebruik van (super)combinatoren lijkt me interessant...
+
+aangepaste typen voor S en K:
+(A -> B(0) -> C(0,1)) -> (A -> B(0)) -> A -> C(2(0)(1(0)),0)
+(A -> B(0) -> A)
+
+
+*** 6/11/15 ***
+
+- taal uitbreiden voor repl, en mogelijk verder vereenvoudigen...
+
+
+
 *** 9/10/15 ***
 Misschien beter dan Andrej's versie:
 http://www.andres-loeh.de/LambdaPi/LambdaPi.pdf
