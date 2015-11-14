@@ -1,7 +1,0 @@
-[0m[[0minfo[0m] [0m[32mParseTest:[0m[0m
-[0m[[0minfo[0m] [0m[32mParboil[0m[0m
-[0m[[0minfo[0m] [0m[32m- should recognize variables[0m[0m
-[0m[[0minfo[0m] [0m[32m- should recognize universes[0m[0m
-[0m[[0minfo[0m] [0m[32m- should recognize abstraction[0m[0m
-[0m[[0minfo[0m] [0m[32m- should recognize products[0m[0m
-[0m[[0minfo[0m] [0m[32m- should recognize applications[0m[0m
