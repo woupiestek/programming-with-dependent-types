@@ -1,12 +1,11 @@
 package nl.woupiestek.andrej
 
-/**
- * Created by Wouter on 4-9-2015.
- */
+import scala.language.postfixOps
+
 object PrettyPrint {
-  def apply[I](expr: Expr[I]):String = {
+  def apply[I](expr: Expr[I]): String = {
     expr match {
-      case Appl(x, y) => (x :: y) map apply mkString("(", " ", ")") //TODO: proper bracketing
+      case Appl(x, y) => (x :: y) map apply mkString ("(", " ", ")") //TODO: proper bracketing
       case Abst(t, e) => "\\%s:%s.%s".format("&" + apply(t), apply(t), apply(e @: Infi(t))) //TODO: generate variable names
       case Prod(Abst(t, e)) => "forall %s:%s.%s".format("&" + apply(t), apply(t), apply(e @: Infi(t))) //TODO: generate variable names
       case Infi(i) => "&" + apply(i)

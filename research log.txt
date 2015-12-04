@@ -1,5 +1,108 @@
 ﻿research log programming-with-dependent-types
 
+*** 4/12/15 ***
+Modulaire interpreters met monad transformaties
+
+Het idee is werkelijk zeer eenvoudig: maak van je interpreter een monade. 
+Begin met een simpele taal en een simple interpreter
+Gebruik monad transformers om de taal en zijn interpretaties uit te breiden.
+
+
+Hoe is een interpreter een monade dan?
+
+Het uitgangspunt is dat er een hoofdtype is van de output.
+Een interpreter produceert daarnaast bijvoorbeeld logs.
+
+Mijn gedachte: alle zichtbare output is een side effect. Neem
+REPL: read evaluate print loop
+read en print zijn sowieso side effects
+een geheugen is een andere side effect
+error messages zijn side effects
+
+Het resultaat van evaluatie zouden we kunnen uitzonderen van de side effects, 
+Maar syntax en type checks die hier deel van uitmaken lijken weer monades.
+
+Overigens lijken monade transformers vaak een omkering te veroorzaken:
+Wat het binnenste side effect lijkt, wordt de buitenste monade.
+
+
+-> het interpreter pattern geeft elke term een methode interpret met een context argument.
+-> free monads zijn een manier om aan data types voor abstract syntax trees. Ik geloof dat ik dit al geprobeerd heb, maar dacht dat case classes hetzelfde
+probleem beter oploste.
+-> Monades zijn nog weleens op operads gebaseerd. Dat geldt bijvoorbeeld ook voor state monads wiens transitiefuncties een soort operad vormen
+   Operads kunnen echter ook parallelle side-effects netjes combineren.
+   Deze presentatie maakt het wellicht eenvoudiger om monades te combineren.
+   
+-> Andere combinaties zijn mogelijke met distributieve wetten. Ik geloof dat het grootste probleem echter is om 
+
+
+De interpreter lijkt een endomorfisme van een top level datatype; je geeft de interpreter een string of een abstract syntax tree
+en er komt een nieuw element van hetzelfde type uit. Maar er zijn dus side effects, met name geheugen, praten met de gebruiker, etc.
+
+REPL voor interactie met de gebruiker. Met print:String -> REPL(Unit) en read: REPL(String)
+Loop is een bijzonder geval... (X->REPL(Bool*X))->REPL(X)
+Herhaal een actie totdat een conditie is berijkt.
+
+
+
+-> zichtbaarheid: kunnen monadetransfrmatie bij elkaars methodes? misschien is dat niet nodig...
+
+ 
+
+
+
+*** 2/12/15 ***
+
+-> finite state machines met eindige monoides. In plaats van naar de fase ruimte zelf te kijken,
+kijken we naar de transitiefuncties.
+
+beter nog misschien: 
+* het alphabet is een verzameling generatoren van een eindige monoide
+dwz: de elementen van de monoide zijn equivalentieklassen van rijtjes uit het alphabet.
+
+Het alphabet lijkt op een kostenmodel, waar de koste van elke staat gelijk is aan het kleinst aantal nodige letters
+
+We hebben een verzamelingen van herschrijfregels of vergelijkingen, en daaronder dient de geaccepteerde verzameling van strings gesloten te zijn.
+Dit gaat echter wel twee kanten op...
+
+Het voordeel: geen beginstaat meer nodig.
+De eindstaten zijn een willekeurige deelverzameling, geen idealen ofzo.
+
+Zowel het alphabet als de eindstaten zijn willekeurige deelverzamelingen.
+
+-> finite monad
+een eindige functor is een functor die bedenkt kan worden met een disjuncte vereniging van functoren van de vorm
+X |-> X^T
+veel monades vallen buiten deze boot.
+
+Een deelverzameling word vervangen door iets wat gesloten is onder 'map' en een functie door een natuurlijke transformatie
+Maar wat heb je dan?
+
+*** 22/11/15 ***
+Een calculus met eliminatieregels aan de rechter- en de linkerkant is veel natuurlijker
+en rekent ook nog makkelijker.
+
+*** 18/11/15 ***
+Met sequenten in rechtsintroductieregels in gedachten, een varient van de lambda calculus met assignments:
+
+variabelen: x,y,z ...
+abstracties: \x.M
+???: x , y := z (weakening, constraction)
+assignments: x:=M;N
+applications: x@=M;N
+
+In normaalvormen worden alleen variabelen ge-assigned en dienen assignements dus alleen om contractie geldig 
+te maken.
+
+x:=M;x > M
+x:=M;y > y
+x:=M;\x.N>\x.N
+x:=M;\y.N>\y.x:=???;N 
+x:=M;
+
+
+x,y,z := w (weakening & contractie)
+
 
 *** 7/11/15 ***
 De Bruijns notatie suggesteert voor producten: 

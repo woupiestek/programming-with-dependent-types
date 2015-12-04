@@ -10,8 +10,8 @@ trait Expr[+I] {
     case Some(iden) => Iden(iden)
   }
 
-  def abstracted[J >: I](variable:J):Expr[Option[I]] = flatMap(
-    j => Iden(Some(j) filterNot(k => k==variable))
+  def abstracted[J >: I](variable: J): Expr[Option[I]] = flatMap(
+    j => Iden(Some(j) filterNot (k => k == variable))
   )
 }
 

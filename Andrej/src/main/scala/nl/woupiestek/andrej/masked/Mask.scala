@@ -1,10 +1,6 @@
 package nl.woupiestek.andrej.masked
 
-
 import scala.annotation.tailrec
-import scalaz.Free
-import scalaz.Free.Suspend
-
 
 sealed trait Rule[+X] {
   def map[Y](f: X => Y): Rule[Y]
@@ -31,9 +27,10 @@ case class Prod[+X](types: List[X], body: X) extends Rule[X] {
   override def map[Y](f: (X) => Y): Rule[Y] = Abst(types map f, f(body))
 }
 
-
 object Normalizer {
-  type Expr[V] = Free[Rule, V]
+  sealed trait Expr[+V]
+  case class Return[V](v: V) extends Expr[V]
+  case class Suspend[+V](e: Rule[Expr[V]]) extends Expr[V]
 
   def redex[X](a: List[Expr[X]], b: Expr[X], c: List[Expr[X]]): Expr[X] = appl(abst(a, b), c)
 
@@ -41,7 +38,7 @@ object Normalizer {
 
   def abst[X](a: List[Expr[X]], b: Expr[X]): Expr[X] = if (Nil == a) b else Suspend(Abst(a, b))
 
-  def bound[X](n: Int): Expr[X] = Suspend[Rule, X](Bound(n))
+  def bound[X](n: Int): Expr[X] = Suspend(Bound(n))
 
   def normalize[X](a: Expr[X]) = reduce(Nil, a, Nil, Nil)
 
@@ -63,7 +60,7 @@ object Normalizer {
     case (Nil, Nil) => true
     case (k :: l, m :: n) =>
       val u = normalize(k)
-      val v = normalize(v)
+      val v = normalize(m)
       (u, v) match {
         case (Suspend(Appl(a, b)), Suspend(Appl(c, d))) => unifiable(a :: b ++ l, c :: d ++ n)
         case (Suspend(Abst(a, b)), Suspend(Abst(c, d))) => unifiable(a ++ (b :: l), c ++ (d :: n))
@@ -73,26 +70,24 @@ object Normalizer {
     case _ => false
   }
 
-  def typ[X](n: Int) = Suspend[Rule, X](Type(n + 1))
+  def typ[X](n: Int) = Suspend(Type(n + 1))
+
+  sealed trait InferenceResult[+E] {
+    def flatMap[F](f: E => InferenceResult[F]): InferenceResult[F]
+  }
+
+  case class Success[+E](result: E) extends InferenceResult[E] {
+    override def flatMap[F](f: (E) => InferenceResult[F]) = f(result)
+  }
+
+  case class Failure(message: String) extends InferenceResult[Nothing] {
+    override def flatMap[F](f: (Nothing) => InferenceResult[F]): InferenceResult[F] = this
+  }
 
   case class Context[X](types: List[Expr[X]]) {
-    type E = Expr[X]
+    def prod(b: Expr[X]): Expr[X] = if (Nil == types) b else Suspend(Prod(types, b))
 
-    def prod(b: E): E = if (Nil == types) b else Suspend(Prod(types, b))
-
-    sealed trait InferenceResult {
-      def flatMap(f: E => InferenceResult): InferenceResult
-    }
-
-    case class Success(result: E) extends InferenceResult {
-      override def flatMap(f: (E) => InferenceResult) = f(result)
-    }
-
-    case class Failure(message: String) extends InferenceResult {
-      override def flatMap(f: (E) => InferenceResult): InferenceResult = this
-    }
-
-    @tailrec private def deduceAppl(x: E, y: List[E]): InferenceResult = x match {
+    @tailrec private def deduceAppl(x: Expr[X], y: List[Expr[X]]): InferenceResult[Expr[X]] = x match {
       case Suspend(Bound(n)) if n < types.length =>
         types(types.length - n - 1) match {
           case Suspend(Prod(u, v)) => combine(y, u, v)
@@ -103,7 +98,7 @@ object Normalizer {
       case other => Failure(s"function required; $other is no function")
     }
 
-    private def combine(y: List[E], u: List[E], v: E): InferenceResult = {
+    private def combine(y: List[Expr[X]], u: List[Expr[X]], v: Expr[X]): InferenceResult[Expr[X]] = {
       if (y.length > u.length) {
         val (h, t) = y splitAt u.length
         check(v, u zip h) flatMap (deduceAppl(_, t))
@@ -113,7 +108,7 @@ object Normalizer {
       }
     }
 
-    private def check(result: E, pairs: List[(E, E)]): InferenceResult = pairs match {
+    private def check(result: Expr[X], pairs: List[(Expr[X], Expr[X])]): InferenceResult[Expr[X]] = pairs match {
       case (t, e) :: tail => deduce(e) flatMap { u =>
         if (unifiable[X](List(t), List(u))) check(result, tail)
         else Failure(s"type mismatch: $e is no $t")
@@ -121,7 +116,7 @@ object Normalizer {
       case Nil => Success(result)
     }
 
-    private def deduceType(frees: List[E], level: Int): InferenceResult = frees match {
+    private def deduceType(frees: List[Expr[X]], level: Int): InferenceResult[Expr[X]] = frees match {
       case Nil => Success(typ(level))
       case h :: t => deduce(h) match {
         case Success(Suspend(Type(n))) => deduceType(t, Math.max(level, n))
@@ -129,7 +124,7 @@ object Normalizer {
       }
     }
 
-    @tailrec final def deduce(expr: E): InferenceResult = expr match {
+    @tailrec final def deduce(expr: Expr[X]): InferenceResult[Expr[X]] = expr match {
       case Suspend(Bound(n)) => types lift (types.length - n - 1) match {
         case Some(t) => Success(prod(t))
         case None => Failure(s"No binding for bound variable $n")
@@ -138,6 +133,7 @@ object Normalizer {
       case Suspend(Appl(x, y)) => deduceAppl(x, y)
       case Suspend(Type(n)) => Success(prod(typ(n + 1)))
       case Suspend(Prod(x, y)) => deduceType(y :: x, 0)
+      case Return(v) => Success(Return(v))
     }
   }
 

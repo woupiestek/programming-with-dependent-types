@@ -1,30 +1,24 @@
 package nl.woupiestek.andrej
 
-/**
-  * Created by Wouter on 9-11-2015.
-  */
-trait Lambda {
+sealed trait Expression
 
-  type Identifier
+sealed trait Statement
 
-  sealed trait Term
+object Lambda {
+  type Identifier = String
 
-  case class Variable(name: Identifier) extends Term
+  case class Typing(identifier: Identifier, typeValue: Expression) extends Statement
 
-  case class Application(operator: Term, operands: List[Term]) extends Term
+  case class Assignment(identifier: Identifier, value: Expression) extends Statement
 
-  case class Abstraction(pairs: List[(Identifier, Term)], body: Term) extends Term
+  case class Variable(identifier: Identifier) extends Expression
 
-  case class Product(pairs: List[(Identifier, Term)], body: Term) extends Term
-
-  case class Type(level:Int) extends Term
-
-  case class Assignment(key:Identifier,value:Term)
-
-  case class Sequence(assignments: List[Assignment], conclusion: Term) extends Term
+  case class Type(level: Int) extends Expression
 
 }
 
+case class Application(operator: Expression, operands: List[Expression]) extends Expression
 
+case class Abstraction(arguments: List[Statement], body: Expression) extends Expression
 
-
+case class Product(typeMap: Expression) extends Expression

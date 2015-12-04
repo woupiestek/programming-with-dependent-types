@@ -1,10 +1,9 @@
 package nl.woupiestek.andrej
 
-
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{blocking, ExecutionContext, Future}
+import scala.concurrent.{ blocking, ExecutionContext, Future }
 import scala.io.StdIn.readLine
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 /**
  * Created by Wouter on 9-10-2015.

@@ -1,9 +1,5 @@
 package nl.woupiestek.andrej
 
-/**
- * Created by Wouter on 9-10-2015.
- */
-
 //normalization using a simple Krivine Machine
 object WeakHeadNormalize {
   def apply[I](expr: Expr[I], cont: List[Expr[I]] = Nil): Expr[I] = (expr, cont) match {

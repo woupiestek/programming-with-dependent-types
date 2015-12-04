@@ -1,7 +1,7 @@
 package nl.woupiestek.andrej
 
 import org.parboiled2._
-
+import scala.language.postfixOps
 
 class Parboil(val input: ParserInput) extends Parser {
   type E = Expr[String]
@@ -37,7 +37,6 @@ class Parboil(val input: ParserInput) extends Parser {
   //def spaced(x: =>Rule0): Rule0 = rule(x ~ zeroOrMore(white))
 
 }
-
 
 object Parboil {
   def apply(input: ParserInput) = new Parboil(input).full.run()
