@@ -13,7 +13,8 @@ object Lambda {
 
   case class Variable(identifier: Identifier) extends Expression
 
-  case class Type(level: Int) extends Expression
+  //let's avoid higher order logic: expression type is untyped.
+  case object Type extends Expression
 
 }
 

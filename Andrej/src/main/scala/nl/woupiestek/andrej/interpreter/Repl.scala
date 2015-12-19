@@ -9,29 +9,27 @@ trait REPL[+T] {
   def flatMap[U](f: T => REPL[U]): REPL[U]
 
   def map[U](f: T => U): REPL[U] = flatMap(x => Return(f(x)))
-
-  def withFilter(c: T => Boolean): REPL[T] = BreakIf(this, c)
-
-  def filter(c: T => Boolean) = withFilter(c)
-
-  def stop = flatMap { case () => Break }
 }
 
 object REPL {
-
-  case class Print(message: String) extends REPL[Unit] {
-    override def flatMap[U](f: (Unit) => REPL[U]): REPL[U] = {
-      println(message)
-      f()
-    }
-  }
 
   case class Return[T](t: T) extends REPL[T] {
     override def flatMap[U](f: (T) => REPL[U]): REPL[U] = f(t)
   }
 
-  case class Read(prompt: String) extends REPL[String] {
-    override def flatMap[U](f: (String) => REPL[U]): REPL[U] = f(StdIn.readLine(prompt))
+  val unit: REPL[Unit] = Return()
+
+  def print(message: String): REPL[Unit] = {
+    println(message)
+    unit
+  }
+
+  def read(prompt: String): REPL[String] = {
+    Return(StdIn.readLine(prompt))
+  }
+
+  case object Break extends REPL[Nothing] {
+    override def flatMap[U](f: (Nothing) => REPL[U]): REPL[U] = this
   }
 
   def loop[T](f: T => REPL[T])(t: T): REPL[T] = {
@@ -41,12 +39,8 @@ object REPL {
     }
   }
 
-  case object Break extends REPL[Nothing] {
-    override def flatMap[U](f: (Nothing) => REPL[U]): REPL[U] = this
-  }
-
-  case class BreakIf[T](x: REPL[T], c: T => Boolean) extends REPL[T] {
-    override def flatMap[U](f: (T) => REPL[U]): REPL[U] = x.flatMap { y => if (c(y)) REPL.Break else f(y) }
+  def thunk(t: => REPL[Unit]): Unit => REPL[Unit] = {
+    case () => t
   }
 
 }
@@ -55,8 +49,9 @@ object TrivialREPL extends App {
 
   import REPL._
 
-  Print("Welcome to the Andrej REPL").flatMap {
-    loop[Unit] { case () => Read("Q:").withFilter("exit" == _).flatMap(Print) }
-  }.flatMap { case () => Print("bye bye") }.stop
-
+  print("Welcome to the Andrej REPL").flatMap {
+    loop(thunk(read("Q:").flatMap {
+      input => if ("exit" == input) Break else print(input)
+    }))
+  }.flatMap(thunk(print("bye bye")))
 }
