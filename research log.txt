@@ -1,13 +1,13 @@
 ﻿research log programming-with-dependent-types
 
+*** 21/12/15 ***
+
+\x\y(MN)P s\yM\yN 
+
 *** 19/12/15 ***
 Type-checker -> booleanwaardige functie van expressies 
 
 Twee vragen: deze expressie heeft dit type, deze expressie heeft een type
-
-
-
-
 
 *** 4/12/15 ***
 Modulaire interpreters met monad transformaties
