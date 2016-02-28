@@ -1,6 +1,6 @@
 package nl.woupiestek.dtlang
 
-object Evaluator {
+object LazyEvaluator {
 
   sealed trait Expr {
     def replace(index: Int, e: Expr): Expr

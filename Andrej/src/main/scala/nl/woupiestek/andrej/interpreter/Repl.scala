@@ -49,9 +49,19 @@ object TrivialREPL extends App {
 
   import REPL._
 
-  print("Welcome to the Andrej REPL").flatMap {
-    loop(thunk(read("Q:").flatMap {
-      input => if ("exit" == input) Break else print(input)
-    }))
-  }.flatMap(thunk(print("bye bye")))
+  //  print("Welcome to the Andrej REPL").flatMap {
+  //    loop(thunk(read("Q:").flatMap {
+  //      input => if ("exit" == input) Break else print(input)
+  //    }))
+  //  }.flatMap(thunk(print("bye bye")))
+
+  for {
+    _ <- print("Welcome to the REPL")
+    _ <- loop(thunk(for {
+      input <- read("Q:")
+      output <- if ("exit" == input) Break else print(input)
+    } yield output))
+    _ <- thunk(print("bye bye"))
+  } yield ()
+
 }

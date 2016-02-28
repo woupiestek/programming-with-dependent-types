@@ -1,13 +1,10 @@
 package nl.woupiestek.andrej
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ blocking, ExecutionContext, Future }
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.io.StdIn.readLine
 import scala.util.{ Failure, Success }
 
-/**
- * Created by Wouter on 9-10-2015.
- */
 object Repl extends App {
 
   private def rep(input: String)(implicit ec: ExecutionContext): Future[String] = Future {
@@ -17,16 +14,16 @@ object Repl extends App {
     }
   }
 
-  private def loop: Unit = {
+  private def loop(): Unit = {
     val input = readLine
     if ("exit" != input) {
       rep(readLine) map println
-      loop
+      loop()
     }
   }
 
   println("Welcome to the Andrej REPL")
-  loop
+  loop()
   println("bye bye")
 
 }

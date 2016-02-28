@@ -57,7 +57,6 @@ object Context {
 
 }
 
-
 case class Memoized[X, Y](f: (X => Y) => X => Y) extends (X => Y) {
   private val memory: mutable.Map[X, Y] = mutable.Map.empty
 
@@ -76,19 +75,20 @@ object Typer {
   import Expression._
 
   def infer: Expression => Typer[Expression] = Memoized {
-    infer => {
-      case Variable(i) => Typer { context => context getType i }
-      case Application(y, z) => Typer { context =>
-        infer(y).value(context).flatMap {
-          case Product(t) => normalize(t, z)
-          case _ => None
+    infer =>
+      {
+        case Variable(i) => Typer { context => context getType i }
+        case Application(y, z) => Typer { context =>
+          infer(y).value(context).flatMap {
+            case Product(t) => normalize(t, z)
+            case _ => None
+          }
         }
+        case Abstraction(y, z) => Typer { context =>
+          infer(z).value(Context.Abstraction(y, context)) map { w => Abstraction(y, w) }
+        }
+        case _ => Typer { _ => None }
       }
-      case Abstraction(y, z) => Typer { context =>
-        infer(z).value(Context.Abstraction(y, context)) map { w => Abstraction(y, w) }
-      }
-      case _ => Typer { _ => None }
-    }
   }
 
   def grab(operator: Expression, context: Context): Expression = operator match {

@@ -1,8 +1,18 @@
 ﻿research log programming-with-dependent-types
 
-*** 21/12/15 ***
 
-\x\y(MN)P s\yM\yN 
+*** 1/1/16 ***
+Ik wil dit project afsluiten.
+
+Adrej's REPL kan op commando
+ - variabelen een type of een waarde geven
+ - een overzicht geven van de huidge context
+ - typechecken en evalueren op verzoek
+ 
+Defunctionalization: leg functies op een heap en doe berekeningen op hun pointers.
+Nu heb je geen hogere order functies meer, maar slechts pointer arithmetic met gewone functies.
+
+Veel hiervan gaat vanzelf binnen scala: we maken een lamba-object met een apply methode en klaar is kees.
 
 *** 19/12/15 ***
 Type-checker -> booleanwaardige functie van expressies 
