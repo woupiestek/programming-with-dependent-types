@@ -16,22 +16,24 @@ object Repl extends App {
   println()
 
   val ij = for {
-    i <- fromSeq(1 to 5)
+    i <- fromSeq(1 to 10)
     j <- fromSeq(1 to i)
   } yield i * j
 
-  for (k <- ij) print(k)
+  for (k <- ij take 20) print(k)
   println()
 
-  val ap0 = fromSeq(1 to 5) map[Int=>Int] ( i => (j:Int) => i - j )
+  val ap0 = fromSeq(1 to 5) map[Int => Int] (i => (j: Int) => i - j)
   val ap1 = fromSeq(1 to 10) ap ap0
-  for(k <- ap1) print(k)
+  for (k <- ap1) print(k)
   println()
 
-  def in2: WhyNot[String] = Suspend[String] { c =>
+  println((for (i <- fromSeq(1 to 5).scanLeft(1)(_ * _)) yield i).toList.mkString(" "))
+
+  def in: WhyNot[String] = Suspend[String] { c =>
     c(StdIn.readLine)
-    in2
+    in
   }
 
-  for (line <- in2 until ("exit" equalsIgnoreCase)) println(line)
+  for (line <- in until ("exit" equalsIgnoreCase)) println(line)
 }

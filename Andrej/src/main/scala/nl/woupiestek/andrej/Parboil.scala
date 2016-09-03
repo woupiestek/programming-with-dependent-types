@@ -33,9 +33,6 @@ class Parboil(val input: ParserInput) extends Parser {
   def white: Rule0 = rule(anyOf(" \n\r\t\f"))
 
   def spaced(x: Char): Rule0 = rule(x ~ zeroOrMore(white))
-
-  //def spaced(x: =>Rule0): Rule0 = rule(x ~ zeroOrMore(white))
-
 }
 
 object Parboil {

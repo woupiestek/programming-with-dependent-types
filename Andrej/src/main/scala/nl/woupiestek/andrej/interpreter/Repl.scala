@@ -1,67 +1,49 @@
 package nl.woupiestek.andrej.interpreter
 
+import nl.woupiestek.andrej.Free.{ Bind, Return }
+import nl.woupiestek.andrej.Free
+
 import scala.io.StdIn
-
-trait REPL[+T] {
-
-  import REPL._
-
-  def flatMap[U](f: T => REPL[U]): REPL[U]
-
-  def map[U](f: T => U): REPL[U] = flatMap(x => Return(f(x)))
-}
 
 object REPL {
 
-  case class Return[T](t: T) extends REPL[T] {
-    override def flatMap[U](f: (T) => REPL[U]): REPL[U] = f(t)
+  sealed trait Command[+T]
+
+  case class Write(message: String) extends Command[Unit]
+
+  case class Read(prompt: String) extends Command[String]
+
+  case class While[T](cond: T => Boolean, program: T => Program[T], t: T) extends Command[T]
+
+  type Program[T] = Free[Command, T]
+
+  def apply[T](program: Program[T]): T = program match {
+    case Return(t) => t
+    case Bind(Write(msg), c) => apply(c(println(msg)))
+    case Bind(Read(prompt), c) => apply(c(StdIn.readLine(prompt)))
+    case Bind(While(c, p, t), d) => apply(d(if (c(t)) apply(p(t)) else t))
   }
 
-  val unit: REPL[Unit] = Return()
+  def write(msg: => String): Program[Unit] = Free.lift(Write(msg))
 
-  def print(message: String): REPL[Unit] = {
-    println(message)
-    unit
-  }
+  def read(prompt: => String): Program[String] = Free.lift(Read(prompt))
 
-  def read(prompt: String): REPL[String] = {
-    Return(StdIn.readLine(prompt))
-  }
-
-  case object Break extends REPL[Nothing] {
-    override def flatMap[U](f: (Nothing) => REPL[U]): REPL[U] = this
-  }
-
-  def loop[T](f: T => REPL[T])(t: T): REPL[T] = {
-    f(t) match {
-      case Break => Return(t)
-      case y => y.flatMap(loop(f))
-    }
-  }
-
-  def thunk(t: => REPL[Unit]): Unit => REPL[Unit] = {
-    case () => t
-  }
-
+  def doWhile[T](c: T => Boolean, p: T => Program[T])(t: T): Program[T] = Free.lift(While[T](c, p, t))
 }
 
 object TrivialREPL extends App {
 
   import REPL._
 
-  //  print("Welcome to the Andrej REPL").flatMap {
-  //    loop(thunk(read("Q:").flatMap {
-  //      input => if ("exit" == input) Break else print(input)
-  //    }))
-  //  }.flatMap(thunk(print("bye bye")))
-
   for {
-    _ <- print("Welcome to the REPL")
-    _ <- loop(thunk(for {
-      input <- read("Q:")
-      output <- if ("exit" == input) Break else print(input)
-    } yield output))
-    _ <- thunk(print("bye bye"))
+    _ <- write("Welcome to the REPL")
+    x <- read("Q:")
+    _ <- doWhile[String](input => !input.equalsIgnoreCase("exit"),
+      input => for {
+        _ <- write(input)
+        y <- read("Q:")
+      } yield y)(x)
+    _ <- write("bye bye")
   } yield ()
 
 }
