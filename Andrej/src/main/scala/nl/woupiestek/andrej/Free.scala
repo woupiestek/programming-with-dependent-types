@@ -1,5 +1,6 @@
 package nl.woupiestek.andrej
 
+import scala.annotation.tailrec
 import scala.language.higherKinds
 
 sealed trait Free[F[_], T] {
@@ -22,4 +23,12 @@ object Free {
   def apply[F[_], T](t: T): Free[F, T] = Return(t)
 
   def lift[F[_], T](ft: F[T]): Free[F, T] = Bind[F, T, T](ft, apply)
+
+  trait Interpreter[F[_]] {
+    def evaluate[T](ft: F[T]): T
+    @tailrec final def execute[T](fft: Free[F, T]): T = fft match {
+      case Return(t) => t
+      case Bind(r, c) => execute(c(evaluate(r)))
+    }
+  }
 }

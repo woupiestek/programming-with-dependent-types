@@ -1,8 +1,8 @@
 package nl.woupiestek.andrej.interpreter
 
-import nl.woupiestek.andrej.Free.{ Bind, Return }
 import nl.woupiestek.andrej.Free
 
+import scala.annotation.tailrec
 import scala.io.StdIn
 
 object REPL {
@@ -13,16 +13,22 @@ object REPL {
 
   case class Read(prompt: String) extends Command[String]
 
-  case class While[T](cond: T => Boolean, program: T => Program[T], t: T) extends Command[T]
+  case class While[T](cond: T => Boolean, program: T => Program[T], value: T) extends Command[T]
 
   type Program[T] = Free[Command, T]
 
-  def apply[T](program: Program[T]): T = program match {
-    case Return(t) => t
-    case Bind(Write(msg), c) => apply(c(println(msg)))
-    case Bind(Read(prompt), c) => apply(c(StdIn.readLine(prompt)))
-    case Bind(While(c, p, t), d) => apply(d(if (c(t)) apply(p(t)) else t))
+  object Machine extends Free.Interpreter[Command] {
+    override def evaluate[T](ft: Command[T]): T = ft match {
+      case Write(msg) => println(msg)
+      case Read(prompt) => StdIn.readLine(prompt)
+      case While(c: (T => Boolean), p: (T => Program[T]), t) => executeWhile(c, p, t)
+    }
+
+    @tailrec private def executeWhile[T](c: T => Boolean, p: T => Program[T], t: T): T =
+      if (c(t)) executeWhile(c, p, t) else t
   }
+
+  def apply[T](program: Program[T]): T = Machine.execute(program)
 
   def write(msg: => String): Program[Unit] = Free.lift(Write(msg))
 
@@ -35,7 +41,7 @@ object TrivialREPL extends App {
 
   import REPL._
 
-  for {
+  val program = for {
     _ <- write("Welcome to the REPL")
     x <- read("Q:")
     _ <- doWhile[String](input => !input.equalsIgnoreCase("exit"),
@@ -45,5 +51,7 @@ object TrivialREPL extends App {
       } yield y)(x)
     _ <- write("bye bye")
   } yield ()
+
+  Machine.execute(program)
 
 }
