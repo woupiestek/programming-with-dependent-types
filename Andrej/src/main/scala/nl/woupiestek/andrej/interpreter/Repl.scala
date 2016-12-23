@@ -1,6 +1,6 @@
 package nl.woupiestek.andrej.interpreter
 
-import nl.woupiestek.andrej.Free
+import nl.woupiestek.andrej.{ CallbackInterpreter, Free, StraightInterpreter }
 
 import scala.annotation.tailrec
 import scala.io.StdIn
@@ -17,7 +17,7 @@ object REPL {
 
   type Program[T] = Free[Command, T]
 
-  object Machine extends Free.Interpreter[Command] {
+  object Console extends StraightInterpreter[Command] {
     override def evaluate[T](ft: Command[T]): T = ft match {
       case Write(msg) => println(msg)
       case Read(prompt) => StdIn.readLine(prompt)
@@ -25,10 +25,10 @@ object REPL {
     }
 
     @tailrec private def executeWhile[T](c: T => Boolean, p: T => Program[T], t: T): T =
-      if (c(t)) executeWhile(c, p, t) else t
+      if (c(t)) executeWhile(c, p, execute(p(t))) else t
   }
 
-  def apply[T](program: Program[T]): T = Machine.execute(program)
+  def apply[T](program: Program[T]): T = Console.execute(program)
 
   def write(msg: => String): Program[Unit] = Free.lift(Write(msg))
 
@@ -52,6 +52,6 @@ object TrivialREPL extends App {
     _ <- write("bye bye")
   } yield ()
 
-  Machine.execute(program)
+  Console.execute(program)
 
 }
