@@ -64,7 +64,7 @@ sealed trait Tree[+N, +L] {
     }
   }
 
-  def map[M](f: L => M) = flatMap(l => Leaf(f(l)))
+  def map[M](f: L => M): Tree[N, M] = flatMap(l => Leaf(f(l)))
 
 }
 
