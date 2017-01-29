@@ -70,7 +70,7 @@ object LambdaImpl {
 
     override def universe: LambdaImpl = Universe
 
-    override def product: LambdaImpl = lambda(Universe,lambda(variable(0),Product(variable(0))))
+    override def product: LambdaImpl = lambda(Universe, lambda(variable(0), Product(variable(0))))
 
     override def lambda(typ: LambdaImpl, body: LambdaImpl): LambdaImpl = Abs(Nil, typ, body)
 
@@ -78,8 +78,8 @@ object LambdaImpl {
       case (Universe, Universe) => true
       case (Product(f2), Product(g2)) => unifies(f2, g2)
       case (Abs(c, d, b), Abs(c2, d2, b2)) =>
-        unifies(substitution(c.reverse, d), substitution(c2.reverse, d2)) &&
-          unifies(substitution(variable(0) :: c.reverse, d), substitution(variable(0) :: c2.reverse, d2))
+        unifies(substitution(c, d), substitution(c2, d2)) &&
+          unifies(substitution(variable(0) :: c, d), substitution(variable(0) :: c2, d2))
       case (App(as, i), App(bs, j)) =>
         i == j && as.length == bs.length && as.zip(bs).forall { case (a, b) => unifies(a, b) }
       case _ => false
@@ -93,7 +93,7 @@ object LambdaImpl {
         case _ => Fail
       }
       case Abs(c, d, b) =>
-        val c2 = c.map(typeOf(context, _)).reverse
+        val c2 = c.map(typeOf(context, _))
         val d2 = substitution(c, d)
         val b2 = typeOf(d2 :: c2 ++ context, b)
         Product(Abs(Nil, d2, b2))
@@ -105,16 +105,16 @@ object LambdaImpl {
     }
 
     override def application(operator: LambdaImpl, operand: LambdaImpl): LambdaImpl = operator match {
-      case Abs(context, typ, body) if of(operand, typ) => substitution(operand :: context.reverse, body)
+      case Abs(context, typ, body) if of(operand, typ) => substitution(operand :: context, body)
       case App(args, index) => App(operand :: args, index)
       case _ => Fail
     }
 
     override def substitution(context: List[LambdaImpl], body: LambdaImpl): LambdaImpl = body match {
-      case App(args, index) => context.lift(index).fold[LambdaImpl](Fail) {
-        operator => args.foldRight(operator)((x, y) => application(y, x))
-      }
-      case Abs(context2, typ, body2) => Abs(context2.reverse ++ context, typ, body2)
+      case App(args, index) =>
+        val operator = context.lift(index).getOrElse(variable(index - context.length))
+        args.foldRight(operator)((x, y) => application(y, substitution(context, x)))
+      case Abs(context2, typ, body2) => Abs(context2 ++ context, typ, body2)
       case Product(arg) => Product(substitution(context, arg))
       case _ => body
     }
