@@ -11,7 +11,7 @@ trait Expr[E] {
 
   def universe: E
 
-  def product(fun: E): E
+  def product(key: String, dom: E, fun: E): E
 }
 
 trait DeBruijnExpr[E] {
@@ -25,7 +25,7 @@ trait DeBruijnExpr[E] {
 
   def universe: E
 
-  def product(fun: E): E
+  def product(dom: E, fun: E): E
 }
 
 class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
@@ -37,7 +37,6 @@ class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
       x <- value(vars)
       y <- context(key :: vars)
     } yield e.push(x, y)
-
 
   override def application(operator: (List[String]) => Option[E], operand: (List[String]) => Option[E]): (List[String]) => Option[E] =
     vars => for {
@@ -53,5 +52,10 @@ class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
 
   override def universe: (List[String]) => Option[E] = _ => Some(e.universe)
 
-  override def product(fun: (List[String]) => Option[E]): (List[String]) => Option[E] = vars => fun(vars).map(e.product)
+  //override def product(fun: (List[String]) => Option[E]): (List[String]) => Option[E] = vars => fun(vars).map(e.product)
+  override def product(key: String, dom: (List[String]) => Option[E], fun: (List[String]) => Option[E]): (List[String]) => Option[E] =
+    vars => for {
+      d <- dom(vars)
+      v <- fun(key :: vars)
+    } yield e.product(d, v)
 }

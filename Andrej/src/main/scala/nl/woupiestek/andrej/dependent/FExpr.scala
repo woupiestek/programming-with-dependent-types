@@ -52,7 +52,6 @@ object Typing extends FExpr[List[FTask] => FTask] {
     }
 }
 
-
 object Valuing extends FExpr[FTask] {
   override def get(index: Int): FTask = FGet(index)
 

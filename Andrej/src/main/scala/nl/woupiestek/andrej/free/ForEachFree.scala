@@ -29,7 +29,7 @@ object ForEachFree {
 
     override def forEach(onReturn: (T) => Unit, onBind: Folder[M]): Unit = {
       val q = new Queue[ForEachFree[M, T]]
-      onBind(request, u => q.enqueue(callback(u)))
+      onBind(request, (u: U) => q.enqueue(callback(u)))
       while (!q.isEmpty) {
         q.dequeue().forEach(onReturn, onBind)
       }
@@ -47,7 +47,7 @@ object ForEachFree {
       in ::= t
     }
 
-    def isEmpty = in.isEmpty && out.isEmpty
+    def isEmpty: Boolean = in.isEmpty && out.isEmpty
 
     def dequeue(): T = {
       if (out.isEmpty) {
@@ -62,6 +62,5 @@ object ForEachFree {
       }
     }
   }
-
 
 }

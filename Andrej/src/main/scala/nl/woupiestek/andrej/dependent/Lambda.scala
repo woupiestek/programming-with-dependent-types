@@ -23,7 +23,7 @@ object LambdaValuing extends FExpr[List[Lambda] => Lambda] {
 
   override def deFunction(index: Int, argument: (List[Lambda]) => Lambda, cont: (List[Lambda]) => Lambda): (List[Lambda]) => Lambda =
     list => get(index)(list) match {
-      case LClosure(_, c) => c(argument(list) :: list)
+      case LClosure(_, c) => c(argument(list))
       case _ => LFail
     }
 
@@ -32,7 +32,6 @@ object LambdaValuing extends FExpr[List[Lambda] => Lambda] {
 
   override def omega: (List[Lambda]) => Lambda = _ => LOmega
 }
-
 
 object LambdaTyping extends FExpr[List[Lambda] => Lambda] {
   override def get(index: Int): (List[Lambda]) => Lambda =
@@ -54,7 +53,7 @@ object LambdaTyping extends FExpr[List[Lambda] => Lambda] {
 
   override def deFunction(index: Int, argument: (List[Lambda]) => Lambda, cont: (List[Lambda]) => Lambda): (List[Lambda]) => Lambda =
     list => get(index)(list) match {
-      case LProduct(c, d) if unifies(argument(list), c) => cont(d :: list)
+      case LProduct(c, d) if unifies(argument(list), c) => cont(d(argument(list)) :: list)
       case _ => LFail
     }
 

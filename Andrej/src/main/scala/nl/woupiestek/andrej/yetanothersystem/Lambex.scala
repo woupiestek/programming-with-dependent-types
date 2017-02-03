@@ -1,6 +1,5 @@
 package nl.woupiestek.andrej.yetanothersystem
 
-
 trait Lambex[E] {
   def variable(identifier: String): E
 
@@ -43,7 +42,10 @@ object Lambex {
     override def variable(identifier: String): (Map[String, L]) => Option[L] = _.get(identifier)
 
     override def cut(identifier: String, value: (Map[String, L]) => Option[L], body: (Map[String, L]) => Option[L]): (Map[String, L]) => Option[L] =
-      context => body(context + (identifier -> value(context)))
+      context => for {
+        v <- value(context)
+        b <- body(context + (identifier -> v))
+      } yield b
 
     override def lambda(identifier: String, body: (Map[String, L]) => Option[L]): (Map[String, L]) => Option[L] =
       context => Some(L(x => body(context + (identifier -> x))))
@@ -122,7 +124,10 @@ object DeBruijnex {
     override def variable(index: Int): (List[L]) => Option[L] = _ lift index
 
     override def cut(value: (List[L]) => Option[L], body: (List[L]) => Option[L]): (List[L]) => Option[L] =
-      list => body(value(list) :: list)
+      list => for {
+        v <- value(list)
+        b <- body(v :: list)
+      } yield b
 
     override def lambda(body: (List[L]) => Option[L]): (List[L]) => Option[L] = tail => Some(L(head => body(head :: tail)))
 
@@ -150,6 +155,4 @@ object DeBruijnex {
   }
 
 }
-
-
 

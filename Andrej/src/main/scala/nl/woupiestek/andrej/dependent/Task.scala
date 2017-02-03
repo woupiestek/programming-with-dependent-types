@@ -35,7 +35,6 @@ case class ApplyTask(x: Task, y: Task) extends Task {
   }
 }
 
-
 //I don't trust this part
 case class TypeTask(value: Expression, stack: List[Task]) extends Task {
   override def next: Option[Task] = value match {
@@ -58,8 +57,7 @@ case class TypeTask(value: Expression, stack: List[Task]) extends Task {
 case class InferenceTask(x: Task, y: Task) extends Task {
   //all is here...
   private def equal(ta: Task, ty: Task) = (ta.eval, ty.eval) match {
-    case (PushTask(a, b), PushTask(c, d))
-      if a.getClass == b.getClass && a.ind == c.ind && a.subs.length == c.subs.length =>
+    case (PushTask(a, b), PushTask(c, d)) if a.getClass == b.getClass && a.ind == c.ind && a.subs.length == c.subs.length =>
       val tas = a.subs.map(PushTask(_, b))
       val tcs = c.subs.map(PushTask(_, d))
       Some(tas.zip(tcs))

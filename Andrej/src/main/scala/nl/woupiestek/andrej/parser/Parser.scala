@@ -50,8 +50,12 @@ class Parser[E](e: Expr[E]) {
 
   def product: G[E] = for {
     "product" <- key
-    x <- term
-  } yield e.product(x)
+    x <- key
+    ':' <- symbol
+    y <- term
+    '.' <- symbol
+    z <- term
+  } yield e.product(x, y, z)
 
   def parens: G[E] = for {
     '(' <- symbol

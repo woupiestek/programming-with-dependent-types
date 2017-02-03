@@ -1,6 +1,6 @@
 package nl.woupiestek.andrej.interpreter
 
-import nl.woupiestek.andrej.{ CallbackInterpreter, Free, StraightInterpreter }
+import nl.woupiestek.andrej.{ Free, StraightInterpreter }
 
 import scala.annotation.tailrec
 import scala.io.StdIn

@@ -9,8 +9,8 @@ trait SbStatement {
 case class ArL(index: Int, arg: SbExpression) extends SbStatement {
   override def push(i: Int, value: SbExpression, expression: SbExpression): SbExpression =
     if (i == index) expression.push(0, value.handle(arg))
-    else if (i > index) expression.push(i + 1, value)//???
-    else expression.push(i, value)//???
+    else if (i > index) expression.push(i + 1, value) //???
+    else expression.push(i, value) //???
 
   override def handle(arg: SbExpression, expression: SbExpression): SbExpression =
     Sequence(this, expression.handle(arg))

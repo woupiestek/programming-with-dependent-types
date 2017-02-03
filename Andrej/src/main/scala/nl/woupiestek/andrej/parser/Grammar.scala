@@ -1,7 +1,8 @@
 package nl.woupiestek.andrej.parser
 
-import nl.woupiestek.andrej.parser.Grammar.{Fail, Point, Read}
+import nl.woupiestek.andrej.parser.Grammar.{ Fail, Point, Read }
 
+//todo test
 sealed trait Grammar[-In, +Out] {
   def |[In2 <: In, Out2 >: Out](grammar: Grammar[In2, Out2]): Grammar[In2, Out2]
 
@@ -57,7 +58,7 @@ object Grammar {
       Read((in: In) => read(in).flatMap(f), alternative.flatMap(f))
   }
 
-  def read[In]:Grammar[In,In] = Read(Point(_))
+  def read[In]: Grammar[In, In] = Read(Point(_))
 
   def collect[In, Out](f: PartialFunction[In, Out]): Grammar[In, Out] = Read {
     case x if f.isDefinedAt(x) => Point(f(x))

@@ -1,6 +1,5 @@
 package nl.woupiestek.andrej.dependent
 
-
 sealed trait Expression {
   val ind: Option[Int]
 
