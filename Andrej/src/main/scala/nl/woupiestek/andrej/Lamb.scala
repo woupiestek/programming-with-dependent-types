@@ -18,7 +18,16 @@ object Lamb {
 
   case object Univ extends Lamb
 
-  def prod2(dom: Lamb, body: Lamb, context: List[Lamb]) = Some(Subs(Prod(dom, body), context))
+  def fold[E](l: Lamb, e: DeBruijnExpr[E]): E = l match {
+    case Vari(i) => e.get(i)
+    case Appl(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.application(a, fold(b, e)) }
+    case Subs(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.push(fold(b, e), a) }
+    case Abst(x, y) => e.lambda(fold(x, e), fold(y, e))
+    case Prod(x, y) => e.product(fold(x, e), fold(y, e))
+    case Univ => e.universe
+  }
+
+  def product(dom: Lamb, body: Lamb, context: List[Lamb]) = Some(Subs(Prod(dom, body), context))
 
   def tuple(index: Int, args: List[Lamb]) = Some(Appl(Vari(index), args))
 
@@ -47,46 +56,50 @@ object Lamb {
       case head :: tail if typeCheck(dom, head) => reduce(body, head :: context, tail)
       case Nil => closure(dom, body, context)
     }
-    case Prod(x, y) if args.isEmpty => prod2(x, y, context)
+    case Prod(x, y) if args.isEmpty => product(x, y, context)
     case Univ if args.isEmpty => Some(Univ)
     case _ => None
   }
 
-  def typeCheck(dom: Lamb, head: Lamb): Boolean = typeCheck2(head, Nil, dom)
+  def typeCheck(dom: Lamb, head: Lamb): Boolean = {
+    @tailrec def typeCheck2(term: Lamb, cont: List[Lamb], typ: Lamb): Boolean = term match {
+      case Vari(i) => cont lift i exists (unifiable(_, typ))
+      case Abst(x, y) => typeCheck2(y, x :: cont, Prod(x, typ))
+      case Appl(x, y) => traverse(y)(z => typeOf(z, cont)) match {
+        case None => false
+        case Some(a) => typeCheck2(x, cont, a.foldLeft(typ) { case (b, c) => Prod(b, c) })
+      }
+      case Subs(x, y) => traverse(y)(z => typeOf(z, cont)) match {
+        case None => false
+        case Some(a) => typeCheck2(x, a ++ cont, typ)
+      }
+      case Prod(x, y) if unifiable(typ, Univ) => typeCheck2(y, x :: cont, Univ)
+      case _ => false
+    }
 
-  @tailrec private def typeCheck2(term: Lamb, cont: List[Lamb], typ: Lamb): Boolean = term match {
-    case Vari(i) => cont lift i exists (unifiable(_, typ))
-    case Abst(x, y) => typeCheck2(y, x :: cont, Prod(x, typ))
-    case Appl(x, y) => traverse(y)(z => typeOf(z, cont)) match {
-      case None => false
-      case Some(a) => typeCheck2(x, cont, a.foldLeft(typ) { case (b, c) => Prod(b, c) })
-    }
-    case Subs(x, y) => traverse(y)(z => typeOf(z, cont)) match {
-      case None => false
-      case Some(a) => typeCheck2(x, a ++ cont, typ)
-    }
-    case Prod(x, y) if unifiable(typ, Univ) => typeCheck2(y, x :: cont, Univ)
-    case _ => false
+    typeCheck2(head, Nil, dom)
   }
 
   def unifiable(x: Lamb, y: Lamb): Boolean = {
-    def f(x: Lamb, y: Lamb): Option[List[(Lamb, Lamb)]] = for {
-      xx <- reduce(x, Nil, Nil)
-      yy <- reduce(y, Nil, Nil)
-      zz <- (xx, yy) match {
-        case (Appl(a, b), Appl(c, d)) if a == c && b.length == d.length => Some(b.zip(d))
-        case (Subs(Abst(a, b), c), Subs(Abst(d, e), f)) => Some((Subs(a, c), Subs(d, f)) :: (Subs(b, c), Subs(e, f)) :: Nil)
-        case (Subs(Prod(a, b), c), Subs(Prod(d, e), f)) => Some((Subs(a, c), Subs(d, f)) :: (Subs(b, c), Subs(e, f)) :: Nil)
-        case (Univ, Univ) => Some(Nil)
-        case _ => None
-      }
-    } yield zz
+    @tailrec def g(z: List[(Lamb, Lamb)]): Boolean = {
+      def f(x: Lamb, y: Lamb): Option[List[(Lamb, Lamb)]] = for {
+        xx <- reduce(x, Nil, Nil)
+        yy <- reduce(y, Nil, Nil)
+        zz <- (xx, yy) match {
+          case (Appl(a, b), Appl(c, d)) if a == c && b.length == d.length => Some(b.zip(d))
+          case (Subs(Abst(a, b), c), Subs(Abst(d, e), f)) => Some((Subs(a, c), Subs(d, f)) :: (Subs(b, c), Subs(e, f)) :: Nil)
+          case (Subs(Prod(a, b), c), Subs(Prod(d, e), f)) => Some((Subs(a, c), Subs(d, f)) :: (Subs(b, c), Subs(e, f)) :: Nil)
+          case (Univ, Univ) => Some(Nil)
+          case _ => None
+        }
+      } yield zz
 
-    @tailrec def g(z: List[(Lamb, Lamb)]): Boolean = z match {
-      case Nil => true
-      case (a, b) :: c => f(a, b) match {
-        case None => false
-        case Some(d) => g(d ++ c)
+      z match {
+        case Nil => true
+        case (a, b) :: c => f(a, b) match {
+          case None => false
+          case Some(d) => g(d ++ c)
+        }
       }
     }
 
