@@ -23,8 +23,8 @@ object Lamb {
     case Appl(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.application(a, fold(b, e)) }
     case Subs(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.push(fold(b, e), a) }
     case Abst(x, y) => e.lambda(fold(x, e), fold(y, e))
-    case Prod(x, y) => e.product(fold(x, e), fold(y, e))
-    case Univ => e.universe
+    case Prod(x, y) => e.pi(fold(x, e), fold(y, e))
+    case Univ => e.omega
   }
 
   def product(dom: Lamb, body: Lamb, context: List[Lamb]) = Some(Subs(Prod(dom, body), context))
@@ -42,9 +42,9 @@ object Lamb {
 
     override def lambda(dom: Lamb, value: Lamb): Lamb = Abst(dom, value)
 
-    override def universe: Lamb = Univ
+    override def omega: Lamb = Univ
 
-    override def product(dom: Lamb, fun: Lamb): Lamb = Prod(dom, fun)
+    override def pi(dom: Lamb, fun: Lamb): Lamb = Prod(dom, fun)
   }
 
   def reduce(pivot: Lamb, context: List[Lamb], args: List[Lamb]): Option[Lamb] = pivot match {

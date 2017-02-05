@@ -1,33 +1,61 @@
 package nl.woupiestek.andrej
 
-import nl.woupiestek.andrej.Lamb._
+import nl.woupiestek.andrej.Lamb.Instance._
 import nl.woupiestek.andrej.parser.{ DTLGrammar, PrettyPrint, Rule, StringParser }
 import org.scalatest._
 
-class ParseTest extends FunSuite {
+class ParseTest extends FunSpec {
+  def rule(vars: List[String]): Rule[Option[Char], Option[Lamb]] =
+    new DTLGrammar(new StripVars(Lamb.Instance)).term.map(x => x(vars))
 
-  val rule: Rule[Option[Char], Option[Lamb]] =
-    new DTLGrammar(new StripVars(Lamb.Instance)).term.map(x => x(Nil))
+  describe("parsing") {
 
-  test("should parse type") {
-    assert(StringParser.parse(rule, "type").contains(Univ))
-    assert(StringParser.parse(rule, "\\t:type.\\x:t.x").contains(Abst(Univ, Abst(Vari(0), Vari(0)))))
-    assert(StringParser.parse(rule, "pi t:type.t").contains(Prod(Univ, Vari(0))))
+    it("should recognize the type of types") {
+      assert(StringParser.parse(rule(Nil), "type") === Some(omega))
+    }
+    it("should recognize the family of identities") {
+      assert(StringParser.parse(rule(Nil), "\\t:type.\\x:t.x") === Some(lambda(omega, lambda(get(0), get(0)))))
+    }
+    it("should recognize the initial type") {
+      assert(StringParser.parse(rule(Nil), "pi t:type.t") === Some(pi(omega, get(0))))
+    }
+
+    it("should fail on gibberish") {
+      assert(StringParser.parse(rule(Nil), "pi t:type.s") === None)
+    }
   }
 
-  test("parsing pretty print") {
-    val s =
-      Abst(Univ,
-        Abst(Univ,
-          Abst(Univ,
-            Abst(Prod(Vari(2), Prod(Vari(2), Vari(2))),
-              Abst(Prod(Vari(3), Vari(2)),
-                Abst(Prod(Vari(4), Vari(2)),
-                  Appl(Vari(2), Vari(0) :: Appl(Vari(1), Vari(0) :: Nil) :: Nil)))))))
+  describe("parsing & printing") {
+    val appl = application(application(get(2), get(0)), application(get(1), get(0)))
+    val abs1 = lambda(pi(get(2), pi(get(2), get(2))), lambda(pi(get(3), get(2)), lambda(pi(get(4), get(2)), appl)))
+    val abs2 = lambda(omega, lambda(omega, lambda(omega, abs1)))
 
-    val string = Lamb.fold(s, PrettyPrint)(Nil)
-    assert(string === "(\\x0:type.(\\x1:type.(\\x2:type.(\\x3:(pi x3:x0.(pi x4:x1.x2)).(\\x4:(pi x4:x0.x2).(\\x5:(pi x5:x0.x3).((x3 x5) (x4 x5))))))))")
-    assert(StringParser.parse(rule, "").contains(s))
+    val xyz = List("c", "b", "a")
+
+    it("should handle applications") {
+      val test1 = Lamb.fold(appl, PrettyPrint)(xyz)
+      info(test1)
+      assert(StringParser.parse(rule(xyz), test1) === Some(appl))
+    }
+
+    it("should handle simple abstractions") {
+      val test2 = Lamb.fold(abs1, PrettyPrint)(xyz)
+      info(test2)
+      assert(StringParser.parse(rule(xyz), test2) === Some(abs1))
+    }
+
+    it("should handle type abstractions") {
+      val test3 = Lamb.fold(abs2, PrettyPrint)(Nil)
+      info(test3)
+      assert(StringParser.parse(rule(Nil), test3) === Some(abs2))
+    }
+
+    it("should handle let bindings") {
+      val lets = Lamb.Instance.push(omega, get(0))
+      val test4 = Lamb.fold(lets, PrettyPrint)(xyz)
+      info(test4)
+      assert(StringParser.parse(rule(xyz), test4) === Some(lets))
+    }
   }
 
 }

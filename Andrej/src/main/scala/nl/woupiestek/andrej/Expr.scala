@@ -23,9 +23,9 @@ trait DeBruijnExpr[E] {
 
   def lambda(dom: E, value: E): E
 
-  def universe: E
+  def omega: E
 
-  def product(dom: E, fun: E): E
+  def pi(dom: E, fun: E): E
 }
 
 class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
@@ -50,12 +50,12 @@ class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
       v <- value(key :: vars)
     } yield e.lambda(d, v)
 
-  override def universe: (List[String]) => Option[E] = _ => Some(e.universe)
+  override def universe: (List[String]) => Option[E] = _ => Some(e.omega)
 
   //override def product(fun: (List[String]) => Option[E]): (List[String]) => Option[E] = vars => fun(vars).map(e.product)
   override def product(key: String, dom: (List[String]) => Option[E], fun: (List[String]) => Option[E]): (List[String]) => Option[E] =
     vars => for {
       d <- dom(vars)
       v <- fun(key :: vars)
-    } yield e.product(d, v)
+    } yield e.pi(d, v)
 }
