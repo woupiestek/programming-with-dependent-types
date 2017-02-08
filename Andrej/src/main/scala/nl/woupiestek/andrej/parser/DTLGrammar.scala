@@ -2,7 +2,7 @@ package nl.woupiestek.andrej.parser
 
 import nl.woupiestek.andrej.Expr
 
-class DTLGrammar[E, T](e: Expr[E]) {
+class DTLGrammar[E](e: Expr[E]) {
 
   type G[X] = Rule[Option[Char], X]
 

@@ -66,27 +66,36 @@ object Rule {
     case x if f.isDefinedAt(x) => Point(f(x))
     case _ => Fail
   }
+
+  def matchList[I](list: List[I]): Rule[I, Unit] = list match {
+    case Nil => Point[I, Unit](())
+    case h :: t => for {
+      h2 <- read[I] if h2 == h
+      _ <- matchList(t)
+    } yield ()
+  }
 }
 
 object StringParser {
 
-  def parse[E](rule: Rule[Option[Char], Option[E]], string: String): Option[E] = {
+  def parse[E](rule: Rule[Option[Char], Option[E]], string: String): Either[Int, E] = {
     val cs = string.toCharArray.toIndexedSeq
     type R = Rule[Option[Char], Option[E]]
 
-    @tailrec def p(index: Int, rule: R, stack: List[(Int, R)]): Option[E] = rule match {
-      case Fail => stack match {
-        case Nil => None
-        case (i, r) :: t => p(i, r, t)
-      }
-      case Read(x, y) => p(index + 1, x(cs lift index), (index, y) :: stack)
+    @tailrec def p(index: Int, rule: R, stack: List[(Int, R)], max: Int): Either[Int, E] = rule match {
+      case Fail =>
+        stack match {
+          case Nil => Left(max)
+          case (i, r) :: t => p(i, r, t, max)
+        }
+      case Read(x, y) => p(index + 1, x(cs lift index), (index, y) :: stack, math.max(max, index))
       case Point(x, y) => x match {
-        case None => p(index, y, stack)
-        case Some(z) => Some(z)
+        case None => p(index, y, stack, max)
+        case Some(z) => Right(z)
       }
     }
 
-    p(0, rule, Nil)
+    p(0, rule, Nil, 0)
   }
 
 }
