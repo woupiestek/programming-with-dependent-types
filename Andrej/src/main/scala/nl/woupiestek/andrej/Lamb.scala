@@ -36,9 +36,15 @@ object Lamb {
   object Instance extends DeBruijnExpr[Lamb] {
     override def get(index: Int): Lamb = Vari(index)
 
-    override def push(value: Lamb, context: Lamb): Lamb = Subs(context, List(value))
+    override def push(value: Lamb, context: Lamb): Lamb = context match {
+      case Subs(x, y) => Subs(x, y ++ List(value))
+      case _ => Subs(context, List(value))
+    }
 
-    override def application(operator: Lamb, operand: Lamb): Lamb = Appl(operator, List(operand))
+    override def application(operator: Lamb, operand: Lamb): Lamb = operator match {
+      case Appl(x, y) => Appl(x, y ++ List(operand))
+      case _ => Appl(operator, List(operand))
+    }
 
     override def lambda(dom: Lamb, value: Lamb): Lamb = Abst(dom, value)
 

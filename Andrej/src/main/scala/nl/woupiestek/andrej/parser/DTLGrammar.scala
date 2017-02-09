@@ -16,44 +16,51 @@ class DTLGrammar[E](e: Expr[E]) {
 
   private lazy val identifier: G[E] = key.map(e.identifier)
 
+  private def matchString(string: String): G[Unit] = Rule.matchList(string.map(Some(_)).toList)
+
+  private def token(string: String): G[Unit] = for {
+    _ <- matchString(string)
+    _ <- space
+  } yield ()
+
+  private def token(char: Char): G[Unit] = for {
+    _ <- Rule.collect[Option[Char], Unit] { case Some(x) if x == char => () }
+    _ <- space
+  } yield ()
+
   private lazy val let: G[E] = for {
-    "let" <- key
+    _ <- token("let")
     x <- key
-    "be" <- key
+    _ <- token("be")
     y <- term
-    "in" <- key
+    _ <- token("in")
     z <- term
   } yield e.let(x, y, z)
 
-  private lazy val symbol = for {
-    x <- Rule.collect[Option[Char], Char] { case Some(c) => c }
-    _ <- space
-  } yield x
-
   private lazy val lambda: G[E] = for {
-    '\\' <- symbol
+    _ <- token('\\')
     x <- key
-    ':' <- symbol
+    _ <- token(':')
     y <- term
-    '.' <- symbol
+    _ <- token('.')
     z <- term
   } yield e.lambda(x, y, z)
 
-  private lazy val universe: G[E] = key.collect { case x if "type" == x => e.universe }
+  private lazy val universe: G[E] = token("type").map { _ => e.universe }
 
   private lazy val product: G[E] = for {
-    "pi" <- key
+    _ <- token("pi")
     x <- key
-    ':' <- symbol
+    _ <- token(':')
     y <- term
-    '.' <- symbol
+    _ <- token('.')
     z <- term
   } yield e.product(x, y, z)
 
   private lazy val parens: G[E] = for {
-    '(' <- symbol
+    _ <- token('(')
     x <- term
-    ')' <- symbol
+    _ <- token(')')
   } yield x
 
   private lazy val unit: G[E] = universe | identifier | let | lambda | product | parens

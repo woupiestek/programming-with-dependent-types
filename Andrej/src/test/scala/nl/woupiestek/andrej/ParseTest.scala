@@ -22,11 +22,11 @@ class ParseTest extends FunSpec {
     }
 
     it("should fail on gibberish") {
-      assert(StringParser.parse(rule(Nil), "pi t:type.s") === Left(12))
+      assert(StringParser.parse(rule(Nil), "pi t:type.s") === Left(11))
     }
 
     it("should fail on gibberish 2") {
-      assert(StringParser.parse(rule(xyz), "(type % b c)") === Left(12))
+      assert(StringParser.parse(rule(xyz), "(type % b c)") === Left(6))
     }
   }
 
