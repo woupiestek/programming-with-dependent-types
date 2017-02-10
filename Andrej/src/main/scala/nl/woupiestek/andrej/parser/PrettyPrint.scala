@@ -8,7 +8,7 @@ object PrettyPrint extends DeBruijnExpr[List[String] => String] {
   override def push(value: (List[String]) => String, context: (List[String]) => String): (List[String]) => String =
     vars => {
       val xL = "x" + vars.length
-      s"let $xL be ${value(vars)} in ${context(xL :: vars)}"
+      s"[$xL = ${value(vars)}]${context(xL :: vars)}"
     }
 
   override def application(operator: (List[String]) => String, operand: (List[String]) => String): (List[String]) => String =
@@ -25,6 +25,6 @@ object PrettyPrint extends DeBruijnExpr[List[String] => String] {
   override def pi(dom: (List[String]) => String, fun: (List[String]) => String): (List[String]) => String =
     vars => {
       val xL = "x" + vars.length
-      s"pi $xL:${dom(vars)}.${fun(xL :: vars)}"
+      s"\\pi $xL:${dom(vars)}.${fun(xL :: vars)}"
     }
 }

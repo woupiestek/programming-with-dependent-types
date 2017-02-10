@@ -10,6 +10,8 @@ sealed trait Rule[-In, +Out] {
 
   def flatMap[In2 <: In, Out2](f: Out => Rule[In2, Out2]): Rule[In2, Out2]
 
+  def ~[In2 <: In, Out2](f: => Rule[In2, Out2]): Rule[In2, Out2] = flatMap(_ => f)
+
   def map[Out2](f: Out => Out2): Rule[In, Out2] = flatMap((out: Out) => Point(f(out)))
 
   def withFilter(f: Out => Boolean): Rule[In, Out] = flatMap((out: Out) => if (f(out)) Point(out) else Fail)
@@ -67,6 +69,8 @@ object Rule {
     case _ => Fail
   }
 
+  def filter[In](f: In => Boolean): Rule[In, In] = Read(x => if (f(x)) Point(x) else Fail)
+
   def matchList[I](list: List[I]): Rule[I, Unit] = list match {
     case Nil => Point[I, Unit](())
     case h :: t => for {
@@ -78,9 +82,9 @@ object Rule {
 
 object StringParser {
 
-  def parse[E](rule: Rule[Option[Char], Option[E]], string: String): Either[Int, E] = {
+  def parse[E](rule: Rule[Option[Char], E], string: String): Either[Int, E] = {
     val cs = string.toCharArray.toIndexedSeq
-    type R = Rule[Option[Char], Option[E]]
+    type R = Rule[Option[Char], E]
 
     @tailrec def p(index: Int, rule: R, stack: List[(Int, R)], max: Int): Either[Int, E] = rule match {
       case Fail =>
@@ -89,10 +93,7 @@ object StringParser {
           case (i, r) :: t => p(i, r, t, max)
         }
       case Read(x, y) => p(index + 1, x(cs lift index), (index, y) :: stack, math.max(max, index))
-      case Point(x, y) => x match {
-        case None => p(index, y, stack, max)
-        case Some(z) => Right(z)
-      }
+      case Point(x, y) => Right(x)
     }
 
     p(0, rule, Nil, 0)

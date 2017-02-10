@@ -29,11 +29,11 @@ class DTLGrammar[E](e: Expr[E]) {
   } yield ()
 
   private lazy val let: G[E] = for {
-    _ <- token("let")
+    _ <- token('[')
     x <- key
-    _ <- token("be")
+    _ <- token('=')
     y <- term
-    _ <- token("in")
+    _ <- token(']')
     z <- term
   } yield e.let(x, y, z)
 
@@ -49,7 +49,7 @@ class DTLGrammar[E](e: Expr[E]) {
   private lazy val universe: G[E] = token("type").map { _ => e.universe }
 
   private lazy val product: G[E] = for {
-    _ <- token("pi")
+    _ <- token("\\pi")
     x <- key
     _ <- token(':')
     y <- term

@@ -12,17 +12,20 @@ class ParseTest extends FunSpec {
   describe("parsing") {
 
     it("should recognize the type of types") {
-      assert(StringParser.parse(rule(Nil), "type") === Right(omega))
+      assert(StringParser.parse(rule(Nil), "type") === Right(Some(omega)))
     }
     it("should recognize the family of identities") {
-      assert(StringParser.parse(rule(Nil), "\\t:type.\\x:t.x") === Right(lambda(omega, lambda(get(0), get(0)))))
+      assert(StringParser.parse(rule(Nil), "\\t:type.\\x:t.x") === Right(Some(lambda(omega, lambda(get(0), get(0))))))
     }
     it("should recognize the initial type") {
-      assert(StringParser.parse(rule(Nil), "pi t:type.t") === Right(pi(omega, get(0))))
+      val i = pi(omega, get(0))
+      val j = Lamb.fold(i, PrettyPrint)(Nil)
+      info(j)
+      assert(StringParser.parse(rule(Nil), j) === Right(Some(i)))
     }
 
-    it("should fail on gibberish") {
-      assert(StringParser.parse(rule(Nil), "pi t:type.s") === Left(11))
+    it("should produce none on missing variables") {
+      assert(StringParser.parse(rule(Nil), "pi t:type.s") === Right(None))
     }
 
     it("should fail on gibberish 2") {
@@ -38,26 +41,26 @@ class ParseTest extends FunSpec {
     it("should handle applications") {
       val test1 = Lamb.fold(appl, PrettyPrint)(xyz)
       info(test1)
-      assert(StringParser.parse(rule(xyz), test1) === Right(appl))
+      assert(StringParser.parse(rule(xyz), test1) === Right(Some(appl)))
     }
 
     it("should handle simple abstractions") {
       val test2 = Lamb.fold(abs1, PrettyPrint)(xyz)
       info(test2)
-      assert(StringParser.parse(rule(xyz), test2) === Right(abs1))
+      assert(StringParser.parse(rule(xyz), test2) === Right(Some(abs1)))
     }
 
     it("should handle type abstractions") {
       val test3 = Lamb.fold(abs2, PrettyPrint)(Nil)
       info(test3)
-      assert(StringParser.parse(rule(Nil), test3) === Right(abs2))
+      assert(StringParser.parse(rule(Nil), test3) === Right(Some(abs2)))
     }
 
     it("should handle let bindings") {
       val lets = Lamb.Instance.push(omega, get(0))
       val test4 = Lamb.fold(lets, PrettyPrint)(xyz)
       info(test4)
-      assert(StringParser.parse(rule(xyz), test4) === Right(lets))
+      assert(StringParser.parse(rule(xyz), test4) === Right(Some(lets)))
     }
   }
 
