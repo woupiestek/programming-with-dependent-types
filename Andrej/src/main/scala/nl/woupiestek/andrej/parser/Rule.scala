@@ -87,13 +87,12 @@ object StringParser {
     type R = Rule[Option[Char], E]
 
     @tailrec def p(index: Int, rule: R, stack: List[(Int, R)], max: Int): Either[Int, E] = rule match {
-      case Fail =>
-        stack match {
-          case Nil => Left(max)
-          case (i, r) :: t => p(i, r, t, max)
-        }
+      case Fail => stack match {
+        case Nil => Left(max)
+        case (i, r) :: t => p(i, r, t, max)
+      }
       case Read(x, y) => p(index + 1, x(cs lift index), (index, y) :: stack, math.max(max, index))
-      case Point(x, y) => Right(x)
+      case Point(x, y) => if (index == string.length) Right(x) else p(index, y, stack, max)
     }
 
     p(0, rule, Nil, 0)

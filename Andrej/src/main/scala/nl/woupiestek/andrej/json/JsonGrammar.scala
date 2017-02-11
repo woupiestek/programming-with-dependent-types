@@ -114,7 +114,7 @@ class JsonGrammar[J](j: Value[J]) {
     } yield j.jObject(pairs)
   }
 
-  def value: R[J] = string.map(j.string) | number | jObject | array | jTrue | jFalse | jNull
+  def value: R[J] = jTrue | jFalse | jNull | array | jObject | number | string.map(j.string)
 }
 
 trait Value[J] {

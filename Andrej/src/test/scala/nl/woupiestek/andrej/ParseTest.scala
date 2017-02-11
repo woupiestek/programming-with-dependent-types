@@ -25,7 +25,7 @@ class ParseTest extends FunSpec {
     }
 
     it("should produce none on missing variables") {
-      assert(StringParser.parse(rule(Nil), "pi t:type.s") === Right(None))
+      assert(StringParser.parse(rule(Nil), "\\pi t:type.s") === Right(None))
     }
 
     it("should fail on gibberish 2") {
