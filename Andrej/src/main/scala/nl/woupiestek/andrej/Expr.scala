@@ -5,7 +5,7 @@ trait Expr[E] {
 
   def let(key: String, value: E, context: E): E
 
-  def application(operator: E, operand: E): E
+  def application(operator: E, operands: List[E]): E
 
   def lambda(key: String, dom: E, value: E): E
 
@@ -19,7 +19,7 @@ trait DeBruijnExpr[E] {
 
   def push(value: E, context: E): E
 
-  def application(operator: E, operand: E): E
+  def application(operator: E, operands: List[E]): E
 
   def lambda(dom: E, value: E): E
 
@@ -38,11 +38,19 @@ class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
       y <- context(key :: vars)
     } yield e.push(x, y)
 
-  override def application(operator: (List[String]) => Option[E], operand: (List[String]) => Option[E]): (List[String]) => Option[E] =
+  override def application(operator: (List[String]) => Option[E], operands: List[(List[String]) => Option[E]]): (List[String]) => Option[E] =
     vars => for {
       x <- operator(vars)
-      y <- operand(vars)
+      y <- traverse(operands)(_(vars))
     } yield e.application(x, y)
+
+  private def traverse[X, Y](list: List[X])(f: X => Option[Y]): Option[List[Y]] = list match {
+    case Nil => Some(Nil)
+    case h :: t => for {
+      h2 <- f(h)
+      t2 <- traverse(t)(f)
+    } yield h2 :: t2
+  }
 
   override def lambda(key: String, dom: (List[String]) => Option[E], value: (List[String]) => Option[E]): (List[String]) => Option[E] =
     vars => for {

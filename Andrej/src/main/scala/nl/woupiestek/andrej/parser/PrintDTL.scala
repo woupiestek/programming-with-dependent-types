@@ -2,7 +2,7 @@ package nl.woupiestek.andrej.parser
 
 import nl.woupiestek.andrej.DeBruijnExpr
 
-object PrettyPrint extends DeBruijnExpr[List[String] => String] {
+object PrintDTL extends DeBruijnExpr[List[String] => String] {
   override def get(index: Int): (List[String]) => String = _ lift index getOrElse "?"
 
   override def push(value: (List[String]) => String, context: (List[String]) => String): (List[String]) => String =
@@ -11,8 +11,8 @@ object PrettyPrint extends DeBruijnExpr[List[String] => String] {
       s"[$xL = ${value(vars)}]${context(xL :: vars)}"
     }
 
-  override def application(operator: (List[String]) => String, operand: (List[String]) => String): (List[String]) => String =
-    vars => s"(${operator(vars)} ${operand(vars)})"
+  override def application(operator: (List[String]) => String, operands: List[(List[String]) => String]): (List[String]) => String =
+    vars => s"(${operator(vars)} ${operands.map(_(vars)).mkString(" ")})"
 
   override def lambda(dom: (List[String]) => String, value: (List[String]) => String): (List[String]) => String =
     vars => {
@@ -25,6 +25,6 @@ object PrettyPrint extends DeBruijnExpr[List[String] => String] {
   override def pi(dom: (List[String]) => String, fun: (List[String]) => String): (List[String]) => String =
     vars => {
       val xL = "x" + vars.length
-      s"\\pi $xL:${dom(vars)}.${fun(xL :: vars)}"
+      s"($xL:${dom(vars)}) -> ${fun(xL :: vars)}"
     }
 }

@@ -20,7 +20,7 @@ object Lamb {
 
   def fold[E](l: Lamb, e: DeBruijnExpr[E]): E = l match {
     case Vari(i) => e.get(i)
-    case Appl(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.application(a, fold(b, e)) }
+    case Appl(x, y) => e.application(fold(x, e), y.map(fold(_, e)))
     case Subs(x, y) => y.foldLeft(fold(x, e)) { case (a, b) => e.push(fold(b, e), a) }
     case Abst(x, y) => e.lambda(fold(x, e), fold(y, e))
     case Prod(x, y) => e.pi(fold(x, e), fold(y, e))
@@ -41,9 +41,9 @@ object Lamb {
       case _ => Subs(context, List(value))
     }
 
-    override def application(operator: Lamb, operand: Lamb): Lamb = operator match {
-      case Appl(x, y) => Appl(x, y ++ List(operand))
-      case _ => Appl(operator, List(operand))
+    override def application(operator: Lamb, operands: List[Lamb]): Lamb = operator match {
+      case Appl(x, y) => Appl(x, y ++ operands)
+      case _ => Appl(operator, operands)
     }
 
     override def lambda(dom: Lamb, value: Lamb): Lamb = Abst(dom, value)
