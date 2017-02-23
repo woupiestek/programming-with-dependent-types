@@ -1,5 +1,7 @@
 package nl.woupiestek.andrej
 
+import nl.woupiestek.andrej.Utils.traverse
+
 trait Expr[E] {
   def identifier(key: String): E
 
@@ -43,14 +45,6 @@ class StripVars[E](e: DeBruijnExpr[E]) extends Expr[List[String] => Option[E]] {
       x <- operator(vars)
       y <- traverse(operands)(_(vars))
     } yield e.application(x, y)
-
-  private def traverse[X, Y](list: List[X])(f: X => Option[Y]): Option[List[Y]] = list match {
-    case Nil => Some(Nil)
-    case h :: t => for {
-      h2 <- f(h)
-      t2 <- traverse(t)(f)
-    } yield h2 :: t2
-  }
 
   override def lambda(key: String, dom: (List[String]) => Option[E], value: (List[String]) => Option[E]): (List[String]) => Option[E] =
     vars => for {

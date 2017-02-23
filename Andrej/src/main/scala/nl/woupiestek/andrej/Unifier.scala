@@ -70,4 +70,4 @@ sealed trait Tree[+N, +L] {
 
 case class Leaf[+L](label: L) extends Tree[Nothing, L]
 
-case class Node[+N, +L](label: N, children: List[Tree[N, L]]*) extends Tree[N, L]
+case class Node[+N, +L](label: N, children: List[Tree[N, L]]) extends Tree[N, L]

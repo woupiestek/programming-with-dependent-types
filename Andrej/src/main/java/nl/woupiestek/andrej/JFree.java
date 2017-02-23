@@ -58,4 +58,5 @@ public abstract class JFree<M, T> {
     public static <M, T> JFree<M, T> lift(M m) {
         return new Bind<M, T, T>(m, Return::new);
     }
+
 }
