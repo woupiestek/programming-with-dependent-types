@@ -1,8 +1,5 @@
 package nl.woupiestek.andrej
 
-/**
- * Created by Wouter on 19-2-2017.
- */
 object Utils {
 
   def traverse[X, Y](list: List[X])(f: X => Option[Y]): Option[List[Y]] = list match {
