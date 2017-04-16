@@ -6,7 +6,6 @@ import nl.woupiestek.andrej.intersections.Stateful.point
 sealed trait InTerm
 
 object InTerm {
-
   case class Variable(index: Int) extends InTerm
 
   case class Application(operator: InTerm, operand: InTerm) extends InTerm
@@ -18,6 +17,8 @@ object InTerm {
 
     def incr: State = copy(arity = arity + 1)
   }
+
+  val start = State(Set.empty, 0)
 
   def pop: Stateful[State, InType] = Stateful { s =>
     (intersection(s.bounds.collect { case (0, b) => b }),
@@ -38,7 +39,7 @@ object InTerm {
       case Nil => for {
         tt <- typed(t, context, Nil)
         t0 <- pop
-      } yield arrow(t0, replace(tt, t0))
+      } yield arrow(t0, tt)
     }
   }
 

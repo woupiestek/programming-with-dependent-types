@@ -12,6 +12,8 @@ object InType {
 
   case class Intersection private (types: Set[InType]) extends InType
 
+  val top: InType = Intersection(Set.empty)
+
   def arrow(source: InType, target: InType): InType = target match {
     case Intersection(ts) => intersection(ts.map(arrow(source, _)))
     case _ => Arrow(source, target)
@@ -19,12 +21,14 @@ object InType {
 
   def arrow(sources: Traversable[InType], target: InType): InType = sources.foldRight(target)(arrow)
 
-  def intersection(types: Set[InType]): InType = Intersection(types.flatMap {
-    case Intersection(ts) => ts
-    case t => Set(t)
-  })
-
-  def top: InType = Intersection(Set.empty)
+  def intersection(types: Set[InType]): InType = types.size match {
+    case 0 => top
+    case 1 => types.head
+    case i if i > 1 => Intersection(types.flatMap {
+      case Intersection(ts) => ts
+      case t => Set(t)
+    })
+  }
 
   def insert(inType: InType, index: Int = 0): InType = inType match {
     case Var(i) if i < index => Var(i)
