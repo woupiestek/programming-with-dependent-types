@@ -43,5 +43,10 @@ object InTerm {
     }
   }
 
+  def typeOf(term: InTerm): InType = {
+    val (typ, state) = InTerm.typed(term, Nil, Nil).go(start)
+    forall(state.arity, typ)
+  }
+
 }
 

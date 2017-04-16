@@ -30,6 +30,8 @@ object InType {
     })
   }
 
+  def forall(arity: Int, inType: InType): InType = (0 until arity).foldLeft(inType) { case (x, _) => Forall(x) }
+
   def insert(inType: InType, index: Int = 0): InType = inType match {
     case Var(i) if i < index => Var(i)
     case Var(i) if i >= index => Var(i + 1)
