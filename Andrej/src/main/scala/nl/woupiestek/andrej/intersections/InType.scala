@@ -68,7 +68,7 @@ object InType {
   def ponens(x: InType, y: InType): InType = x match {
     case Intersection(xs) => intersection(xs.map(ponens(_, y)))
     case Forall(t) => Forall(ponens(t, insert(y)))
-    case Arrow(a, b) if subtypes(a, y, 0) => b
+    case Arrow(a, b) if subtypes(y, a, 0) => b
     case _ => top
   }
 
