@@ -1,5 +1,7 @@
 package nl.woupiestek.andrej.intersections
 
+import nl.woupiestek.andrej.Utils
+
 sealed trait InType
 
 object InType {
@@ -73,4 +75,39 @@ object InType {
   }
 
   def ponens(x: InType, ys: List[InType]): InType = ys.foldLeft(x)(ponens)
+
+  sealed trait Prop
+
+  case class UB(index: Int, inType: InType) extends Prop
+
+  case class LB(inType: InType, index: Int) extends Prop
+
+  def exists(props: Set[Prop]): Option[Set[Prop]] = {
+    val lbs = props.collect { case LB(t, 0) => t }
+    val ub = intersection(props.collect { case UB(0, t) => t })
+    Utils.traverse(lbs.toList)(leq(_, ub)).map(_.flatten.toSet union props.collect {
+      case LB(t, i) if i > 0 => LB(replace(t, ub), i - 1)
+      case UB(i, t) if i > 0 => UB(i - 1, replace(t, ub))
+    })
+  }
+
+  def leq(x: InType, y: InType): Option[Set[Prop]] = x match {
+    case Var(i) if y == Var(i) => Some(Set.empty)
+    case Var(i) if y != Var(i) => Some(Set(UB(i, y)))
+    case Intersection(ts) => ts.foldLeft[Option[Set[Prop]]](None) { case (a, b) => a orElse leq(b, y) }
+    case Forall(t) => for {
+      p <- leq(t, insert(y))
+      q <- exists(p)
+    } yield q
+    case Arrow(a, b) => y match {
+      case Var(i) => Some(Set(LB(x, i)))
+      case Intersection(ts) => Utils.traverse(ts.toList)(leq(x, _)).map(_.flatten.toSet)
+      case Forall(t) => leq(insert(x), t)
+      case Arrow(c, d) => for {
+        e <- leq(c, a)
+        f <- leq(b, d)
+      } yield e union f
+    }
+  }
+
 }
