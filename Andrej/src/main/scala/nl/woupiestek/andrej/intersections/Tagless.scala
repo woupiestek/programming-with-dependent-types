@@ -1,6 +1,7 @@
 package nl.woupiestek.andrej.intersections
 
 import nl.woupiestek.andrej.intersections.InType._
+import nl.woupiestek.andrej.intersections.Prop.combine
 import nl.woupiestek.andrej.intersections.Stateful.point
 import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm
 
@@ -19,7 +20,7 @@ object Tagless {
 
   implicit val instance: UntypedLambdaTerm[Term] = new UntypedLambdaTerm[Term] {
     override def variable(index: Int): Term = (context, args) => context.lift(index) match {
-      case Some(t) => point(ponens(t, args))
+      case Some(t) => point(combine(t, args))
       case None => for {
         v <- fresh
         _ <- bind(index, arrow(args, v))
