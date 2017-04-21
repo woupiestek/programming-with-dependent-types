@@ -44,5 +44,5 @@ object Tagless {
   def typeOf(term: Term): InType = term(Nil, Nil).go(State(Set.empty, 0)) match {
     case (typ, state) => forall(state.arity, typ)
   }
-
 }
+

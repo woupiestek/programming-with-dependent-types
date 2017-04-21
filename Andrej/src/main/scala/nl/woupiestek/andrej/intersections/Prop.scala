@@ -47,10 +47,28 @@ object Prop {
     case _ => fail
   }
 
+  private def deduce(props: Set[Prop], context: InType): InType = {
+    if (props.contains(False)) top else
+      context match {
+        case Var(i) => intersection(props.collect { case UB(j, t) if i == j => t })
+        case Intersection(ts) => intersection(ts.map(deduce(props, _)))
+        case Forall(t) => Forall(deduce(props.map {
+          case UB(i, u) => UB(i + 1, u)
+          case LB(u, i) => LB(u, i + 1)
+          case False => False
+        }, t))
+        case Arrow(a, b) => Arrow(deduce(props.map {
+          case UB(i, t) => LB(t, i)
+          case LB(t, i) => UB(i, t)
+          case False => False
+        }, a), deduce(props, b))
+      }
+  }
+
   def combine(x: InType, y: InType): InType = x match {
     case Intersection(xs) => intersection(xs.map(combine(_, y)))
     case Forall(t) => Forall(combine(t, insert(y)))
-    case Arrow(a, b) if !leq(y, a).contains(False) => b
+    case Arrow(a, b) => deduce(leq(y, a), b)
     case _ => top
   }
 
