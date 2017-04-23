@@ -34,7 +34,7 @@ object Tagless {
 
     override def abstraction(term: Term): Term = (context, args) => args match {
       case Nil => for {
-        tt <- term(context, args)
+        tt <- term(context, Nil)
         t0 <- pop
       } yield arrow(t0, tt)
       case head :: tail => term(head :: context, tail)
@@ -42,7 +42,7 @@ object Tagless {
   }
 
   def typeOf(term: Term): InType = term(Nil, Nil).go(State(Set.empty, 0)) match {
-    case (typ, state) => forall(state.arity, typ)
+    case (typ, state) => typ
   }
 }
 

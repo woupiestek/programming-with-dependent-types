@@ -8,8 +8,6 @@ object InType {
 
   case class Arrow private (source: InType, target: InType) extends InType
 
-  case class Forall(inType: InType) extends InType
-
   case class Intersection private (types: Set[InType]) extends InType
 
   val top: InType = Intersection(Set.empty)
@@ -30,13 +28,10 @@ object InType {
     })
   }
 
-  def forall(arity: Int, inType: InType): InType = (0 until arity).foldLeft(inType) { case (x, _) => Forall(x) }
-
   def insert(inType: InType, index: Int = 0): InType = inType match {
     case Var(i) if i < index => Var(i)
     case Var(i) if i >= index => Var(i + 1)
     case Arrow(s, t) => Arrow(insert(s, index), insert(t, index))
-    case Forall(i) => Forall(insert(i, index + 1))
     case Intersection(ts) => intersection(ts.map(insert(_, index)))
   }
 
@@ -45,7 +40,6 @@ object InType {
     case Var(i) if i == index => substitution
     case Var(i) if i > index => Var(i - 1)
     case Arrow(s, t) => Arrow(replace(s, substitution, index), replace(t, substitution, index))
-    case Forall(i) => Forall(replace(i, substitution, index + 1))
     case Intersection(ts) => intersection(ts.map(replace(_, substitution, index)))
   }
 
@@ -53,20 +47,17 @@ object InType {
     case Var(i) => Set(i)
     case Arrow(s, t) => freeVars(s) union freeVars(t)
     case Intersection(s) => s.flatMap(freeVars)
-    case Forall(s) => freeVars(s).collect { case i if i > 0 => i - 1 }
   }
 
   def subtypes(x: InType, y: InType, m: Int): Boolean = {
     def subArrow(z: InType, a: InType, b: InType, n: Int): Boolean = z match {
       case Intersection(cs) => cs.exists(subArrow(_, a, b, n))
-      case Forall(c) => subArrow(c, a, b, n + 1)
       case Var(i) => i < n
       case Arrow(c, d) => subtypes(c, a, -n) && subtypes(b, d, n)
     }
 
     y match {
       case Intersection(bs) => bs.forall(subtypes(x, _, m))
-      case Forall(a) => subtypes(insert(x), a, m)
       case Var(i) => (i + m < 0) || x == Var(i + m)
       case Arrow(a, b) => subArrow(x, a, b, m)
     }
@@ -74,7 +65,6 @@ object InType {
 
   def ponens(x: InType, y: InType): InType = x match {
     case Intersection(xs) => intersection(xs.map(ponens(_, y)))
-    case Forall(t) => Forall(ponens(t, insert(y)))
     case Arrow(a, b) if subtypes(y, a, 0) => b
     case _ => top
   }

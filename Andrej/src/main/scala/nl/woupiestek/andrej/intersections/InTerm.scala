@@ -6,6 +6,7 @@ import nl.woupiestek.andrej.intersections.Stateful.point
 sealed trait InTerm
 
 object InTerm {
+
   case class Variable(index: Int) extends InTerm
 
   case class Application(operator: InTerm, operand: InTerm) extends InTerm
@@ -43,10 +44,7 @@ object InTerm {
     }
   }
 
-  def typeOf(term: InTerm): InType = {
-    val (typ, state) = InTerm.typed(term, Nil, Nil).go(start)
-    forall(state.arity, typ)
-  }
+  def typeOf(term: InTerm): InType = InTerm.typed(term, Nil, Nil).go(start)._1
 
 }
 

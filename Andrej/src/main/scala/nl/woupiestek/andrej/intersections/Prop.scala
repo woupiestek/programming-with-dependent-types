@@ -36,11 +36,9 @@ object Prop {
     case Var(i) if y == Var(i) => Set.empty
     case Var(i) if y != Var(i) => overBind(i, y)
     case Intersection(ts) => ts.map(leq(_, y)).find(s => !s.contains(False)).getOrElse(Set(False))
-    case Forall(t) => exists(leq(t, insert(y)))
     case Arrow(a, b) => y match {
       case Var(i) if !freeVars(x).contains(i) => underBind(x, i)
       case Intersection(ts) => ts.flatMap(leq(x, _))
-      case Forall(t) => leq(insert(x), t)
       case Arrow(c, d) => leq(c, a) union leq(b, d)
       case _ => fail
     }
@@ -48,26 +46,34 @@ object Prop {
   }
 
   private def deduce(props: Set[Prop], context: InType): InType = {
-    if (props.contains(False)) top else
-      context match {
-        case Var(i) => intersection(props.collect { case UB(j, t) if i == j => t })
-        case Intersection(ts) => intersection(ts.map(deduce(props, _)))
-        case Forall(t) => Forall(deduce(props.map {
-          case UB(i, u) => UB(i + 1, u)
-          case LB(u, i) => LB(u, i + 1)
-          case False => False
-        }, t))
-        case Arrow(a, b) => Arrow(deduce(props.map {
-          case UB(i, t) => LB(t, i)
-          case LB(t, i) => UB(i, t)
-          case False => False
-        }, a), deduce(props, b))
+    val shift: Prop => Prop = {
+      case UB(i, u) => UB(i + 1, insert(u))
+      case LB(u, i) => LB(insert(u), i + 1)
+      case False => False
+    }
+
+    def deduceLeft(props2: Set[Prop], context2: InType): Set[InType] = {
+      context2 match {
+        case Var(i) => props2.collect { case LB(t, j) if i == j => t }
+        case Intersection(ts) => ts.foldLeft(Set.empty[Set[InType]]) {
+          case (x, y) => for {
+            a <- x
+            b <- deduceLeft(props2, y)
+          } yield a + b
+        }.map(intersection)
+        case Arrow(a, b) => deduceLeft(props2, b).map(arrow(deduce(props2, a), _))
       }
+    }
+
+    if (props.contains(False)) top else context match {
+      case Var(i) => intersection(props.collect { case UB(j, t) if i == j => t })
+      case Intersection(ts) => intersection(ts.map(deduce(props, _)))
+      case Arrow(a, b) => intersection(deduceLeft(props, a).map(arrow(_, deduce(props, b))))
+    }
   }
 
   def combine(x: InType, y: InType): InType = x match {
     case Intersection(xs) => intersection(xs.map(combine(_, y)))
-    case Forall(t) => Forall(combine(t, insert(y)))
     case Arrow(a, b) => deduce(leq(y, a), b)
     case _ => top
   }

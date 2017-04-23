@@ -7,7 +7,7 @@ import org.scalatest.FunSpec
 
 class Tagless2Test extends FunSpec {
 
-  describe("Tagless.typeOf") {
+  describe("Tagless2.typeOf") {
     it("types S combinator") {
       val s = \(\(\($(2) * $(0) * ($(1) * $(0)))))
       assert(typeOf(s) ===

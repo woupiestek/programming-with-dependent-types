@@ -1,6 +1,6 @@
 package nl.woupiestek.andrej.intersections
 
-import nl.woupiestek.andrej.intersections.InType.{ Var, arrow, forall, intersection }
+import nl.woupiestek.andrej.intersections.InType.{ Var, arrow, intersection }
 import nl.woupiestek.andrej.intersections.Prop.combine
 import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm
 
@@ -28,7 +28,7 @@ object Tagless2 {
     } yield ty
 
     override def abstraction(term: Term): Term = args => for {
-      tt <- term(args)
+      tt <- term(Nil)
       t0 <- pop
     } yield combine(arrow(t0, tt), args)
   }
