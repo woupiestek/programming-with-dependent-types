@@ -28,13 +28,6 @@ object InType {
     })
   }
 
-  def insert(inType: InType, index: Int = 0): InType = inType match {
-    case Var(i) if i < index => Var(i)
-    case Var(i) if i >= index => Var(i + 1)
-    case Arrow(s, t) => Arrow(insert(s, index), insert(t, index))
-    case Intersection(ts) => intersection(ts.map(insert(_, index)))
-  }
-
   def replace(inType: InType, substitution: InType, index: Int = 0): InType = inType match {
     case Var(i) if i < index => Var(i)
     case Var(i) if i == index => substitution

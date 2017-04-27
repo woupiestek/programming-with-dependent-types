@@ -1,6 +1,6 @@
 package nl.woupiestek.andrej.intersections
 
-import nl.woupiestek.andrej.intersections.InType._
+import nl.woupiestek.andrej.intersections.LType._
 import nl.woupiestek.andrej.intersections.Tagless._
 import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm._
 import org.scalatest.FunSpec
@@ -11,37 +11,35 @@ class TaglessTest extends FunSpec {
     it("types S combinator") {
       val s = \(\(\($(2) * $(0) * ($(1) * $(0)))))
       assert(typeOf(s) ===
-        arrow(arrow(Var(2), arrow(Var(1), Var(3))),
-          arrow(arrow(Var(0), Var(1)),
-            arrow(intersection(Set(Var(0), Var(2))), Var(3)))))
+        arrow(arrow(parameter(2), arrow(parameter(1), parameter(3))),
+          arrow(arrow(parameter(0), parameter(1)),
+            arrow(intersection(parameter(0), parameter(2)), parameter(3)))))
     }
 
     it("types K combinator") {
       val k = \(\($(1)))
-      assert(typeOf(k) === arrow(Var(0), arrow(top, Var(0))))
+      assert(typeOf(k) === arrow(parameter(0), arrow(omega, parameter(0))))
     }
 
-    val omega = \($(0) * $(0))
+    val omegaC = \($(0) * $(0))
 
     it("types omega combinator") {
-      assert(typeOf(omega) === arrow(intersection(Set(Var(0), arrow(Var(0), Var(1)))), Var(1)))
+      assert(typeOf(omegaC) === arrow(intersection(parameter(0), arrow(parameter(0), parameter(1))), parameter(1)))
     }
 
     it("types Omega combinator") {
-      assert(typeOf(omega * omega) === top)
+      assert(typeOf(omegaC * omegaC) === omega)
     }
 
     val l = \(\($(1) * ($(0) * $(0))))
 
     it("types L combinator") {
-      assert(typeOf(l) === arrow(arrow(Var(1), Var(2)),
-        arrow(intersection(Set(Var(0), arrow(Var(0), Var(1)))), Var(2))))
+      assert(typeOf(l) === arrow(arrow(parameter(1), parameter(2)),
+        arrow(intersection(parameter(0), arrow(parameter(0), parameter(1))), parameter(2))))
     }
 
-    val y = \(\($(1) * ($(0) * $(0))) * \($(1) * ($(0) * $(0))))
-
     it("types Y combinator") {
-      assert(typeOf(y) === top)
+      assert(typeOf(l * l) === omega)
     }
 
   }

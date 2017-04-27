@@ -38,7 +38,7 @@ class Tagless2Test extends FunSpec {
         arrow(intersection(Set(Var(0), arrow(Var(0), Var(1)))), Var(2))))
     }
 
-    val y = \(\($(1) * ($(0) * $(0))) * \($(1) * ($(0) * $(0))))
+    val y = l * l
 
     it("types Y combinator") {
       assert(typeOf(y) === top)

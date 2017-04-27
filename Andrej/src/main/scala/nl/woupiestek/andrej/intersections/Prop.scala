@@ -46,29 +46,21 @@ object Prop {
   }
 
   private def deduce(props: Set[Prop], context: InType): InType = {
-    val shift: Prop => Prop = {
-      case UB(i, u) => UB(i + 1, insert(u))
-      case LB(u, i) => LB(insert(u), i + 1)
-      case False => False
-    }
-
-    def deduceLeft(props2: Set[Prop], context2: InType): Set[InType] = {
-      context2 match {
-        case Var(i) => props2.collect { case LB(t, j) if i == j => t }
-        case Intersection(ts) => ts.foldLeft(Set.empty[Set[InType]]) {
-          case (x, y) => for {
-            a <- x
-            b <- deduceLeft(props2, y)
-          } yield a + b
-        }.map(intersection)
-        case Arrow(a, b) => deduceLeft(props2, b).map(arrow(deduce(props2, a), _))
-      }
+    def deduceLeft(context2: InType): Set[InType] = context2 match {
+      case Var(i) => props.collect { case LB(t, j) if i == j => t }
+      case Intersection(ts) => ts.foldLeft(Set.empty[Set[InType]]) {
+        case (x, y) => for {
+          a <- x
+          b <- deduceLeft(y)
+        } yield a + b
+      }.map(intersection)
+      case Arrow(a, b) => deduceLeft(b).map(arrow(deduce(props, a), _))
     }
 
     if (props.contains(False)) top else context match {
       case Var(i) => intersection(props.collect { case UB(j, t) if i == j => t })
       case Intersection(ts) => intersection(ts.map(deduce(props, _)))
-      case Arrow(a, b) => intersection(deduceLeft(props, a).map(arrow(_, deduce(props, b))))
+      case Arrow(a, b) => intersection(deduceLeft(a).map(arrow(_, deduce(props, b))))
     }
   }
 
