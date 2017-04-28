@@ -4,7 +4,6 @@ import nl.woupiestek.andrej.parser.Rule.{ Fail, Point, Read }
 
 import scala.annotation.tailrec
 
-//todo test
 sealed trait Rule[-In, +Out] {
   def |[In2 <: In, Out2 >: Out](grammar: Rule[In2, Out2]): Rule[In2, Out2]
 

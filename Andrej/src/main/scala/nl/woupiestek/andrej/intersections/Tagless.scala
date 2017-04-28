@@ -21,7 +21,7 @@ object Tagless {
   implicit val instance: UntypedLambdaTerm[Term] = new UntypedLambdaTerm[Term] {
 
     override def variable(index: Int): Term = (context, args) => context.lift(index) match {
-      case Some(t) => point(combine(t, args))
+      case Some(t) => point(Combinator.combine(t, args))
       case None => for {
         v <- fresh
         _ <- bind(index, args.foldRight(v)(arrow))
@@ -33,13 +33,17 @@ object Tagless {
       ty <- operator(context, tx :: args)
     } yield ty
 
-    override def abstraction(term: Term): Term = (context, args) => args match {
-      case Nil => for {
-        tt <- term(context, Nil)
-        t0 <- pop
-      } yield arrow(t0, tt) //hier zouden de nieuwe variabelen gebonden kunnen worden.
-      case head :: tail => term(head :: context, tail)
-    }
+    override def abstraction(term: Term): Term = (context, args) => /*for {
+      tt <- term(context, Nil)
+      t0 <- pop
+    } yield Combinator.combine(arrow(t0, tt), args)*/
+      args match {
+        case Nil => for {
+          tt <- term(context, Nil)
+          t0 <- pop
+        } yield arrow(t0, tt) //hier zouden de nieuwe variabelen gebonden kunnen worden.
+        case head :: tail => term(head :: context, tail)
+      }
   }
 
   def typeOf(term: Term): LType = term(Nil, Nil).go(State(Set.empty, 0))._1

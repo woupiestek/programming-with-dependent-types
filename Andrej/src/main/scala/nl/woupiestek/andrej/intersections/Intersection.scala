@@ -1,10 +1,15 @@
 package nl.woupiestek.andrej.intersections
 
 case class LType(rTypes: Set[RType]) {
-  override def toString: String = if (rTypes.isEmpty) "top" else rTypes.mkString(" & ")
+  def &(other: LType): LType = copy(rTypes = rTypes union other.rTypes)
+
+  override def toString: String = if (rTypes.isEmpty) "T" else rTypes.mkString(" & ")
 }
 
 case class RType(sources: List[LType], target: AType) {
+
+  def ->:(source: LType): RType = copy(sources = source :: sources)
+
   override def toString: String =
     if (sources.isEmpty) target.toString
     else (sources ++ List(target)).mkString("(", " -> ", ")")
@@ -32,6 +37,8 @@ object LType {
 
   def arrow(x: LType, y: LType) = LType(y.rTypes.map { case RType(sy, ty) => RType(x :: sy, ty) })
 
+  def left(x: RType): LType = LType(Set(x))
+
   def replace(lType: LType, index: Int, sub: LType): LType = LType(lType.rTypes.flatMap(replace(_, index, sub).rTypes))
 
   def replace(rType: RType, index: Int, sub: LType): LType = rType match {
@@ -53,8 +60,6 @@ object LType {
   }
 
   object ->: {
-    def apply(source: LType, target: RType): RType = target.copy(sources = source :: target.sources)
-
     def unapply(arrow: RType): Option[(LType, RType)] = arrow.sources match {
       case Nil => None
       case h :: t => Some((h, arrow.copy(sources = t)))
@@ -62,13 +67,13 @@ object LType {
   }
 
   //typing without elimination
-  def leq(x: LType, y: LType): Boolean = x.rTypes.exists(xr => y.rTypes.forall(yr => leq(xr, yr)))
+  def leq(x: LType, t: AType): Boolean = x.rTypes.contains(Atomic(t))
 
-  def leq(x: RType, y: RType): Boolean = (x, y) match {
-    case (a ->: b, c ->: d) => leq(c, a) && leq(b, d)
-    case (Atomic(a), Atomic(b)) => a == b
-    case _ => false
+  def leq(x: LType, y: RType): Boolean = y match {
+    case RType(s, t) => leq(combine(x, s), t)
   }
+
+  def leq(x: LType, y: LType): Boolean = y.rTypes.forall(leq(x, _))
 
   def combine(x: LType, y: List[LType]): LType = LType(x.rTypes.flatMap(combine(_, y)).headOption.toSet)
 
