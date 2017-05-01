@@ -1,8 +1,5 @@
 package nl.woupiestek.andrej.yetanothersystem
 
-/**
- * Created by Wouter on 23-1-2017.
- */
 sealed trait La {
   def cut(i: Int, x: La): La
 

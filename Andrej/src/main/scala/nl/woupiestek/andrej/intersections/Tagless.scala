@@ -36,7 +36,7 @@ object Tagless {
     override def abstraction(term: Term): Term = (context, args) => /*for {
       tt <- term(context, Nil)
       t0 <- pop
-    } yield Combinator.combine(arrow(t0, tt), args)*/
+    } yield args.foldLeft(arrow(t0, tt))(Combinator2.combine) */ //Combinator.combine(arrow(t0, tt), args)
       args match {
         case Nil => for {
           tt <- term(context, Nil)

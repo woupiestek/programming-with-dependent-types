@@ -17,8 +17,8 @@ class TaglessTest extends FunSpec {
     }
 
     it("binds variables") {
-      val result = Combinator.leq(arrow1, Parameter(0))
-      assert(result === Some(Map(0 -> arrow1)))
+      val result = Combinator.leq(arrow1, Parameter(0))(Atomic(Parameter(0)))
+      assert(result === arrow1)
     }
 
     //while the test fails, result is a correct type for the identity function.
@@ -27,6 +27,13 @@ class TaglessTest extends FunSpec {
       assert(result === arrow(parameter(0), parameter(0)))
     }
 
+  }
+
+  describe("Combinator2") {
+    it("handles this just fine") {
+      val result = Combinator2.combine(Combinator2.combine(typeOf(s), typeOf(k)), typeOf(k))
+      assert(result === arrow(parameter(0), parameter(0)))
+    }
   }
 
   describe("Tagless.typeOf") {

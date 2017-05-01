@@ -70,7 +70,8 @@ object LType {
   def leq(x: LType, t: AType): Boolean = x.rTypes.contains(Atomic(t))
 
   def leq(x: LType, y: RType): Boolean = y match {
-    case RType(s, t) => leq(combine(x, s), t)
+    case a ->: b => leq(LType(x.rTypes.collect { case c ->: d if leq(a, b) => d }), b)
+    case Atomic(_) => x.rTypes.contains(y)
   }
 
   def leq(x: LType, y: LType): Boolean = y.rTypes.forall(leq(x, _))
