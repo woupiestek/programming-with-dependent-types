@@ -31,8 +31,8 @@ class TaglessTest extends FunSpec {
 
   describe("Combinator2") {
     it("handles this just fine") {
-      val result = Combinator2.combine(Combinator2.combine(typeOf(s), typeOf(k)), typeOf(k))
-      assert(result === arrow(parameter(0), parameter(0)))
+      val result = Combinator2.leq(typeOf(s), left(typeOf(k) ->: typeOf(k) ->: Atomic(Parameter(4))))(Atomic(Parameter(4)))
+      assert(LType(result) === arrow(parameter(0), parameter(0)))
     }
   }
 

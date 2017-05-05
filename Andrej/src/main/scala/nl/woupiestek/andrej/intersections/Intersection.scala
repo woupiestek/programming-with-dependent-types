@@ -18,7 +18,7 @@ case class RType(sources: List[LType], target: AType) {
 sealed trait AType
 
 case class Constant(name: String) extends AType {
-  override def toString: String = "name"
+  override def toString: String = name
 }
 
 case class Parameter(index: Int) extends AType {

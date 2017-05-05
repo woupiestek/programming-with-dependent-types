@@ -1,7 +1,6 @@
 package nl.woupiestek.andrej.intersections
 
 import nl.woupiestek.andrej.intersections.LType._
-import nl.woupiestek.andrej.intersections.Stateful.point
 import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm
 
 object Tagless {
@@ -21,7 +20,9 @@ object Tagless {
   implicit val instance: UntypedLambdaTerm[Term] = new UntypedLambdaTerm[Term] {
 
     override def variable(index: Int): Term = (context, args) => context.lift(index) match {
-      case Some(t) => point(Combinator.combine(t, args))
+      case Some(t) => for {
+        v <- fresh
+      } yield LType(v.rTypes.flatMap(rt => Combinator2.leq(t, left(args.foldRight(rt)(_ ->: _)))(rt)))
       case None => for {
         v <- fresh
         _ <- bind(index, args.foldRight(v)(arrow))
@@ -36,10 +37,11 @@ object Tagless {
     override def abstraction(term: Term): Term = (context, args) => /*for {
       tt <- term(context, Nil)
       t0 <- pop
-    } yield args.foldLeft(arrow(t0, tt))(Combinator2.combine) */ //Combinator.combine(arrow(t0, tt), args)
+    } yield args.foldLeft(arrow(t0, tt))(Combinator2.combine) */
+      //Combinator.combine(arrow(t0, tt), args)
       args match {
         case Nil => for {
-          tt <- term(context, Nil)
+          tt <- term(context, Nil) //incorrect context!!!!!
           t0 <- pop
         } yield arrow(t0, tt) //hier zouden de nieuwe variabelen gebonden kunnen worden.
         case head :: tail => term(head :: context, tail)
