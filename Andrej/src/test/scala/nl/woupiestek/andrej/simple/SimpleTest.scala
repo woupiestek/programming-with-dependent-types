@@ -15,10 +15,14 @@ class SimpleTest extends FunSpec {
 
   describe("System") {
     val systemS = System(s(Nil, %(0)).run(1)._2).equated
+    val skk = s * k * k
+    val systemSKK = System(skk(Nil, %(0)).run(1)._2).equated
     info(systemS.toString)
+    info(systemSKK.toString)
 
     it("assesses which variables need to be eliminated to get a solution") {
       assert(systemS.assess === Some(Set(5, 1, 2, 3, 8, 4)))
+      assert(systemSKK.assess === Some(Set(0, 14, 1, 13, 2, 7, 3, 18, 11, 8, 15)))
     }
 
     it("eliminates any of those variables") {
@@ -31,6 +35,10 @@ class SimpleTest extends FunSpec {
       val solution = systemS.solve
       info(solution.toString)
       assert(solution.map(_.assess) === Some(Some(Set.empty)))
+      val solution2 = systemSKK.solve
+      info(solution2.toString)
+      val solution3 =
+        assert(solution.map(_.assess) === Some(Some(Set.empty)))
     }
 
   }
@@ -38,19 +46,19 @@ class SimpleTest extends FunSpec {
   describe("SimpleTyper.typeOf") {
 
     it("types S combinator") {
-      assert(typeOf(s) === Some((%(2) ->: %(1) ->: %(0)) ->: (%(2) ->: %(1)) ->: %(2) ->: %(0)))
+      assert(typeOf(s) === Some(Set((%(9) ->: %(7) ->: %(6)) ->: (%(9) ->: %(7)) ->: %(9) ->: %(6))))
     }
 
     it("types K combinator") {
-      assert(typeOf(k) === Some(%(1) ->: %(2) ->: %(1)))
+      assert(typeOf(k) === Some(Set(%(4) ->: %(3) ->: %(4))))
     }
 
     it("types I combinator") {
-      assert(typeOf(\($(0))) === Some(%(1) ->: %(1)))
+      assert(typeOf(s * k * k) === Some(Set(%(19) ->: %(19))))
     }
 
     it("types I I") {
-      assert(typeOf(\($(0)) * \($(0))) === Some(%(1) ->: %(1)))
+      assert(typeOf(\($(0)) * \($(0))) === Some(Set(%(3) ->: %(3))))
     }
 
     val omegaC = \($(0) * $(0))

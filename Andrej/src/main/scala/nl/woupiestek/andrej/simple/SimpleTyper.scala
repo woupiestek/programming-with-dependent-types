@@ -90,7 +90,7 @@ object Solver {
         (_, u) <- a
         (j, v) <- b
       } yield (j, replace(u, index)(v))
-      System(a ++ c)
+      System(a ++ c).equated
     }
 
     def solve: Option[System] = assess match {
@@ -101,43 +101,4 @@ object Solver {
       }
     }
   }
-
-  def solve(eqs: Set[(Int, SimpleType)]): Option[Map[Int, SimpleType]] = {
-
-    def assess(eqs: List[(Int, SimpleType)]) = {
-      def helper: List[(Int, SimpleType)] => Option[(Set[Int], Set[Int])] = {
-        case Nil => Some((Set.empty[Int], Set.empty[Int]))
-        case (i, t) :: tail =>
-          val ps = t.parameters
-          if (ps.contains(i)) None else helper(tail).flatMap { case (l, r) => Some((l + i, r ++ ps)) }
-      }
-
-      helper(eqs) map { case (l, r) => l intersect r }
-    }
-
-    def eliminate(eqs: Set[(Int, SimpleType)], index: Int): Set[(Int, SimpleType)] = {
-      val (a, b) = eqs.partition { case (i, _) => i == index }
-      val c = for {
-        (_, t) <- a
-        (_, u) <- a
-        r <- analyze(t, u)
-      } yield r
-      val d = for {
-        (_, t) <- a
-        (j, u) <- b
-      } yield (j, replace(t, index)(u))
-      a ++ c ++ d
-    }
-
-    def run(eqs: Set[(Int, SimpleType)]): Option[Map[Int, SimpleType]] = {
-      assess(eqs.toList) match {
-        case None => None
-        case Some(indices) => if (indices.isEmpty) Some(eqs.toMap)
-        else run(indices.foldLeft(Set.empty[(Int, SimpleType)])(eliminate))
-      }
-    }
-
-    run(eqs)
-  }
-
 }
