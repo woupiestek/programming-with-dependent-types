@@ -13,7 +13,7 @@ object SimpleTyper {
 
     override def bind[A, B](fa: M[A])(f: (A) => M[B]): M[B] = M(c => fa.run(c) match {
       case (a2, b2, c2) => f(a2).run(c2) match {
-        case (a3, b3, c3) => (a3, b2 ++ b3, c3)
+        case (a3, b3, c3) => (a3, b2 union b3, c3)
       }
     })
   }
@@ -44,9 +44,8 @@ object SimpleTyper {
     }
   }
 
-  def typeOf(term: Term): Option[SimpleType] = term(Nil, %(0)).run(1) match {
-    case (_, eqs, _) => Solver.solve(eqs).flatMap(_.get(0))
-  }
+  def typeOf(term: Term): Option[Set[SimpleType]] =
+    Solver.System(term(Nil, %(0)).run(1)._2).equated.solve.map(_.eqs.collect { case (0, t) => t })
 
 }
 
@@ -55,8 +54,9 @@ object Solver {
   def analyze: (SimpleType, SimpleType) => Set[(Int, SimpleType)] = {
     case (c ->: d, e ->: f) => analyze(c, e) ++ analyze(d, f)
     case (%(i), %(j)) if i == j => Set.empty
+    case (%(i), %(j)) if i > j => Set((j, %(i)))
     case (%(i), x) => Set((i, x))
-    case (x, %(i)) => Set((i, x))
+    case (x, %(j)) => Set((j, x))
   }
 
   def replace(value: SimpleType, key: Int): SimpleType => SimpleType = {
@@ -66,16 +66,50 @@ object Solver {
       else SimpleType(s2, j)
   }
 
-  def solve(eqs: Set[(Int, SimpleType)]): Option[Map[Int, SimpleType]] = {
+  case class System(eqs: Set[(Int, SimpleType)]) {
+    def equated: System = System((for {
+      (i, u) <- eqs
+      (j, v) <- eqs if j == i
+      w <- analyze(u, v)
+    } yield w) ++ eqs)
 
-    def access(eqs: List[(Int, SimpleType)]) = {
+    def assess: Option[Set[Int]] = {
       def helper: List[(Int, SimpleType)] => Option[(Set[Int], Set[Int])] = {
         case Nil => Some((Set.empty[Int], Set.empty[Int]))
-        case (i, t) :: tail => helper(tail).flatMap {
-          case (l, r) =>
-            val ps = t.parameters
-            if (ps.contains(i)) None else Some((l + i, r ++ ps))
-        }
+        case (i, t) :: tail =>
+          val ps = t.parameters
+          if (ps.contains(i)) None else helper(tail).flatMap { case (l, r) => Some((l + i, r ++ ps)) }
+      }
+
+      helper(eqs.toList) map { case (l, r) => l intersect r }
+    }
+
+    def eliminate(index: Int): System = {
+      val (a, b) = eqs.partition { case (i, _) => i == index }
+      val c = for {
+        (_, u) <- a
+        (j, v) <- b
+      } yield (j, replace(u, index)(v))
+      System(a ++ c)
+    }
+
+    def solve: Option[System] = assess match {
+      case None => None
+      case Some(indices) => indices.headOption match {
+        case None => Some(this)
+        case Some(index) => eliminate(index).solve
+      }
+    }
+  }
+
+  def solve(eqs: Set[(Int, SimpleType)]): Option[Map[Int, SimpleType]] = {
+
+    def assess(eqs: List[(Int, SimpleType)]) = {
+      def helper: List[(Int, SimpleType)] => Option[(Set[Int], Set[Int])] = {
+        case Nil => Some((Set.empty[Int], Set.empty[Int]))
+        case (i, t) :: tail =>
+          val ps = t.parameters
+          if (ps.contains(i)) None else helper(tail).flatMap { case (l, r) => Some((l + i, r ++ ps)) }
       }
 
       helper(eqs) map { case (l, r) => l intersect r }
@@ -85,18 +119,18 @@ object Solver {
       val (a, b) = eqs.partition { case (i, _) => i == index }
       val c = for {
         (_, t) <- a
-        (_, u) <- a if u != t
+        (_, u) <- a
         r <- analyze(t, u)
       } yield r
       val d = for {
         (_, t) <- a
         (j, u) <- b
-      } yield (j, replace(t, j)(u))
+      } yield (j, replace(t, index)(u))
       a ++ c ++ d
     }
 
     def run(eqs: Set[(Int, SimpleType)]): Option[Map[Int, SimpleType]] = {
-      access(eqs.toList) match {
+      assess(eqs.toList) match {
         case None => None
         case Some(indices) => if (indices.isEmpty) Some(eqs.toMap)
         else run(indices.foldLeft(Set.empty[(Int, SimpleType)])(eliminate))

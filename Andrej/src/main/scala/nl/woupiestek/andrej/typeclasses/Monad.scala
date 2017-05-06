@@ -1,6 +1,6 @@
 package nl.woupiestek.andrej.typeclasses
 
-import scala.languageFeature.higherKinds
+import scala.language.higherKinds
 
 trait Monad[F[_]] {
   def unit[A](a: A): F[A]
