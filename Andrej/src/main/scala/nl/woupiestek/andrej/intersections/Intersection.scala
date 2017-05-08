@@ -7,6 +7,10 @@ case class LType(rTypes: Set[RType]) {
 }
 
 case class RType(sources: List[LType], target: AType) {
+  def replace(i: Int, x: RType): RType = {
+    val s2 = sources.map(s => LType(s.rTypes.map(_.replace(i, x))))
+    if (target == Parameter(i)) x.copy(sources = s2 ++ x.sources) else copy(sources = s2)
+  }
 
   def ->:(source: LType): RType = copy(sources = source :: sources)
 
@@ -47,10 +51,8 @@ object LType {
   }
 
   def replace(aType: AType, index: Int, sub: LType): LType = aType match {
-    case Constant(name) => constant(name)
-    case Parameter(j) if j < index => parameter(j)
     case Parameter(j) if j == index => sub
-    case Parameter(j) if j > index => parameter(j - 1)
+    case _ => left(Atomic(aType))
   }
 
   object Atomic {
@@ -63,6 +65,34 @@ object LType {
     def unapply(arrow: RType): Option[(LType, RType)] = arrow.sources match {
       case Nil => None
       case h :: t => Some((h, arrow.copy(sources = t)))
+    }
+  }
+
+  def parameters(rType: RType): Set[Int] = rType.sources.toSet.flatMap((lt: LType) => lt.rTypes.flatMap(parameters)) ++
+    (rType.target match {
+      case Parameter(i) => Set(i)
+      case _ => Set.empty
+    })
+
+  def solve(equations: List[(RType, RType)], types: Map[Int, RType]): Option[Map[Int, RType]] = equations match {
+    case Nil => Some(types)
+    case h :: t => h match {
+      case (Atomic(Parameter(i)), Atomic(Parameter(j))) if i == j => solve(t, types)
+      case (Atomic(Parameter(i)), x) if !parameters(x)(i) => types get i match {
+        case Some(y) => solve((y, x) :: t, types)
+        case None =>
+          val equations2 = equations.map { case (a, b) => (a.replace(i, x), b.replace(i, x)) }
+          val types2 = types.map { case (j, a) => (j, a.replace(i, x)) } + (i -> x)
+          solve(equations2, types2)
+      }
+      case (_, Atomic(Parameter(_))) => solve(h.swap :: t, types)
+      case (a ->: b, c ->: d) =>
+        val z = for { //seems excessive
+          e <- a.rTypes.toList
+          f <- c.rTypes.toList
+        } yield (f, e)
+        solve((b, d) :: z ++ t, types)
+      case _ => None
     }
   }
 

@@ -5,49 +5,48 @@ import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm
 
 object Tagless {
 
-  case class State(bounds: Set[(Int, RType)], arity: Int)
+  case class State(bounds: Set[(Int, Int)], arity: Int, types: Map[Int, RType])
 
-  type Term = (List[LType], List[LType]) => Stateful[State, LType]
+  type Term = Stateful[State, RType]
 
   val pop: Stateful[State, LType] = Stateful(s => (LType(s.bounds.collect {
     case (0, t) => t
-  }), s.copy(bounds = s.bounds.collect { case (j, t) if j > 0 => (j - 1, t) })))
+  }.flatMap(s.types.get)), s.copy(bounds = s.bounds.collect { case (j, t) if j > 0 => (j - 1, t) })))
 
-  val fresh: Stateful[State, LType] = Stateful(s => (parameter(s.arity), s.copy(arity = 1 + s.arity)))
+  val fresh: Stateful[State, Int] = Stateful(s => (s.arity, s.copy(arity = 1 + s.arity)))
 
-  def bind(i: Int, t: LType): Stateful[State, Unit] = Stateful(s => ((), s.copy(bounds = s.bounds ++ t.rTypes.map((i, _)))))
+  def bind(i: Int, t: Int): Stateful[State, Unit] = Stateful(s => ((), s.copy(bounds = s.bounds + ((i, t)))))
+
+  def typeOf(index: Int): Stateful[State, RType] = Stateful(s => (s.types.getOrElse(index, Atomic(Parameter(index))), s))
+
+  def force(x: RType, y: RType): Stateful[State, Boolean] = Stateful(s => {
+    LType.solve((x, y) :: Nil, s.types) match {
+      case None => (false, s)
+      case Some(ts) => (true, s.copy(types = ts))
+    }
+  })
 
   implicit val instance: UntypedLambdaTerm[Term] = new UntypedLambdaTerm[Term] {
 
-    override def variable(index: Int): Term = (context, args) => context.lift(index) match {
-      case Some(t) => for {
-        v <- fresh
-      } yield LType(v.rTypes.flatMap(rt => Combinator2.leq(t, left(args.foldRight(rt)(_ ->: _)))(rt)))
-      case None => for {
-        v <- fresh
-        _ <- bind(index, args.foldRight(v)(arrow))
-      } yield v
-    }
+    override def variable(index: Int): Term = for {
+      u <- fresh
+      _ <- bind(index, u)
+    } yield Atomic(Parameter(u))
 
-    override def application(operator: Term, operand: Term): Term = (context, args) => for {
-      tx <- operand(context, Nil)
-      ty <- operator(context, tx :: args)
-    } yield ty
+    override def application(operator: Term, operand: Term): Term = for {
+      v <- fresh.map(u => Atomic(Parameter(u)))
+      tx <- operand
+      ty <- operator
+      _ <- force(ty, left(ty) ->: v)
+    } yield v
 
-    override def abstraction(term: Term): Term = (context, args) => /*for {
-      tt <- term(context, Nil)
+    override def abstraction(term: Term): Term = for {
+      tt <- term
       t0 <- pop
-    } yield args.foldLeft(arrow(t0, tt))(Combinator2.combine) */
-      //Combinator.combine(arrow(t0, tt), args)
-      args match {
-        case Nil => for {
-          tt <- term(context, Nil) //incorrect context!!!!!
-          t0 <- pop
-        } yield arrow(t0, tt) //hier zouden de nieuwe variabelen gebonden kunnen worden.
-        case head :: tail => term(head :: context, tail)
-      }
+    } yield t0 ->: tt
+
   }
 
-  def typeOf(term: Term): LType = term(Nil, Nil).go(State(Set.empty, 0))._1
+  def typeOf(term: Term): LType = left(term.go(State(Set.empty, 0, Map.empty))._1)
 }
 

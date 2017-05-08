@@ -10,7 +10,9 @@ import scala.annotation.tailrec
  *  b) coordinates of free variables, but relative to input as in the list of inputs
  *  c) we might even try to build up the types already.
  *
- *  important: keep track of the ordering. Keep assuming that the whole term comes last!
+ *  Important: keep track of the ordering. Keep assuming that the whole term comes last!
+ *
+ *  If a variable is untyped, there is no subterm to point to. For this case I needed to alter the structure.
  */
 
 sealed trait SType {
@@ -43,7 +45,7 @@ object SType {
     case Nil => Some(out)
     case h :: t => h match {
       case (Parameter(i), Parameter(j)) if i == j => solve(t, out)
-      case (Parameter(i), x) if !x.parameters.contains(i) => out get i match {
+      case (Parameter(i), x) if !x.parameters(i) => out get i match {
         case Some(y) => solve((y, x) :: t, out)
         case None =>
           val in2 = in.map { case (a, b) => (a.replace(i, x), b.replace(i, x)) }
@@ -84,7 +86,7 @@ class STerm private (val size: Int, private val free: Set[(Int, Int)], val types
     val f = free ++ other.free.map { case (i, p) => (i, p + size) }
     val opt = SType.solve(
       (getType, Arrow(other.getType.shift(size), Parameter(size + other.size))) :: Nil,
-      types ++ other.types.map { case (i, x) => (i + size, x.shift(size)) }) //ugly hack
+      types ++ other.types.map { case (i, x) => (i + size, x.shift(size)) })
     opt.map(t => new STerm(size + other.size + 1, f, t))
   }
 
