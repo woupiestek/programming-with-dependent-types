@@ -42,6 +42,7 @@ object LType {
   def arrow(x: LType, y: LType) = LType(y.rTypes.map { case RType(sy, ty) => RType(x :: sy, ty) })
 
   def left(x: RType): LType = LType(Set(x))
+  def left(x: Option[RType]): LType = LType(x.toSet)
 
   def replace(lType: LType, index: Int, sub: LType): LType = LType(lType.rTypes.flatMap(replace(_, index, sub).rTypes))
 

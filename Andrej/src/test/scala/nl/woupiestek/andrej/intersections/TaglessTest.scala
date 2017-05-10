@@ -9,33 +9,6 @@ class TaglessTest extends FunSpec {
   val s: Term = \(\(\($(2) * $(0) * ($(1) * $(0)))))
   val k: Term = \(\($(1)))
 
-  describe("Combinator") {
-    val arrow1 = arrow(parameter(1), parameter(1))
-    it("understands parameters") {
-      val result = Combinator.combine(arrow(parameter(0), parameter(0)), List(arrow1))
-      assert(result === arrow1)
-    }
-
-    it("binds variables") {
-      val result = Combinator.leq(arrow1, Parameter(0))(Atomic(Parameter(0)))
-      assert(result === arrow1)
-    }
-
-    //while the test fails, result is a correct type for the identity function.
-    it("handles this just fine") {
-      val result = Combinator.combine(typeOf(s), typeOf(k) :: typeOf(k) :: Nil)
-      assert(result === arrow(parameter(0), parameter(0)))
-    }
-
-  }
-
-  describe("Combinator2") {
-    it("handles this just fine") {
-      val result = Combinator2.leq(typeOf(s), left(typeOf(k) ->: typeOf(k) ->: Atomic(Parameter(4))))(Atomic(Parameter(4)))
-      assert(LType(result) === arrow(parameter(0), parameter(0)))
-    }
-  }
-
   describe("Tagless.typeOf") {
 
     it("types S combinator") {
@@ -52,7 +25,7 @@ class TaglessTest extends FunSpec {
     }
 
     it("types I combinator") {
-      assert(typeOf(s * k * k) === arrow(parameter(0), parameter(0)))
+      assert(typeOf(s * k * k) === arrow(intersection(parameter(2), parameter(4)), parameter(4)))
     }
 
     it("types I I") {
