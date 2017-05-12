@@ -1,5 +1,7 @@
 package nl.woupiestek.andrej.intersections
 
+import nl.woupiestek.andrej.intersections.AType.{ Constant, Parameter }
+
 case class LType(rTypes: Set[RType]) {
   def &(other: LType): LType = copy(rTypes = rTypes union other.rTypes)
 
@@ -21,19 +23,23 @@ case class RType(sources: List[LType], target: AType) {
 
 sealed trait AType
 
-case class Constant(name: String) extends AType {
-  override def toString: String = name
-}
+object AType {
 
-case class Parameter(index: Int) extends AType {
-  override def toString: String = index.toString
+  case class Constant(name: String) extends AType {
+    override def toString: String = name
+  }
+
+  case class Parameter(index: Int) extends AType {
+    override def toString: String = index.toString
+  }
+
 }
 
 object LType {
 
-  def parameter(index: Int): LType = LType(Set(Atomic(Parameter(index))))
+  def parameter(index: Int): LType = left(Atomic(Parameter(index)))
 
-  def constant(name: String): LType = LType(Set(Atomic(Constant(name))))
+  def constant(name: String): LType = left(Atomic(Constant(name)))
 
   def omega = LType(Set.empty)
 
@@ -97,21 +103,5 @@ object LType {
     }
   }
 
-  //typing without elimination
-  def leq(x: LType, t: AType): Boolean = x.rTypes.contains(Atomic(t))
-
-  def leq(x: LType, y: RType): Boolean = y match {
-    case a ->: b => leq(LType(x.rTypes.collect { case c ->: d if leq(a, b) => d }), b)
-    case Atomic(_) => x.rTypes.contains(y)
-  }
-
-  def leq(x: LType, y: LType): Boolean = y.rTypes.forall(leq(x, _))
-
-  def combine(x: LType, y: List[LType]): LType = LType(x.rTypes.flatMap(combine(_, y)).headOption.toSet)
-
-  def combine(x: RType, y: List[LType]): Option[RType] = y.foldLeft[Option[RType]](Some(x)) {
-    case (Some(a ->: b), c) if leq(c, a) => Some(b)
-    case _ => None
-  }
 }
 

@@ -1,6 +1,7 @@
 package nl.woupiestek.andrej.intersections
 
-import nl.woupiestek.andrej.intersections.LType.{ ->:, _ }
+import nl.woupiestek.andrej.intersections.AType.{ Constant, Parameter }
+import nl.woupiestek.andrej.intersections.LType._
 import nl.woupiestek.andrej.intersections.Stateful.point
 import nl.woupiestek.andrej.typeclasses.UntypedLambdaTerm
 
