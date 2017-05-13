@@ -1,57 +1,64 @@
 package nl.woupiestek.andrej.interpreter
 
-import nl.woupiestek.andrej.{ Free, StraightInterpreter }
+import nl.woupiestek.andrej.typeclasses.Monad
+import Monad._
+import scala.language.higherKinds
 
-import scala.annotation.tailrec
 import scala.io.StdIn
+
+trait REPL[IO[_]] {
+  def write(message: String): IO[Unit]
+
+  def read(prompt: String): IO[String]
+
+  def doWhile[T](condition: T => Boolean, program: T => IO[T], init: T): IO[T]
+}
 
 object REPL {
 
-  sealed trait Command[+T]
+  def write[IO[_]](message: String)(implicit IO: REPL[IO]): IO[Unit] = IO.write(message)
 
-  case class Write(message: String) extends Command[Unit]
+  def read[IO[_]](prompt: String)(implicit IO: REPL[IO]): IO[String] = IO.read(prompt)
 
-  case class Read(prompt: String) extends Command[String]
-
-  case class While[T](cond: T => Boolean, program: T => Program[T], value: T) extends Command[T]
-
-  type Program[T] = Free[Command, T]
-
-  object Console extends StraightInterpreter[Command] {
-    override def evaluate[T](ft: Command[T]): T = ft match {
-      case Write(msg) => println(msg)
-      case Read(prompt) => StdIn.readLine(prompt)
-      case While(c: (T => Boolean), p: (T => Program[T]), t) => executeWhile(c, p, t)
-    }
-
-    @tailrec private def executeWhile[T](c: T => Boolean, p: T => Program[T], t: T): T =
-      if (c(t)) executeWhile(c, p, execute(p(t))) else t
+  implicit class Looper[IO[_], T](t: T)(implicit IO: REPL[IO] with Monad[IO]) {
+    def doWhile(c: (T) => Boolean, p: (T) => IO[T]): IO[T] = IO.doWhile(c, p, t)
   }
-
-  def apply[T](program: Program[T]): T = Console.execute(program)
-
-  def write(msg: => String): Program[Unit] = Free.lift(Write(msg))
-
-  def read(prompt: => String): Program[String] = Free.lift(Read(prompt))
-
-  def doWhile[T](c: T => Boolean, p: T => Program[T])(t: T): Program[T] = Free.lift(While[T](c, p, t))
 }
 
 object TrivialREPL extends App {
 
   import REPL._
 
-  val program = for {
+  type Program[T] = Unit => T
+
+  implicit val console = new REPL[Program] with Monad[Program] {
+    override def write(message: String): Program[Unit] = unit(println(message))
+
+    override def read(prompt: String): Program[String] = unit(StdIn.readLine(prompt))
+
+    override def doWhile[T](c: (T) => Boolean, p: (T) => Program[T], t: T): Program[T] = {
+      def fixand(u: T): T = if (c(u)) fixand(p(u).apply(())) else u
+
+      _ => fixand(t)
+    }
+
+    override def unit[A](a: A): Program[A] = _ => a
+
+    override def bind[A, B](fa: Program[A])(f: (A) => Program[B]): Program[B] = f(fa.apply(()))
+  }
+
+  val program: Program[Unit] = for {
     _ <- write("Welcome to the REPL")
     x <- read("Q:")
-    _ <- doWhile[String](input => !input.equalsIgnoreCase("exit"),
+    _ <- x.doWhile(
+      input => !input.equalsIgnoreCase("exit"),
       input => for {
         _ <- write(input)
         y <- read("Q:")
-      } yield y)(x)
+      } yield y)
     _ <- write("bye bye")
   } yield ()
 
-  Console.execute(program)
+  program.apply(())
 
 }
