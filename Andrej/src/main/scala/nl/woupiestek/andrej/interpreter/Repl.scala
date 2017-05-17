@@ -11,7 +11,7 @@ trait REPL[IO[_]] {
 
   def read(prompt: String): IO[String]
 
-  def doWhile[T](condition: T => Boolean, program: T => IO[T], init: T): IO[T]
+  def doWhile[T](condition: T => IO[Boolean], program: T => IO[T], init: T): IO[T]
 }
 
 object REPL {
@@ -21,7 +21,7 @@ object REPL {
   def read[IO[_]](prompt: String)(implicit IO: REPL[IO]): IO[String] = IO.read(prompt)
 
   implicit class Looper[IO[_], T](t: T)(implicit IO: REPL[IO] with Monad[IO]) {
-    def doWhile(c: (T) => Boolean, p: (T) => IO[T]): IO[T] = IO.doWhile(c, p, t)
+    def doWhile(c: (T) => IO[Boolean], p: (T) => IO[T]): IO[T] = IO.doWhile(c, p, t)
   }
 }
 
@@ -36,8 +36,8 @@ object TrivialREPL extends App {
 
     override def read(prompt: String): Program[String] = unit(StdIn.readLine(prompt))
 
-    override def doWhile[T](c: (T) => Boolean, p: (T) => Program[T], t: T): Program[T] = {
-      def fixand(u: T): T = if (c(u)) fixand(p(u).apply(())) else u
+    override def doWhile[T](c: (T) => Program[Boolean], p: (T) => Program[T], t: T): Program[T] = {
+      def fixand(u: T): T = if (c(u).apply(())) fixand(p(u).apply(())) else u
 
       _ => fixand(t)
     }
@@ -51,7 +51,7 @@ object TrivialREPL extends App {
     _ <- write("Welcome to the REPL")
     x <- read("Q:")
     _ <- x.doWhile(
-      input => !input.equalsIgnoreCase("exit"),
+      input => console.unit(!input.equalsIgnoreCase("exit")),
       input => for {
         _ <- write(input)
         y <- read("Q:")
