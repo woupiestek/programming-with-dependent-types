@@ -38,10 +38,11 @@ trait Monad[F[_]] extends Bind[F] with Applicative[F] {
   override def ap[A, B](fa: => F[A])(f: => F[(A) => B]): F[B] = bind(f)(map(fa))
 }
 
-object Bind {
+object Monad {
 
   implicit class Ops[F[_], A](fa: F[A])(implicit F: Monad[F]) {
     def flatMap[B](f: A => F[B]): F[B] = F.bind(fa)(f)
+    def map[B](f: A => B): F[B] = F.map(fa)(f)
   }
 
 }

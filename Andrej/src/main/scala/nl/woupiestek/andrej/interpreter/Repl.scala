@@ -1,7 +1,7 @@
 package nl.woupiestek.andrej.interpreter
 
 import nl.woupiestek.andrej.typeclasses.Monad
-import Monad._
+import nl.woupiestek.andrej.typeclasses.Monad._
 import scala.language.higherKinds
 
 import scala.io.StdIn
