@@ -48,8 +48,8 @@ object SType {
       case (Parameter(i), x) if !x.parameters(i) => out get i match {
         case Some(y) => solve((y, x) :: t, out)
         case None =>
-          val in2 = in.map { case (a, b) => (a.replace(i, x), b.replace(i, x)) }
-          val out2 = out.map { case (j, y) => j -> y.replace(i, x) } + (i -> x)
+          val in2 = t.map { case (a, b) => (a.replace(i, x), b.replace(i, x)) }
+          val out2 = out.mapValues( _.replace(i, x) ) + (i -> x)
           solve(in2, out2)
       }
       case (_, Parameter(_)) => solve(h.swap :: t, out)
@@ -76,7 +76,7 @@ object SType {
 
 }
 
-class STerm private (val size: Int, private val free: Set[(Int, Int)], val types: Map[Int, SType]) {
+class STerm private (val size: Int, free: Set[(Int, Int)], val types: Map[Int, SType]) {
 
   def getType: SType = typeOf(size - 1)
 

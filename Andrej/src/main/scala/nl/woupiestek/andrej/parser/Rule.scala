@@ -29,11 +29,6 @@ sealed trait Rule[-In, +Out] {
 
   def zeroOrOne: Rule[In, Option[Out]] = map(Some(_)) | Point(None)
 
-  def andThen[Out2](grammar: Rule[Out, Out2]): Rule[In, Out2] = grammar match {
-    case Fail => Fail
-    case Point(out, alternative) => Point(out, andThen(alternative))
-    case Read(read, alternative) => flatMap(out => andThen(read(out))) | andThen(alternative)
-  }
 }
 
 object Rule {
