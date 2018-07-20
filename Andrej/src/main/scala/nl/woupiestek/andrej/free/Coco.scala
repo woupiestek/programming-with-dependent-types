@@ -1,6 +1,7 @@
 package nl.woupiestek.andrej.free
 
 import nl.woupiestek.andrej.free.Coco.Extend
+import scala.language.higherKinds
 
 abstract class Coco[F[_], A](val extract: A) {
 

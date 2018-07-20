@@ -76,7 +76,7 @@ object SType {
 
 }
 
-class STerm private (val size: Int, free: Set[(Int, Int)], val types: Map[Int, SType]) {
+case class STerm private (size: Int, free: Set[(Int, Int)], types: Map[Int, SType]) {
 
   def getType: SType = typeOf(size - 1)
 
