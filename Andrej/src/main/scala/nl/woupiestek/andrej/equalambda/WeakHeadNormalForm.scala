@@ -1,6 +1,6 @@
-package nl.woupiestek.andrej.equalambda.attempt2
+package nl.woupiestek.andrej.equalambda
 
-abstract class WeakHeadNormalForm[W, T](implicit T: Term[T]) {
+trait WeakHeadNormalForm[W, T] {
   def lambda[Term](name: String, term: T, substitution: Map[String, T]): W
 
   def alpha[Term](name: String, operands: List[T]): W
@@ -9,8 +9,7 @@ abstract class WeakHeadNormalForm[W, T](implicit T: Term[T]) {
     def build: W = buildWith(Map.empty, Nil)
   }
 
-
-  object Reduce extends Term[Builder] {
+  implicit def reduce(implicit T: Term[T]): Term[Builder] = new Term[Builder] {
     override def identifier(name: String): Builder = Builder(T.identifier(name), (context, args) =>
       if (context.contains(name)) context(name).buildWith(Map.empty, args)
       else alpha(name, args.map(_.value)))
@@ -21,7 +20,6 @@ abstract class WeakHeadNormalForm[W, T](implicit T: Term[T]) {
 
     override def application(operator: Builder, operands: List[Builder]): Builder =
       Builder(T.application(operator.value, operands.map(_.value)), (context, args) => {
-        val contextValues = context.mapValues(_.value)
         operator.buildWith(context, operands.map(where(_, context)) ++ args)
       })
 

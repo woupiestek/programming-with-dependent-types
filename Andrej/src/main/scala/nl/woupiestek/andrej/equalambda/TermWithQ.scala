@@ -1,4 +1,4 @@
-package nl.woupiestek.andrej.equalambda.attempt2
+package nl.woupiestek.andrej.equalambda
 
 trait TermWithQ[T] extends Term[T] {
   /* |-M=N
@@ -6,12 +6,16 @@ trait TermWithQ[T] extends Term[T] {
    * ----------
    * |-M=N?P:p
    */
-  def equalizer(left: T, right: T, term: T): T
+  def check(left: T, right: T, term: T): T
 
   /* |-M=N,
    * M=N|-P:p
    * --------------
    * |-M=N!P:M=N->p
    */
-  def factor(left: T, right: T, term: T): T
+  def unify(left: T, right: T, term: T): T
+}
+
+trait NumVar[T] {
+  def param(int: Int): T
 }

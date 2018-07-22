@@ -1,4 +1,4 @@
-package nl.woupiestek.andrej.equalambda.attempt2
+package nl.woupiestek.andrej.equalambda
 
 abstract class Type[Ty, Te: Term] {
 

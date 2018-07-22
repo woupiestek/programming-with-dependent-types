@@ -3,7 +3,6 @@ package nl.woupiestek.andrej.typeclasses
 import scala.language.higherKinds
 
 trait Functor[F[_]] {
-  self =>
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
 
@@ -16,23 +15,19 @@ object Functor {
 }
 
 trait Apply[F[_]] extends Functor[F] {
-  self =>
   def ap[A, B](fa: => F[A])(f: => F[A => B]): F[B]
 }
 
 trait Bind[F[_]] extends Apply[F] {
-  self =>
   def bind[A, B](fa: F[A])(f: A => F[B]): F[B]
 
 }
 
 trait Applicative[F[_]] extends Apply[F] {
-  self =>
   def unit[A](a: A): F[A]
 }
 
 trait Monad[F[_]] extends Bind[F] with Applicative[F] {
-  self =>
   override def map[A, B](fa: F[A])(f: A => B): F[B] = bind(fa)(f andThen unit)
 
   override def ap[A, B](fa: => F[A])(f: => F[(A) => B]): F[B] = bind(f)(map(fa))
