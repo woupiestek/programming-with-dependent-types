@@ -44,16 +44,30 @@ object TagFree {
     }
 
   implicit class TraversableOps[T[X] <: TraversableOnce[X], A](in: T[A]) {
+
     def traverse[F[_], B](f: A => TagFree[F, B])(
       implicit cbf: CanBuildFrom[T[A], B, T[B]]): TagFree[F, T[B]] = new TagFree[F, T[B]] {
+      //this is a great way to get a stack overflow.
       override def eval[M[_]](fm: F ==> M)(implicit M: Monad[M]): M[T[B]] =
         M.map(in.foldLeft(M.unit(cbf(in)))((fr, a) => M.bind(fr)(builder => M.map(f(a).eval(fm))(builder += _))))(_.result())
     }
 
+
     def foldLeftM[F[_], B](b: B)(f: (B, A) => TagFree[F, B]): TagFree[F, B] = new TagFree[F, B] {
+      //this is a great way to get a stack overflow.
       override def eval[M[_]](fm: F ==> M)(implicit M: Monad[M]): M[B] =
         in.foldLeft(M.unit(b))((b, a) => M.bind(b)(f(_, a).eval(fm)))
     }
+  }
+  implicit class TraversableTagFreeOps[T[X] <: TraversableOnce[X], F[_], A](in: T[TagFree[F,A]]) {
+
+    def sequence(
+      implicit cbf: CanBuildFrom[T[TagFree[F,A]], A, T[A]]): TagFree[F, T[A]] = new TagFree[F, T[A]] {
+      //this is a great way to get a stack overflow.
+      override def eval[M[_]](fm: F ==> M)(implicit M: Monad[M]): M[T[A]] =
+        M.map(in.foldLeft(M.unit(cbf(in)))((fr, a) => M.bind(fr)(builder => M.map(a.eval(fm))(builder += _))))(_.result())
+    }
+
   }
 
 }
