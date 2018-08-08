@@ -45,7 +45,7 @@ object DependentTyper {
 
   private def check(l: DTerm, r: DTerm, t: DTerm)(cod: Cod, context: List[Dom], i: Int): List[Q] =
     QTe(l, r, context) :: rules(l)(Par(i), context, i + 1) ++ rules(r)(Par(i), context, i + 1) ++
-      rules(t)(Arrow(Equa(l, r), cod), context, i + 1)
+      rules(t)(Arrow(Equa(l, r), cod), context, i + 1)//not the right way to generate fresh variables...
 
   private def unify(l: DTerm, r: DTerm, t: DTerm)(cod: Cod, context: List[Dom], i: Int): List[Q] =
     QTy(Arrow(Equa(l, r), cod), Par(i), context) :: rules(l)(Par(i), context, i + 2) ++
@@ -63,76 +63,46 @@ object DependentTyper {
     case Pair(n, d) if name == n => QTy(cod, d, context)
   }.toList
 
-  case class R(assumption: T, target: S)
-
-  case class S(target: Cod, context: List[Dom])
-
-  case class T(target: DTerm, context: List[Dom])
-
-  def solve1(assignment: Map[Int, S],
-    assignment2: Map[Int, R],
-    assumptions: List[(T, T)],
-    equations: List[(S, S)]): Map[Int, S] =
-    equations match {
-      case Nil => assignment
-      case (S(Par(i), _), x) :: t =>
-        if (assignment.contains(i)) solve1(assignment, assignment2, assumptions, (assignment(i), x) :: t)
-        else solve1(assignment + (i -> x), assignment2, assumptions, t)
-      case (x, S(Par(i), _)) :: t =>
-        if (assignment.contains(i)) solve1(assignment, assignment2, assumptions, (assignment(i), x) :: t)
-        else solve1(assignment + (i -> x), assignment2, assumptions, t)
-      case (S(Par2(i, m), c), x) :: t =>
-        if (assignment2.contains(i)) {
-          val R(t, y) = assignment2(i)
-          solve1(assignment, assignment2, (T(m, c), t) :: assumptions, (x, y) :: equations)
-        } else solve1(assignment, assignment2 + (i -> R(T(m, c), x)), assumptions, t)
-      case (x, S(Par2(i, m), c)) :: t =>
-        if (assignment2.contains(i)) {
-          val R(t, y) = assignment2(i)
-          solve1(assignment, assignment2, (T(m, c), t) :: assumptions, (x, y) :: equations) //assumptions out of context
-        } else solve1(assignment, assignment2 + (i -> R(T(m, c), x)), assumptions, t)
-      case (S(Arrow(a, b), c), S(Arrow(d, e), f)) :: t => //here we run into a new problem: dependencies between subterms
-        solve1(assignment, assignment2, assumptions, (S(b, a :: c), S(e, d :: f)) :: t)
-      case _ => ??? //failure
-    }
-
   case class U(cod: Cod, mask: Map[String, Int])
 
   case class V(pattern: DTerm, mask: Map[String, Int])
 
   case class W(v: V, u: U)
 
-  case class X(l: U, r: U, us: List[(V, V)])//these unification still have a role to play
+  case class X(l: U, r: U, us: List[(V, V)])
+
+  case class Y(l: V, r: V, us: List[(V, V)])
 
   //introduce equations of terms.
   def solve2(
     assignment1: Map[Int, U],
     assignment2: Map[Int, W],
     equations: List[X],
+    equations2: List[Y],
     index: Int): Map[Int, U] = equations match {
     case Nil => assignment1
     case X(U(Par(a), _), b, d) :: c =>
-      if (assignment1.contains(a)) solve2(assignment1, assignment2, X(assignment1(a), b, d) :: c, index)//incidence check!
-      else solve2(assignment1 + (a -> b), assignment2, c, index)
+      if (assignment1.contains(a)) solve2(assignment1, assignment2, X(assignment1(a), b, d) :: c, equations2, index) //incidence check!
+      else solve2(assignment1 + (a -> b), assignment2, c, equations2, index)
     case X(b, U(Par(a), _), d) :: c =>
-      if (assignment1.contains(a)) solve2(assignment1, assignment2, X(assignment1(a), b, d) :: c, index)//incidence check!
-      else solve2(assignment1 + (a -> b), assignment2, c, index)
+      if (assignment1.contains(a)) solve2(assignment1, assignment2, X(assignment1(a), b, d) :: c, equations2, index) //incidence check!
+      else solve2(assignment1 + (a -> b), assignment2, c, equations2, index)
     case X(U(Par2(a, b), c), d, h) :: e =>
       if (assignment2.contains(a)) {
-        val W(f, g) = assignment2(a)//incidence check!
-        solve2(assignment1, assignment2, X(d, g, (f, V(b, c)) :: h) :: equations, index)
-      } else solve2(assignment1, assignment2 + (a -> W(V(b, c), d)), e, index)
+        val W(f, g) = assignment2(a) //incidence check!
+        solve2(assignment1, assignment2, X(d, g, (f, V(b, c)) :: h) :: equations, equations2, index)
+      } else solve2(assignment1, assignment2 + (a -> W(V(b, c), d)), e, equations2, index)
     case X(d, U(Par2(a, b), c), h) :: e =>
       if (assignment2.contains(a)) {
-        val W(f, g) = assignment2(a)//incidence check!
-        solve2(assignment1, assignment2, X(d, g, (f, V(b, c)) :: h) :: equations, index)
-      } else solve2(assignment1, assignment2 + (a -> W(V(b, c), d)), e, index)
+        val W(f, g) = assignment2(a) //incidence check!
+        solve2(assignment1, assignment2, X(d, g, (f, V(b, c)) :: h) :: equations, equations2, index)
+      } else solve2(assignment1, assignment2 + (a -> W(V(b, c), d)), e, equations2, index)
     case X(U(Arrow(a, b), c), U(Arrow(d, e), f), l) :: g => (a, d) match {
       case (Pair(h, i), Pair(j, k)) => solve2(assignment1, assignment2,
-        X(U(i, c), U(k, f), l) :: X(U(b, c + (h -> index)), U(e, f + (j -> index)), l) :: g, index + 1)
+        X(U(i, c), U(k, f), l) :: X(U(b, c + (h -> index)), U(e, f + (j -> index)), l) :: g, equations2, index + 1)
       case (Equa(h, i), Equa(j, k)) => //these should play a role in solving other equations
         solve2(assignment1, assignment2,
-          X(U(b, c), U(e, f), (V(h, c), V(j, f)) :: (V(i, c), V(k, f)) :: l) :: equations, index)
+          X(U(b, c), U(e, f), (V(h, c), V(j, f)) :: (V(i, c), V(k, f)) :: l) :: equations, equations2, index)
       case _ => ??? //fail
     }
     case _ => ??? //fail

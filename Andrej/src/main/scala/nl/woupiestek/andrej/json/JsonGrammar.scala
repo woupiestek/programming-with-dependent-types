@@ -1,8 +1,8 @@
 package nl.woupiestek.andrej.json
 
 import nl.woupiestek.andrej.parser.Rule
-import nl.woupiestek.andrej.parser.Rule.{ Point, collect, filter, matchList }
-import org.apache.commons.lang3.StringEscapeUtils
+import nl.woupiestek.andrej.parser.Rule.{Point, collect, filter, matchList}
+import org.apache.commons.text.StringEscapeUtils
 
 // use http://seriot.ch/parsing_json.php for testing
 
