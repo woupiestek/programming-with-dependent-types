@@ -19,11 +19,11 @@ object Rule {
 
   def nil[I, O]: Rule[I, List[O]] = unit(Nil)
 
-  def sequence[I, O](rules: List[Rule[I, O]]): Rule[I, List[O]] = Rule(
-    (i: I) => sequence(rules.map(_.next(i))),
-    rules.foldRight(Seq(List.empty[O])) {
-      case (h, t) => h.done.flatMap(x => t.map(x :: _))
-    })
+  def sequence[I, O](rules: List[Rule[I, O]]): Rule[I, List[O]] =
+    traverse(rules)(r => r)
+
+  def traverse[I, A, B](list: List[A])(f: A => Rule[I, B]): Rule[I, List[B]] =
+    list.foldRight(nil[I, B])((h,t) => f(h) ::: t)
 
   implicit class MonadOps[I, O](rule: Rule[I, O]) {
     def before[O2](f: Seq[O] => Seq[O2]): Rule[I, O2] =
@@ -46,6 +46,9 @@ object Rule {
 
     def zip[O2, O3](rule2: Rule[I, O2])(f: (O, O2) => O3): Rule[I, O3] =
       rule.flatMap(x => rule2.map(f(x, _)))
+
+    def par[O2, O3](rule2: Rule[I, O2])(f: (O, O2) => O3): Rule[I, O3] =
+      (rule split rule2) ((a, b) => a.flatMap(c => b.map(d => f(c, d))))
 
     def >[O2](other: Rule[I, O2]): Rule[I, O2] = zip(other)((_, x) => x)
 
@@ -70,11 +73,6 @@ object Rule {
 
     def ~[T <: HList](rule2: Rule[I, T]): Rule[I, O :: T] =
       (rule zip rule2) (_ :: _)
-  }
-
-  implicit class FunOps[I, A, B](rule: Rule[I, A => B]) {
-    def times(ruleA: Rule[I, A]): Rule[I, B] =
-      (rule split ruleA) ((a, b) => a.flatMap(b.map))
   }
 
   implicit class ListOps[I, O](rule: Rule[I, List[O]]) {

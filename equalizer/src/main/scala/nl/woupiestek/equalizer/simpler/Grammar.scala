@@ -34,21 +34,18 @@ class Grammar[T](implicit T: TermLike[String, T]) {
 object Grammar {
   val space: Rule[Char, Unit] = readIf(isWhitespace).zeroOrMore.ignore
 
-  def spaced[X](rule: Rule[Char, X]): Rule[Char, X] =
-    rule < space
-
   val name: Rule[Char, String] =
-    spaced(readIf(isUpperCase) ::: readIf(isLetterOrDigit).zeroOrMore)
-      .map(_.mkString)
+    (readIf(isUpperCase) ::: readIf(isLetterOrDigit).zeroOrMore)
+      .map(_.mkString) < space
 
-  def symbol(c: Char): Rule[Char, Unit] = spaced(readIf[Char](_ == c)).ignore
+  def symbol(c: Char): Rule[Char, Unit] = readIf[Char](_ == c).ignore < space
 
   def keyword(name: String): Rule[Char, Unit] =
-    spaced(sequence(name.map(c => readIf[Char](_ == c)).toList)).ignore
+    traverse(name.toList)(c => readIf[Char](_ == c)).ignore < space
 
-  val punct: Rule[Char, Char] = spaced(readIf(Set(',', '.', ';', '&')))
+  val punct: Rule[Char, Char] = readIf(Set(',', '.', ';', '&')) < space
 
-  def count(from: Int): Rule[Char, Int] =
-    join(read[Char] > count(from + 1), unit[Char, Int](from))
+  def count[I](from: Int): Rule[I, Int] =
+    join(read > count(from + 1), unit(from))
 
 }
