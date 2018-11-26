@@ -25,4 +25,7 @@ object X {
   /* issue: while reducing, variables and equations attached to them
    * must be taken seriously.
    */
+
+
+  //use a state monad to track state through parsing
 }
