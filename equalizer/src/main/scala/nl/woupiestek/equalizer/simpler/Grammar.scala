@@ -11,10 +11,10 @@ import scala.language.{postfixOps, reflectiveCalls}
 
 class Grammar[T](implicit T: TermLike[String, T]) {
 
-  lazy val term: Rule[Char, T] =
+  lazy val term: R[T] =
     (name |@| list(mod)) ((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))
 
-  private lazy val mod: Rule[Char, T => T] = or(
+  private lazy val mod: R[T => T] = or(
     ((keyword("be") > name) |@| term) ((x, y) => T.let(x, y, _)),
     (keyword("for") > name).map(x => T.lambda(x, _)),
     ((keyword("if") > term) |@| (keyword("is") > term)) ((x, y) => T.check(x, y, _)),
@@ -22,24 +22,26 @@ class Grammar[T](implicit T: TermLike[String, T]) {
 }
 
 object Grammar {
-  val space: Rule[Char, List[Char]] = readIf(isWhitespace).zeroOrMore
+  type R[X] = Rule[Char, X]
 
-  val name: Rule[Char, String] =
+  val space: R[List[Char]] = readIf(isWhitespace).zeroOrMore
+
+  val name: R[String] =
     ((readIf(isUpperCase) ::: readIf(isLetterOrDigit).zeroOrMore) < space)
       .map(_.mkString)
 
-  def symbol(c: Char): Rule[Char, Unit] =
-    (readIf[Char](_ == c) |@| space)((_,_) => ())
+  def symbol(c: Char): R[List[Char]] = (is(c) |@| space) (_ :: _)
 
-  def keyword(s: String): Rule[Char, Unit] =
-    (traverse(s.toList)(c => readIf[Char](_ == c)) |@| space)((_,_) => ())
+  private def is(c: Char): R[Char] = readIf[Char](_ == c)
 
-  val punct: Rule[Char, Char] = readIf(Set(',', '.', ';', '&')) < space
+  def keyword(s: String): R[List[Char]] = (s.toList.traverse(is) |@| space) (_ ++ _)
 
-  def list[O](rule: Rule[Char, O]): Rule[Char, List[O]] = or(nel(rule), nil)
+  private val punct: R[Char] = readIf(Set(',', '.', ';', '&')) < space
 
-  def nel[O](rule: Rule[Char, O]): Rule[Char, List[O]] =
+  def list[O](rule: R[O]): R[List[O]] = or(nel(rule), unit(Nil))
+
+  def nel[O](rule: R[O]): R[List[O]] =
     rule ::: or(
       punct.flatMap(c => rule ::: (symbol(c) > rule).zeroOrMore),
-      nil)
+      unit(Nil))
 }

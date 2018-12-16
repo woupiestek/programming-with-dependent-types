@@ -1,3 +1,49 @@
+
+# 16/12/18
+Now what?
+
+The terms kan be normalized to the form:
+`\ab.cd`
+where `a` is a list of variables, 
+`b` is a list of equation of terms,
+`c` is a variable and 
+`d` is a list of terms that serve are arguments.
+The domain of this term is determined by `ab`, and this has
+become a more or less independent form `\a.cd`.
+
+I don't see how any of there terms could fail at this point. Every condition 
+just transforms into new stricter conditions on application. The only thing
+that makes sense now, is to somehow simplify the domains.
+
+The fact that the domains are independent has some curious consequences.
+`\ab.cd = \ef.gh` requires that `b |= f`, `f |= b` and roughly `b, f |= cd = gh`. 
+Equations become collection of clauses, that contain equations of either
+simpler terms, or of simpler form. Here we run into the headache of keeping
+track of variables.
+
+Wait a minute... nope!
+For I while I was thinking that the `b|=f`, `f|=b` part doesn't add anything
+important, as these can be assumed. But it is an essential part of the equality.
+
+The `b, f |= cd = gh` part is the hardest. The lead variables make it possible
+to match up equations, then use a from of pattern mathcing.
+- `a, (b |= cd = ef) |= cg = hi`
+- `a |= b`, `a, d = g |= ef = hi`
+
+I don't think this is the only rule to take into account. It feels like there
+should be some method to eliminate variables and finally, some direct 
+comparison of terms should play a role too. So I don't think this is complete.
+Along the way, I have a problem dealing with all the variables, although I have
+a kind of solution for it.
+
+The obvious rule `ab = cd <=> a=c, b=d` can only be used under very special
+circumstances, but don't a need to add something for that?
+
+# 13/12/18
+
+M = N <->
+dom(M) = dom(N) & forall x:dom(M) => term(M) = term (N)
+
 # 12/9/18
 
 Just get rid of the variables

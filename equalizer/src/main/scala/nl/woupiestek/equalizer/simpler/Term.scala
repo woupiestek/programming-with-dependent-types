@@ -41,16 +41,3 @@ object Term {
 
 }
 
-trait TermLike[I, T] {
-
-  def variable(id: I): T
-
-  def lambda(id: I, body: T): T
-
-  def apply(operator: T, operand: T): T
-
-  def let(id: I, value: T, context: T): T
-
-  def check(left: T, right: T, context: T): T
-
-}
