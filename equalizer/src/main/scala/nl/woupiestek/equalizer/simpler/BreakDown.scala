@@ -44,9 +44,13 @@ object BreakDown {
       }
     }
 
-  type NF = (Either[String, Int], List[Task], List[(Task, Task)], Int)
-
   case class Task(head: BreakDown, tail: Map[String, Either[Task, Int]])
+
+  case class NF(
+    operator: Either[String, Int],
+    operands: List[Task],
+    domain: List[(Task, Task)],
+    arity: Int)
 
   def normalize(
     pivot: BreakDown,
@@ -56,8 +60,8 @@ object BreakDown {
     arity: Int = 0): NF = pivot match {
     case Id(string) => heap.get(string) match {
       case Some(Left(Task(a, b))) => normalize(a, heap ++ b, stack, eqs, arity)
-      case Some(Right(a)) => (Right(arity), stack, eqs, arity)
-      case None => (Left(string), stack, eqs, arity)
+      case Some(Right(a)) => NF(Right(a), stack, eqs, arity)
+      case None => NF(Left(string), stack, eqs, arity)
     }
     case Abs(a, b) => stack match {
       case Nil => normalize(b, heap + (a -> Right(arity)), Nil, eqs, arity + 1)
@@ -70,42 +74,34 @@ object BreakDown {
       normalize(c, heap, stack, (Task(a, heap), Task(b, heap)) :: eqs, arity)
   }
 
-  def patternMatch: NF => NF = {
-    case (operator, operands, equations, arity) =>
-      operator match {
-        case Left(name) => (operator, operands, equations, arity) //stop right here!
-        case Right(index) =>
-          val normalized = equations.map { case (a, b) => (
-            normalize(a.head, a.tail, arity = arity),
-            normalize(b.head, b.tail, arity = arity))
-          }
-          val select = (normalized ++ normalized.map { case (a, b) => (b, a) })
-            .collect {
-              case ((a0, a1, a2, a3), (b0, b1, b2, b3)) if a0 == operator =>
-                ((a0, a1, a2, a3), (b0, b1, b2, b3))
-            }
-          ???
-      }
-  }
+  case class SF(
+    operator: Either[String, Int],
+    operands: List[Task],
+    arity: Int)
 
-  def f(nf0: NF, nf1: NF): ((((Either[String, Int], List[Task], Int), (Either[String, Int], List[Task], Int)), List[(Task, Task)], Int), List[(List[(Task, Task)], (Task, Task))]) = {
-    val (a0, a1, a2, a3) = nf0
-    val (b0, b1, b2, b3) = nf1
-    //the easy set of other equations to hold
-    val implications = a2.map((b2, _)) ++ b2.map((a2, _))
-    val imp = a3 - b3 match {
-      case c if c > 0 => (((a0, a1, 0), (b0, b1, c)), a2, a3)
-      case 0 => (((a0, a1, 0), (b0, b1, 0)), a2, a3)
-      case c if c < 0 => (((a0, a1, -c), (b0, b1, 0)), b2, b3)
+  case class Clause[X, Y](left: X, right: X, args: List[Y], index: Int)
+
+  def simplify(ab: Clause[NF, (NF, NF)]): (Clause[SF, (NF, NF)], List[Clause[NF, (NF, NF)]]) = {
+    val Clause(NF(a0, a1, a2, a3), NF(b0, b1, b2, b3), e, max) = ab
+    val c: List[(NF, NF)] = a2.map { case (x, y) => (
+      normalize(x.head, x.tail, arity = max),
+      normalize(y.head, y.tail, arity = max))
     }
-    //consider all the options here
-    //the art always revolved around eliminating variable
-    //perhaps working systematically
-    //perhaps starting earlier...
-
-    //eliminate the head variable if possible,
-
-    (imp, implications)
+    val d: List[(NF, NF)] = b2.map { case (x, y) => (
+      normalize(x.head, x.tail, arity = max),
+      normalize(y.head, y.tail, arity = max))
+    }
+    (Clause(SF(a0, a1, a3), SF(b0, b1, b3), c ++ d ++ e, max),
+      c.map { case (c0, c1) => Clause(c0, c1, d ++ e, max) } ++
+        d.map { case (d0, d1) => Clause(d0, d1, c ++ e, max) })
   }
 
+  def simplify2(ab: Clause[Task, (Task, Task)]): (Clause[SF, (Task, Task)], List[Clause[Task, (Task, Task)]]) = {
+    val Clause(a, b, e, max) = ab
+    val NF(a0, a1, a2, a3) = normalize(a.head, a.tail, arity = max)
+    val NF(b0, b1, b2, b3) = normalize(b.head, b.tail, arity = max)
+    (Clause(SF(a0, a1, a3), SF(b0, b1, b3), a2 ++ b2 ++ e, max),
+      a2.map { case (c0, c1) => Clause(c0, c1, b2 ++ e, max) } ++
+        b2.map { case (d0, d1) => Clause(d0, d1, a2 ++ e, max) })
+  }
 }
