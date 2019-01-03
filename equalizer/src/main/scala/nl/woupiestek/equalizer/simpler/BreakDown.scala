@@ -44,7 +44,9 @@ object BreakDown {
       }
     }
 
-  case class Task(head: BreakDown, tail: Map[String, Either[Task, Int]])
+  case class Task(head: BreakDown, tail: Map[String, Either[Task, Int]]) {
+    def normalized(arity: Int = 0): NF = normalize(head, tail, arity = arity)
+  }
 
   case class NF(
     operator: Either[String, Int],
@@ -85,9 +87,7 @@ object BreakDown {
     val Clause(NF(a0, a1, a2, a3), NF(b0, b1, b2, b3), e, max) = ab
 
     def norms: ((Task, Task)) => (NF, NF) = {
-      case (x, y) => (
-        normalize(x.head, x.tail, arity = max),
-        normalize(y.head, y.tail, arity = max))
+      case (x, y) => (x.normalized(max), y.normalized(max))
     }
 
     val c = a2.map(norms)
@@ -97,12 +97,17 @@ object BreakDown {
         d.map { case (d0, d1) => Clause(d0, d1, c ++ e, max) })
   }
 
-  def simplify2(ab: Clause[Task, (Task, Task)]): (Clause[SF, (Task, Task)], List[Clause[Task, (Task, Task)]]) = {
-    val Clause(a, b, e, max) = ab
-    val NF(a0, a1, a2, a3) = normalize(a.head, a.tail, arity = max)
-    val NF(b0, b1, b2, b3) = normalize(b.head, b.tail, arity = max)
-    (Clause(SF(a0, a1, a3), SF(b0, b1, b3), a2 ++ b2 ++ e, max),
-      a2.map { case (c0, c1) => Clause(c0, c1, b2 ++ e, max) } ++
-        b2.map { case (d0, d1) => Clause(d0, d1, a2 ++ e, max) })
-  }
+  def simplify3(ab: List[Clause[NF, (NF, NF)]], cd: List[Clause[SF, (NF, NF)]]): List[Clause[SF, (NF, NF)]] =
+    ab match {
+      case Nil => cd
+      case h :: t =>
+        val (c, a) = simplify(h)
+        simplify3(a ++ t, c :: cd)
+    }
+
+  def simplify4(eqs: List[(NF, NF)], arity: Int): List[Clause[SF, (NF, NF)]] =
+    simplify3(
+      eqs.map { case (x, y) => Clause[NF, (NF, NF)](x, y, Nil, arity) },
+      Nil)
+
 }
