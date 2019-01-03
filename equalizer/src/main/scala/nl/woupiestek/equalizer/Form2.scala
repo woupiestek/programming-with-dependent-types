@@ -2,7 +2,7 @@ package nl.woupiestek.equalizer
 
 object Form2 {
 
-  sealed trait Term
+  sealed abstract class Term
 
   case class Index(depth: Int) extends Term
 
@@ -17,7 +17,7 @@ object Form2 {
   case class Reflection(left: Term, right: Term) extends Term
 
 
-  sealed trait Type
+  sealed abstract class Type
 
   case class TypeIndex(depth: Int) extends Type
 
@@ -29,7 +29,7 @@ object Form2 {
     typ: Type, value: Term, body: Type) extends Type
 
 
-  sealed trait Proposition
+  sealed abstract class Proposition
 
   case class Typing(term: Term, typ: Type) extends Proposition
 
@@ -101,7 +101,7 @@ object Form2 {
         case h :: t => Task(body, h :: subs, t)
         case Nil => this
       }
-      case Application(a, b) => Task(a, subs, Task(b, subs, Nil) :: args)
+      case Application(a, b) => Task(a, subs, b.map(Task(_, subs, Nil)) ++ args)
       case Reflection(a, b) => this
     }
   }

@@ -1,6 +1,6 @@
 package nl.woupiestek.equalizer.simpler
 
-sealed trait BreakDown2
+sealed abstract class BreakDown2
 
 object BreakDown2 {
 

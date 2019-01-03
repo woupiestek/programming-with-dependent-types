@@ -4,7 +4,7 @@ import scalaz._
 import scalaz.Scalaz._
 import scala.language.reflectiveCalls
 
-case class Rule[I, O](next: I => Rule[I, O], done: Seq[O])
+case class Rule[-I, +O](next: I => Rule[I, O], done: Seq[O])
 
 object Rule {
 

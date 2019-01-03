@@ -2,7 +2,7 @@ package nl.woupiestek.equalizer
 
 object Form3 {
 
-  sealed trait Term
+  sealed abstract class Term
 
   case class Variable(name: String) extends Term
 
@@ -12,7 +12,7 @@ object Form3 {
 
   case class Reflection(left: Term, right: Term) extends Term
 
-  sealed trait Type
+  sealed abstract class Type
 
   case class TypeVariable(name: String) extends Type
 

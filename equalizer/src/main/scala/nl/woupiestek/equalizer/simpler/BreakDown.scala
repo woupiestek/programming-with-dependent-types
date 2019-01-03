@@ -1,6 +1,6 @@
 package nl.woupiestek.equalizer.simpler
 
-sealed trait BreakDown
+sealed abstract class BreakDown
 
 object BreakDown {
 
@@ -83,14 +83,15 @@ object BreakDown {
 
   def simplify(ab: Clause[NF, (NF, NF)]): (Clause[SF, (NF, NF)], List[Clause[NF, (NF, NF)]]) = {
     val Clause(NF(a0, a1, a2, a3), NF(b0, b1, b2, b3), e, max) = ab
-    val c: List[(NF, NF)] = a2.map { case (x, y) => (
-      normalize(x.head, x.tail, arity = max),
-      normalize(y.head, y.tail, arity = max))
+
+    def norms: ((Task, Task)) => (NF, NF) = {
+      case (x, y) => (
+        normalize(x.head, x.tail, arity = max),
+        normalize(y.head, y.tail, arity = max))
     }
-    val d: List[(NF, NF)] = b2.map { case (x, y) => (
-      normalize(x.head, x.tail, arity = max),
-      normalize(y.head, y.tail, arity = max))
-    }
+
+    val c = a2.map(norms)
+    val d = b2.map(norms)
     (Clause(SF(a0, a1, a3), SF(b0, b1, b3), c ++ d ++ e, max),
       c.map { case (c0, c1) => Clause(c0, c1, d ++ e, max) } ++
         d.map { case (d0, d1) => Clause(d0, d1, c ++ e, max) })

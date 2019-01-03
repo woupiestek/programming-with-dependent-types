@@ -4,7 +4,7 @@ import scala.language.higherKinds
 
 class Form4 {
 
-  sealed trait Term[E, Y]
+  sealed abstract class Term[E, Y]
 
   case class EVar[E, Y](name: String) extends Term[E, Y]
 
@@ -14,7 +14,7 @@ class Form4 {
 
   case class ERefl[E, Y](left: E, right: E) extends Term[E, Y]
 
-  sealed trait Type[E, Y]
+  sealed abstract class Type[E, Y]
 
   case class YVar[E, Y](name: String) extends Type[E, Y]
 
@@ -26,7 +26,7 @@ class Form4 {
 
 
   //add more?
-  sealed trait Free[F[_], X] {
+  sealed abstract class Free[F[_], X] {
     def flatMap[Y](f: X => Free[F, Y]): Free[F, Y]
 
     def map[Y](f: X => Y): Free[F, Y] = flatMap((x: X) => Pure(f(x)))
@@ -42,8 +42,8 @@ class Form4 {
   }
 
   //oh dear
-  type FE = Free[Term[_, FY], Int]
-  type FY = Free[Type[FE, _], Int]
+  //type FE = Free[Term[_, FY], Int]
+  //type FY = Free[Type[FE, _], Int]
 
 
 

@@ -110,7 +110,7 @@ trait Builder[F[_], P] {
 
 object Builder {
 
-  sealed trait Term[P]
+  sealed abstract class Term[P]
 
   case class Variable[P](position: P, name: String)
 

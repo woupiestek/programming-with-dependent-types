@@ -1,6 +1,6 @@
 package nl.woupiestek.equalizer.simpler
 
-sealed trait Term[I, T]
+sealed abstract class Term[I, T]
 
 object Term {
 
@@ -16,24 +16,24 @@ object Term {
 
 
   class Instance[I] extends TermLike[I, List[Term[I, Int]]] {
-    override def variable(id: I): List[Term[I, Int]] = Term(id) :: Nil
+    override def variable(id: I): List[Term[I, Int]] = Variable[I, Int](id) :: Nil
 
     override def lambda(id: I, body: List[Term[I, Int]]): List[Term[I, Int]] =
-      Lambda(id, body.length) :: body
+      Lambda[I, Int](id, body.length) :: body
 
     override def apply(operator: List[Term[I, Int]], operand: List[Term[I, Int]]): List[Term[I, Int]] =
-      Apply(
+      Apply[I, Int](
         operator.length + operand.length,
         operand.length) :: operator ++ operand
 
     override def let(id: I, value: List[Term[I, Int]], context: List[Term[I, Int]]): List[Term[I, Int]] =
-      Let(
+      Let[I, Int](
         id,
         value.length + context.length,
         context.length) :: value ++ context
 
     override def check(left: List[Term[I, Int]], right: List[Term[I, Int]], context: List[Term[I, Int]]): List[Term[I, Int]] =
-      Check(
+      Check[I,Int](
         left.length + right.length + context.length,
         right.length + context.length,
         context.length) :: left ++ right ++ context
