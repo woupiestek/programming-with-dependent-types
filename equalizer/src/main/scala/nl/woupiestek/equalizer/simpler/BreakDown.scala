@@ -96,7 +96,7 @@ object BreakDown {
     eqs: List[(NF, NF)],
     arity: Int): While[NF] = pivot match {
     case Id(string) => heap.get(string) match {
-      case Some(Left(a)) => tailCall(a.run(stack, eqs, arity))
+      case Some(Left(a)) => suspend(a.run(stack, eqs, arity))
       case Some(Right(a)) => stack
         .traverse(_.run(Nil, Nil, arity))
         .map(NF(Right(a), _, eqs, arity))

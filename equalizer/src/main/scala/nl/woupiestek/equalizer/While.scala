@@ -13,7 +13,7 @@ final case class While[T](next: () => While[T] \/ T) {
 
 object While {
 
-  def tailCall[A](a: => While[A]): While[A] = While(() => -\/(a))
+  def suspend[A](a: => While[A]): While[A] = While(() => -\/(a))
 
   implicit object Instance extends Monad[While] with BindRec[While] {
 
@@ -25,7 +25,7 @@ object While {
     override def tailrecM[A, B](f: A => While[A \/ B])(a: A): While[B] =
       bind(f(a))(_.fold(tail(tailrecM[A,B](f)), point[B](_)))
 
-    private def tail[A, B](f: A => While[B])(a: A): While[B] = tailCall(f(a))
+    private def tail[A, B](f: A => While[B])(a: A): While[B] = suspend(f(a))
   }
 
 }
