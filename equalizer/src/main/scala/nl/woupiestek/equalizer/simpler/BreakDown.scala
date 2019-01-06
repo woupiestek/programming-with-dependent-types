@@ -1,5 +1,9 @@
 package nl.woupiestek.equalizer.simpler
 
+import nl.woupiestek.equalizer.While
+import nl.woupiestek.equalizer.While._
+import scalaz.Scalaz._
+
 sealed abstract class BreakDown
 
 object BreakDown {
@@ -26,8 +30,8 @@ object BreakDown {
     entries match {
       case Nil => (eqs, ars)
       case h :: t => h match {
-        case (p, v, Id(id)) =>
-          val w = v.collect { case (i, j) if j == id => (i, p) }
+        case (p, v, Id(k)) =>
+          val w = v.collect { case (i, j) if j == k => (i, p) }
           arrows(t, eqs ++ w, ars, next)
         case (p, v, Abs(a, b)) =>
           val w = (next + 1, v + ((next, a)), b) :: t
@@ -45,13 +49,13 @@ object BreakDown {
     }
 
   case class Task(head: BreakDown, tail: Map[String, Either[Task, Int]]) {
-    def normalized(arity: Int = 0): NF = normalize(head, tail, arity = arity)
+    def normalized(arity: Int = 0): HNF[Task] = normalize(head, tail, arity = arity)
   }
 
-  case class NF(
+  case class HNF[T](
     operator: Either[String, Int],
-    operands: List[Task],
-    domain: List[(Task, Task)],
+    operands: List[T],
+    domain: List[(T, T)],
     arity: Int)
 
   def normalize(
@@ -59,11 +63,11 @@ object BreakDown {
     heap: Map[String, Either[Task, Int]],
     stack: List[Task] = Nil,
     eqs: List[(Task, Task)] = Nil,
-    arity: Int = 0): NF = pivot match {
+    arity: Int = 0): HNF[Task] = pivot match {
     case Id(string) => heap.get(string) match {
       case Some(Left(Task(a, b))) => normalize(a, heap ++ b, stack, eqs, arity)
-      case Some(Right(a)) => NF(Right(a), stack, eqs, arity)
-      case None => NF(Left(string), stack, eqs, arity)
+      case Some(Right(a)) => HNF(Right(a), stack, eqs, arity)
+      case None => HNF(Left(string), stack, eqs, arity)
     }
     case Abs(a, b) => stack match {
       case Nil => normalize(b, heap + (a -> Right(arity)), Nil, eqs, arity + 1)
@@ -76,6 +80,45 @@ object BreakDown {
       normalize(c, heap, stack, (Task(a, heap), Task(b, heap)) :: eqs, arity)
   }
 
+  //apply & substitute
+  final case class NF(
+    operator: Either[String, Int],
+    operands: List[NF],
+    domain: List[(NF, NF)],
+    arity: Int)
+
+  final case class Task2(run:(List[Task2], List[(NF, NF)], Int) => While[NF])
+
+  def normalize2(
+    pivot: BreakDown,
+    heap: Map[String, Either[Task2, Int]],
+    stack: List[Task2],
+    eqs: List[(NF, NF)],
+    arity: Int): While[NF] = pivot match {
+    case Id(string) => heap.get(string) match {
+      case Some(Left(a)) => tailCall(a.run(stack, eqs, arity))
+      case Some(Right(a)) => stack
+        .traverse(_.run(Nil, Nil, arity))
+        .map(NF(Right(a), _, eqs, arity))
+      case None => stack
+        .traverse(_.run(Nil, Nil, arity))
+        .map(NF(Left(string), _, eqs, arity))
+    }
+    case Abs(a, b) => stack match {
+      case Nil => normalize2(b, heap + (a -> Right(arity)), Nil, eqs, arity + 1)
+      case h :: t => normalize2(b, heap + (a -> Left(h)), t, eqs, arity)
+    }
+    case App(a, b) =>
+      normalize2(a, heap, Task2(normalize2(b, heap, _, _, _)) :: stack, eqs, arity)
+    case Let(i, a, b) =>
+      normalize2(b, heap + (i -> Left(Task2(normalize2(a, heap, _, _, _)))), stack, eqs, arity)
+    case Check(a, b, c) => for {
+      d <- normalize2(a, heap, Nil, Nil, arity)
+      e <- normalize2(a, heap, Nil, Nil, arity)
+      f <- normalize2(c, heap, stack, (d, e) :: eqs, arity)
+    } yield f
+  }
+
   case class SF(
     operator: Either[String, Int],
     operands: List[Task],
@@ -83,10 +126,10 @@ object BreakDown {
 
   case class Clause[X, Y](left: X, right: X, args: List[Y], index: Int)
 
-  def simplify(ab: Clause[NF, (NF, NF)]): (Clause[SF, (NF, NF)], List[Clause[NF, (NF, NF)]]) = {
-    val Clause(NF(a0, a1, a2, a3), NF(b0, b1, b2, b3), e, max) = ab
+  def simplify(ab: Clause[HNF[Task], (HNF[Task], HNF[Task])]): (Clause[SF, (HNF[Task], HNF[Task])], List[Clause[HNF[Task], (HNF[Task], HNF[Task])]]) = {
+    val Clause(HNF(a0, a1, a2, a3), HNF(b0, b1, b2, b3), e, max) = ab
 
-    def norms: ((Task, Task)) => (NF, NF) = {
+    def norms: ((Task, Task)) => (HNF[Task], HNF[Task]) = {
       case (x, y) => (x.normalized(max), y.normalized(max))
     }
 
@@ -97,7 +140,7 @@ object BreakDown {
         d.map { case (d0, d1) => Clause(d0, d1, c ++ e, max) })
   }
 
-  def simplify3(ab: List[Clause[NF, (NF, NF)]], cd: List[Clause[SF, (NF, NF)]]): List[Clause[SF, (NF, NF)]] =
+  def simplify3(ab: List[Clause[HNF[Task], (HNF[Task], HNF[Task])]], cd: List[Clause[SF, (HNF[Task], HNF[Task])]]): List[Clause[SF, (HNF[Task], HNF[Task])]] =
     ab match {
       case Nil => cd
       case h :: t =>
@@ -105,9 +148,9 @@ object BreakDown {
         simplify3(a ++ t, c :: cd)
     }
 
-  def simplify4(eqs: List[(NF, NF)], arity: Int): List[Clause[SF, (NF, NF)]] =
-    simplify3(
-      eqs.map { case (x, y) => Clause[NF, (NF, NF)](x, y, Nil, arity) },
-      Nil)
+  def simplify4(eqs: List[(HNF[Task], HNF[Task])], arity: Int): List[Clause[SF, (HNF[Task], HNF[Task])]] =
+    simplify3(eqs.map {
+      case (x, y) => Clause[HNF[Task], (HNF[Task], HNF[Task])](x, y, Nil, arity)
+    }, Nil)
 
 }
