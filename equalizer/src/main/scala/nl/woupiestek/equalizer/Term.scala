@@ -12,8 +12,6 @@ trait Term[F[_], T] {
 
   def abstraction(name: String, body: T): F[T]
 
-  def reflection(left: T, right: T): F[T]
-
   def guard(left: T, right: T, body: T): F[T]
 }
 
