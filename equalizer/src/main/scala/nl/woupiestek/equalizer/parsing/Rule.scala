@@ -34,7 +34,7 @@ object Rule {
         or(a, b)
     }
 
-  implicit class RuleOps[I, O](rule: Rule[I, O]) {
+  implicit class RuleOps[I, O](val rule: Rule[I, O]) extends AnyVal {
 
     def before[O2](f: Seq[O] => Seq[O2]): Rule[I, O2] =
       Rule(rule.next(_).before(f), f(rule.done))
@@ -62,7 +62,7 @@ object Rule {
 
   }
 
-  implicit class ListOps[I, O](rule: Rule[I, List[O]]) {
+  implicit class ListOps[I, O](val rule: Rule[I, List[O]]) extends AnyVal {
     def :::(rule2: Rule[I, O]): Rule[I, List[O]] = (rule2 |@| rule) (_ :: _)
   }
 

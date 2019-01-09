@@ -38,18 +38,42 @@ object HNF {
       case Nil => normalize(arity + 1, eqs, b, heap + (a -> Right(arity)), stack)
       case c :: d => normalize(arity, eqs, b, heap + (a -> Left(c)), d)
     }
-    case App(a, b) => normalize(arity, eqs, a, heap, Task(b, heap) :: stack)
+    case App(a, b) => normalize(arity, eqs, a, heap, task(b, heap) :: stack)
     case Let(a, b, c) =>
-      normalize(arity, eqs, c, heap + (a -> Left(Task(b, heap))), stack)
+      normalize(arity, eqs, c, heap + (a -> Left(task(b, heap))), stack)
     case Check(a, b, c) =>
-      normalize(arity, (Task(a, heap), Task(b, heap)) :: eqs, c, heap, stack)
+      normalize(arity, (task(a, heap), task(b, heap)) :: eqs, c, heap, stack)
   }
 
-  private final case class Task(pivot: BreakDown, heap: Map[String, Either[Task, Int]]) {
-    def run(arity: Int, eqs: List[(Task, Task)], stack: List[Task]): While[HNF] =
-      normalize(arity, eqs, pivot, heap, stack)
+  def task(pivot: BreakDown, heap: Map[String, Either[Task, Int]]) =
+    Task(normalize(_, _, pivot, heap, _))
 
-    def value(arity: Int): While[HNF] = run(arity, Nil, Nil)
+  final case class Task(run: (Int, List[(Task, Task)], List[Task]) => While[HNF]) {
+    def value(arity: Int): While[HNF] = run(0, Nil, Nil)
+  }
+
+  type K = Map[String, Either[Task, Int]] => Task
+
+  val instance: TermLike[String, K] = new TermLike[String, K] {
+    override def variable(i: String): K = h => Task((a, e, s) =>
+      h.get(i) match {
+        case None => complete(a, e, Left(i), s)
+        case Some(Left(c)) => suspend(c.run(a, e, s))
+        case Some(Right(c)) => complete(a, e, Right(c), s)
+      })
+
+    override def lambda(i: String, b: K): K = h => Task((a, e, s) => s match {
+      case Nil => b(h + (i -> Right(a))).run(a + 1, e, s)
+      case c :: d => b(h + (i -> Left(c))).run(a, e, d)
+    })
+
+    override def apply(x: K, y: K): K = h =>
+      Task((a, e, s) => x(h).run(a, e, y(h) :: s))
+
+    override def let(i: String, v: K, c: K): K = h => c(h + (i -> Left(v(h))))
+
+    override def check(l: K, r: K, c: K): K = h =>
+      Task((a, e, s) => c(h).run(a, (l(h), r(h)) :: e, s))
   }
 
   private def complete(
@@ -57,50 +81,6 @@ object HNF {
     eqs: List[(Task, Task)],
     operator: Either[String, Int],
     stack: List[Task]): While[HNF] =
-    (eqs.traverse {
-      case (b, c) => (b.value(arity) |@| c.value(arity)) ((a, b) =>
-        CNF(a.snf, b.snf, a.eqs ++ b.eqs) ::
-          a.eqs.map(e => e.copy(args = e.args ++ b.eqs)) ++
-            b.eqs.map(f => f.copy(args = f.args ++ a.eqs)))
-    }.map(_.flatten) |@|
-      stack.traverse(_.value(arity))) (HNF(arity, _, operator, _))
-
-
-  final case class J(run: (Int, List[(J, J)], List[J]) => While[HNF]) {
-    def value(arity: Int): While[HNF] = run(0, Nil, Nil)
-  }
-
-  type K = Map[String, Either[J, Int]] => J
-
-  val instance: TermLike[String, K] = new TermLike[String, K] {
-    override def variable(id: String): K = heap => J((arity, eqs, stack) =>
-      heap.get(id) match {
-        case None => complete2(arity, eqs, Left(id), stack)
-        case Some(Left(c)) => suspend(c.run(arity, eqs, stack))
-        case Some(Right(c)) => complete2(arity, eqs, Right(c), stack)
-      })
-
-    override def lambda(id: String, body: K): K = heap => J((arity, eqs, stack) =>
-      stack match {
-        case Nil => body(heap + (id -> Right(arity))).run(arity + 1, eqs, stack)
-        case c :: d => body(heap + (id -> Left(c))).run(arity, eqs, d)
-      })
-
-    override def apply(operator: K, operand: K): K = heap => J((arity, eqs, stack) =>
-      operator(heap).run(arity, eqs, operand(heap) :: stack))
-
-    override def let(id: String, value: K, context: K): K = heap => J((arity, eqs, stack) =>
-      context(heap + (id -> Left(value(heap)))).run(arity, eqs, stack))
-
-    override def check(left: K, right: K, context: K): K = heap => J((arity, eqs, stack) =>
-      context(heap).run(arity, (left(heap), right(heap)) :: eqs, stack))
-  }
-
-  private def complete2(
-    arity: Int,
-    eqs: List[(J, J)],
-    operator: Either[String, Int],
-    stack: List[J]): While[HNF] =
     (eqs.traverse {
       case (b, c) => (b.value(arity) |@| c.value(arity)) ((a, b) =>
         CNF(a.snf, b.snf, a.eqs ++ b.eqs) ::
