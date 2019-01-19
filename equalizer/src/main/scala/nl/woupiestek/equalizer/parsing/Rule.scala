@@ -2,68 +2,60 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
+
 import scala.language.reflectiveCalls
 
-case class Rule[-I, +O](next: I => Rule[I, O], done: Seq[O])
+final case class Rule[-I, +O](unfold: () => (I => Rule[I, O]) \/ (O, Rule[I, O]))
 
 object Rule {
 
-  def read[I]: Rule[I, I] = Rule(unit, Seq.empty)
+  def rule[I, O](r: => (I => Rule[I, O]) \/ (O, Rule[I, O])): Rule[I, O] =
+    Rule(() => r)
+
+  def ana[I, R, O](f: R => (I => R) \/ (O, R))(r: R): Rule[I, O] =
+    rule(f(r).bimap(_ andThen ana(f), { case (o, s) => (o, ana(f)(s)) }))
+
+  def fail[I, O]: Rule[I, O] = instance[I].empty[O]
+
+  def emit[I, O](o: => O): Rule[I, O] = rule(\/-((o, fail)))
+
+  def read[I]: Rule[I, I] = rule(-\/(emit(_)))
 
   def readIf[I](f: I => Boolean): Rule[I, I] = read[I].filter(f)
 
-  def joinAll[I, O](rules: Seq[Rule[I, O]]): Rule[I, O] =
-    Rule((i: I) => joinAll(rules.map(_.next(i))), rules.flatMap(_.done))
-
-  def or[I, O](x: Rule[I, O]*): Rule[I, O] = joinAll(x)
-
-  def unit[I, O](o: O): Rule[I, O] = Rule((_: I) => or(), List(o))
-
   implicit def instance[I]: MonadPlus[({type R[O] = Rule[I, O]})#R] =
     new MonadPlus[({type R[O] = Rule[I, O]})#R] {
-      override def point[A](a: => A): Rule[I, A] = unit(a)
+      override def point[A](a: => A): Rule[I, A] = emit(a)
 
       override def bind[A, B](fa: Rule[I, A])(f: A => Rule[I, B]): Rule[I, B] =
-        or(
-          Rule((i: I) => bind(fa.next(i))(f), Seq.empty),
-          joinAll(fa.done.map(f)))
+        fa.unfold() match {
+          case -\/(g) => rule(-\/((i: I) => bind(g(i))(f)))
+          case \/-((a, b)) => plus(f(a), bind(b)(f))
+        }
 
-      override def empty[A]: Rule[I, A] = or()
+      override def empty[A]: Rule[I, A] = ana[I, Unit, A](r => -\/(_ => r))(())
 
       override def plus[A](a: Rule[I, A], b: => Rule[I, A]): Rule[I, A] =
-        or(a, b)
+        rule(a.unfold().fold(
+          c => b.unfold().bimap(
+            d => i => plus(c(i), d(i)),
+            { case (d, e) => (d, plus(a, e)) }),
+          { case (c, d) => \/-((c, plus(d, b))) }))
     }
 
   implicit class RuleOps[I, O](val rule: Rule[I, O]) extends AnyVal {
-
-    def before[O2](f: Seq[O] => Seq[O2]): Rule[I, O2] =
-      Rule(rule.next(_).before(f), f(rule.done))
-
-    def ignore: Rule[I, Unit] = before(_ => Seq(()))
-
-    def par[O2, O3](rule2: Rule[I, O2])(f: (O, O2) => O3): Rule[I, O3] =
-      (rule split rule2) ((a, b) => a.flatMap(c => b.map(d => f(c, d))))
 
     def >[O2](other: Rule[I, O2]): Rule[I, O2] = (rule |@| other) ((_, x) => x)
 
     def <[O2](other: Rule[I, O2]): Rule[I, O] = (rule |@| other) ((x, _) => x)
 
-    def oneOrMore: Rule[I, List[O]] = rule ::: rule.zeroOrMore
+    def |::|(tail: Rule[I,List[O]]): Rule[I, List[O]] = (rule |@| tail) (_ :: _)
 
-    def zeroOrMore: Rule[I, List[O]] = or(unit(Nil), rule.oneOrMore)
+    def oneOrMore: Rule[I, List[O]] = rule |::| rule.zeroOrMore
 
-    def zeroOrOne: Rule[I, Option[O]] = or(unit(None), rule.map(Some(_)))
+    def zeroOrMore: Rule[I, List[O]] = emit[I, List[O]](Nil) <+> rule.oneOrMore
 
-    def split[A, B](
-      ruleA: Rule[I, A])(
-      combine: (Seq[O], Seq[A]) => Seq[B]): Rule[I, B] = Rule(
-      (i: I) => rule.next(i).split(ruleA.next(i))(combine),
-      combine(rule.done, ruleA.done))
-
-  }
-
-  implicit class ListOps[I, O](val rule: Rule[I, List[O]]) extends AnyVal {
-    def :::(rule2: Rule[I, O]): Rule[I, List[O]] = (rule2 |@| rule) (_ :: _)
+    def zeroOrOne: Rule[I, Option[O]] = emit[I, Option[O]](None) <+> rule.map(Some(_))
   }
 
 }

@@ -14,11 +14,11 @@ class Grammar[T](implicit T: TermLike[String, T]) {
   lazy val term: R[T] =
     (name |@| list(mod)) ((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))
 
-  private lazy val mod: R[T => T] = or(
-    ((keyword("be") > name) |@| term) ((x, y) => T.let(x, y, _)),
-    (keyword("for") > name).map(x => T.lambda(x, _)),
-    ((keyword("if") > term) |@| (keyword("is") > term)) ((x, y) => T.check(x, y, _)),
-    term.map(x => T.apply(_, x)))
+  private lazy val mod: R[T => T] =
+    ((keyword("be") > name) |@| term) ((x, y) => T.let(x, y, _)) <+>
+    (keyword("for") > name).map(x => T.lambda(x, _)) <+>
+    ((keyword("if") > term) |@| (keyword("is") > term)) ((x, y) => T.check(x, y, _)) <+>
+    term.map(x => T.apply(_, x))
 }
 
 object Grammar {
@@ -27,10 +27,10 @@ object Grammar {
   val space: R[List[Char]] = readIf(isWhitespace).zeroOrMore
 
   val name: R[String] =
-    ((readIf(isUpperCase) ::: readIf(isLetterOrDigit).zeroOrMore) < space)
+    ((readIf(isUpperCase) |::| readIf(isLetterOrDigit).zeroOrMore) < space)
       .map(_.mkString)
 
-  def symbol(c: Char): R[List[Char]] = (is(c) |@| space) (_ :: _)
+  def symbol(c: Char): R[List[Char]] = is(c) |::| space
 
   private def is(c: Char): R[Char] = readIf[Char](_ == c)
 
@@ -38,10 +38,10 @@ object Grammar {
 
   private val punct: R[Char] = readIf(Set(',', '.', ';', '&')) < space
 
-  def list[O](rule: R[O]): R[List[O]] = or(nel(rule), unit(Nil))
+  def list[O](rule: R[O]): R[List[O]] = nel(rule) <+> emit(Nil)
 
   def nel[O](rule: R[O]): R[List[O]] =
-    rule ::: or(
-      punct.flatMap(c => rule ::: (symbol(c) > rule).zeroOrMore),
-      unit(Nil))
+    rule |::| (
+      punct.flatMap(c => rule |::| (symbol(c) > rule).zeroOrMore) <+>
+      emit(Nil))
 }

@@ -47,7 +47,6 @@ object HNF2 {
             hnf.eqs)))
   }
 
-
   private def complete(i: Either[String, Int], s: Stack, a: Int): While[HNF2] = s
     .traverse(_.run(Nil, a))
     .map((s: List[HNF2]) => HNF2(SNF2(a, i, s), Nil))
