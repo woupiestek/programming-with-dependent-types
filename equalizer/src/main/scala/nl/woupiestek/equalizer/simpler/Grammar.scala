@@ -4,6 +4,7 @@ import java.lang.Character._
 
 import nl.woupiestek.equalizer.parsing.Rule
 import nl.woupiestek.equalizer.parsing.Rule._
+import scalaz._
 import scalaz.Scalaz._
 
 import scala.language.{higherKinds, postfixOps, reflectiveCalls}
@@ -32,10 +33,10 @@ class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
   def keyword(s: String): R[List[Char]] =
     s.toList.traverse[R, Char](is) < space
 
-  def list[O](rule: R[O]): R[List[O]] =
-    nel(rule) <+> List.empty[O].point[R]
+  def list[O](rule: R[O]): R[List[O]] = nel(rule) <+> List.empty[O].point[R]
 
-  def nel[O](rule: R[O]): R[List[O]] = rule |::|
-    Set(',', '.', ';', '&').foldLeft(R.empty[List[O]])((a, b) =>
-      a <+> (symbol(b) > rule).zeroOrMore)
+  def nel[O](rule: R[O]): R[List[O]] = {
+    implicit val inst: Monoid[R[List[O]]] = PlusEmpty[R].monoid[List[O]]
+    rule |::| List(',', '.', ';', '&').foldMap(b => (symbol(b) > rule).zeroOrMore)
+  }
 }
