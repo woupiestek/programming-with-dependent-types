@@ -2,60 +2,30 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
+import scala.language.{higherKinds, reflectiveCalls}
 
-import scala.language.reflectiveCalls
+trait Rule[R[_, _], I] extends ApplicativePlus[({type RI[O] = R[I, O]})#RI] {
+  def readIf(f: I => Boolean): R[I, I]
 
-final case class Rule[-I, +O](unfold: () => (I => Rule[I, O]) \/ (O, Rule[I, O]))
+  type RI[O] = R[I, O]
+}
 
 object Rule {
 
-  def rule[I, O](r: => (I => Rule[I, O]) \/ (O, Rule[I, O])): Rule[I, O] =
-    Rule(() => r)
+  implicit class ops[R[_, _], I, O](rule: R[I, O])(implicit R: Rule[R, I]) {
 
-  def ana[I, R, O](f: R => (I => R) \/ (O, R))(r: R): Rule[I, O] =
-    rule(f(r).bimap(_ andThen ana(f), { case (o, s) => (o, ana(f)(s)) }))
+    def >[O2](other: R[I, O2]): R[I, O2] = (rule |@| other) ((_, x) => x)
 
-  def fail[I, O]: Rule[I, O] = instance[I].empty[O]
+    def <[O2](other: R[I, O2]): R[I, O] = (rule |@| other) ((x, _) => x)
 
-  def emit[I, O](o: => O): Rule[I, O] = rule(\/-((o, fail)))
+    def |::|(tail: R[I, List[O]]): R[I, List[O]] = (rule |@| tail) (_ :: _)
 
-  def read[I]: Rule[I, I] = rule(-\/(emit(_)))
+    def oneOrMore: R[I, List[O]] = rule |::| rule.zeroOrMore
 
-  def readIf[I](f: I => Boolean): Rule[I, I] = read[I].filter(f)
+    def zeroOrMore: R[I, List[O]] = rule.oneOrMore <+> List.empty[O].point[R.RI]
 
-  implicit def instance[I]: MonadPlus[({type R[O] = Rule[I, O]})#R] =
-    new MonadPlus[({type R[O] = Rule[I, O]})#R] {
-      override def point[A](a: => A): Rule[I, A] = emit(a)
-
-      override def bind[A, B](fa: Rule[I, A])(f: A => Rule[I, B]): Rule[I, B] =
-        fa.unfold() match {
-          case -\/(g) => rule(-\/((i: I) => bind(g(i))(f)))
-          case \/-((a, b)) => plus(f(a), bind(b)(f))
-        }
-
-      override def empty[A]: Rule[I, A] = ana[I, Unit, A](r => -\/(_ => r))(())
-
-      override def plus[A](a: Rule[I, A], b: => Rule[I, A]): Rule[I, A] =
-        rule(a.unfold().fold(
-          c => b.unfold().bimap(
-            d => i => plus(c(i), d(i)),
-            { case (d, e) => (d, plus(a, e)) }),
-          { case (c, d) => \/-((c, plus(d, b))) }))
-    }
-
-  implicit class RuleOps[I, O](val rule: Rule[I, O]) extends AnyVal {
-
-    def >[O2](other: Rule[I, O2]): Rule[I, O2] = (rule |@| other) ((_, x) => x)
-
-    def <[O2](other: Rule[I, O2]): Rule[I, O] = (rule |@| other) ((x, _) => x)
-
-    def |::|(tail: Rule[I,List[O]]): Rule[I, List[O]] = (rule |@| tail) (_ :: _)
-
-    def oneOrMore: Rule[I, List[O]] = rule |::| rule.zeroOrMore
-
-    def zeroOrMore: Rule[I, List[O]] = emit[I, List[O]](Nil) <+> rule.oneOrMore
-
-    def zeroOrOne: Rule[I, Option[O]] = emit[I, Option[O]](None) <+> rule.map(Some(_))
+    def zeroOrOne: R[I, Option[O]] =
+      rule.map(_.point[Option]) <+> Option.empty[O].point[R.RI]
   }
 
 }
