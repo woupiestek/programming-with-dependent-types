@@ -67,7 +67,7 @@ object HNF {
       case c :: d => b(h + (i -> Left(c))).run(a, e, d)
     })
 
-    override def apply(x: K, y: K): K = h =>
+    override def operate(x: K, y: K): K = h =>
       Task((a, e, s) => x(h).run(a, e, y(h) :: s))
 
     override def let(i: String, v: K, c: K): K = h => c(h + (i -> Left(v(h))))

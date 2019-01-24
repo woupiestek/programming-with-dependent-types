@@ -6,7 +6,7 @@ trait TermLike[I, T] {
 
   def lambda(id: I, body: T): T
 
-  def apply(operator: T, operand: T): T
+  def operate(operator: T, operand: T): T
 
   def let(id: I, value: T, context: T): T
 
@@ -21,7 +21,7 @@ object TermLike {
 
     override def lambda(id: I, body: Set[I]): Set[I] = body - id
 
-    override def apply(operator: Set[I], operand: Set[I]): Set[I] =
+    override def operate(operator: Set[I], operand: Set[I]): Set[I] =
       operator ++ operand
 
     override def let(id: I, value: Set[I], context: Set[I]): Set[I] =
@@ -36,7 +36,7 @@ object TermLike {
 
     override def lambda(id: I, body: Int): Int = 2 + body
 
-    override def apply(operator: Int, operand: Int): Int = 1 + operand + operator
+    override def operate(operator: Int, operand: Int): Int = 1 + operand + operator
 
     override def let(id: I, value: Int, context: Int): Int = 2 + value + context
 

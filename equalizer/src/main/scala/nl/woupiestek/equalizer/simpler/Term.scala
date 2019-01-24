@@ -21,7 +21,7 @@ object Term {
     override def lambda(id: I, body: List[Term[I, Int]]): List[Term[I, Int]] =
       Lambda[I, Int](id, body.length) :: body
 
-    override def apply(operator: List[Term[I, Int]], operand: List[Term[I, Int]]): List[Term[I, Int]] =
+    override def operate(operator: List[Term[I, Int]], operand: List[Term[I, Int]]): List[Term[I, Int]] =
       Apply[I, Int](
         operator.length + operand.length,
         operand.length) :: operator ++ operand

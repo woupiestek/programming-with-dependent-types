@@ -24,15 +24,14 @@ object While {
 
       override def point[A](a: => A): While[A] = cons(-\/(a))
 
-      override def bind[A, B](fa: While[A])(f: A => While[B]): While[B] =
-        fa.next() match {
-          case -\/(a) => f(a)
-          case \/-(a) => suspend(bind(a)(f))
-        }
+      override def bind[A, B](fa: While[A])(f: A => While[B]): While[B] = {
+        val a = fa.exhaust
+        suspend(f(a))
+      }
 
-      override def tailrecM[A, B](f: A => While[A \/ B])(a: A): While[B] =
-        bind(f(a)) {
-          case -\/(b) => suspend(tailrecM(f)(b))
+      @tailrec override def tailrecM[A, B](f: A => While[A \/ B])(a: A): While[B] =
+        f(a).exhaust match {
+          case -\/(b) => tailrecM(f)(b)
           case \/-(b) => point(b)
         }
     }

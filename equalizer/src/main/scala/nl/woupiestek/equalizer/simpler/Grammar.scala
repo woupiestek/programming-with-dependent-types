@@ -18,7 +18,7 @@ class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
     ((keyword("be") > name) |@| term) ((x, y) => T.let(x, y, _)) <+>
       (keyword("for") > name).map(x => T.lambda(x, _)) <+>
       ((keyword("if") > term) |@| (keyword("is") > term)) ((x, y) => T.check(x, y, _)) <+>
-      term.map(x => T.apply(_, x))
+      term.map(x => T.operate(x,_))
 
   val space: R[List[Char]] = R.readIf(isWhitespace).zeroOrMore
 

@@ -52,7 +52,7 @@ object X {
           abstractions = f.abstractions + ((f.position + 2, id, f.position)))
       }
 
-    override def apply(operator: Equations => Equations, operand: Equations => Equations): Equations => Equations =
+    override def operate(operator: Equations => Equations, operand: Equations => Equations): Equations => Equations =
       e => {
         val f = operator(e)
         val g = operand(f)
