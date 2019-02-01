@@ -1,7 +1,5 @@
 package nl.woupiestek.equalizer.parsing
 
-import scala.language.reflectiveCalls
-
 final case class RuleImpl2[I, O](emit: () => List[O], next: () => RuleImpl2[I, I => Option[O]])
 
 object RuleImpl2 {

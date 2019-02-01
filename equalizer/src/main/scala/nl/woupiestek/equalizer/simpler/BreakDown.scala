@@ -114,7 +114,7 @@ object BreakDown {
       normalize2(b, heap + (i -> Left(Task2(normalize2(a, heap, _, _, _)))), stack, eqs, arity)
     case Check(a, b, c) => for {
       d <- normalize2(a, heap, Nil, Nil, arity)
-      e <- normalize2(a, heap, Nil, Nil, arity)
+      e <- normalize2(b, heap, Nil, Nil, arity)
       f <- normalize2(c, heap, stack, (d, e) :: eqs, arity)
     } yield f
   }

@@ -4,10 +4,10 @@ import java.lang.Character._
 
 import nl.woupiestek.equalizer.parsing.Rule
 import nl.woupiestek.equalizer.parsing.Rule._
-import scalaz._
 import scalaz.Scalaz._
+import scalaz._
 
-import scala.language.{higherKinds, postfixOps, reflectiveCalls}
+import scala.language.higherKinds
 
 class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
 
@@ -15,28 +15,31 @@ class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
     (name |@| list(mod)) ((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))
 
   private lazy val mod: R[T => T] =
-    ((keyword("be") > name) |@| term) ((x, y) => T.let(x, y, _)) <+>
-      (keyword("for") > name).map(x => T.lambda(x, _)) <+>
-      ((keyword("if") > term) |@| (keyword("is") > term)) ((x, y) => T.check(x, y, _)) <+>
-      term.map(x => T.operate(x,_))
+    ((keyword("be") *> name) |@| term) ((x, y) => T.let(x, y, _)) <+>
+      (keyword("for") *> name).map(x => T.lambda(x, _)) <+>
+      ((keyword("if") *> term) |@| (keyword("is") *> term)) ((x, y) => T.check(x, y, _)) <+>
+      term.map(x => T.operate(x, _))
 
-  val space: R[List[Char]] = R.readIf(isWhitespace).zeroOrMore
+  val space: R[Unit] = readWhile[R, Char, Unit](isWhitespace)(_ => ())
 
   val name: R[String] =
-    ((R.readIf(isUpperCase) |::| R.readIf(isLetterOrDigit).zeroOrMore) < space)
-      .map(_.mkString)
+    (readIf(isUpperCase) |@| readIf(isLetterOrDigit).list <* space) {
+      (h, t) => (h :: t).foldLeft(new StringBuilder)(_ += _).toString
+    }
 
-  def symbol(c: Char): R[List[Char]] = is(c) |::| space
+  def symbol(c: Char): R[Char] = is(c) <* space
 
-  private def is(c: Char): R[Char] = R.readIf(_ == c)
+  private def is(c: Char): R[Char] = readIf(_ == c)
 
-  def keyword(s: String): R[List[Char]] =
-    s.toList.traverse[R, Char](is) < space
+  def keyword(s: String): R[Unit] =
+    s.foldLeft(().pure[R])(_ <* is(_)) <* space
 
-  def list[O](rule: R[O]): R[List[O]] = nel(rule) <+> List.empty[O].point[R]
+  def list[O](rule: R[O]): R[IList[O]] =
+    nel(rule).map(_.list) <+> IList.empty[O].point[R]
 
-  def nel[O](rule: R[O]): R[List[O]] = {
-    implicit val inst: Monoid[R[List[O]]] = PlusEmpty[R].monoid[List[O]]
-    rule |::| List(',', '.', ';', '&').foldMap(b => (symbol(b) > rule).zeroOrMore)
+  def nel[O](rule: R[O]): R[NonEmptyList[O]] = {
+    implicit val inst: Monoid[R[IList[O]]] = PlusEmpty[R].monoid[IList[O]]
+    (rule |@| List(',', '.', ';', '&').foldMap(b => (symbol(b) *> rule).list)) (
+      NonEmptyList.nel[O])
   }
 }

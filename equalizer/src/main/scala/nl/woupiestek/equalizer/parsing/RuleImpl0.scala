@@ -2,8 +2,6 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 
-import scala.language.reflectiveCalls
-
 final case class RuleImpl0[-I, +O](unfold: () => (I => RuleImpl0[I, O]) \/ (O, RuleImpl0[I, O]))
 
 object RuleImpl0 {

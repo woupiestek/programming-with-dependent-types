@@ -4,7 +4,6 @@ import scalaz._
 import scalaz.syntax.order._
 
 import scala.annotation.tailrec
-import scala.language.reflectiveCalls
 
 sealed abstract class PrioQueue2[P, E]
 
@@ -61,7 +60,7 @@ object PrioQueue2 {
     type Q[E] = PrioQueue2[P, E]
     new Foldable[Q] {
       override def foldMap[A, B](fa: Q[A])(f: A => B)(implicit F: Monoid[B]): B = {
-        def fm(qa: Q[A], b: B): B = fa match {
+        def fm(qa: Q[A], b: B): B = qa match {
           case Empty() => b
           case NonEmpty(_, node) => fm(node.tail, F.append(b, f(node.head)))
         }
@@ -70,7 +69,7 @@ object PrioQueue2 {
       }
 
       override def foldRight[A, B](fa: Q[A], z: => B)(f: (A, => B) => B): B = {
-        def r(qa: Q[A], la: List[A]): List[A] = fa match {
+        def r(qa: Q[A], la: List[A]): List[A] = qa match {
           case Empty() => la
           case NonEmpty(_, node) => r(node.tail, node.head :: la)
         }

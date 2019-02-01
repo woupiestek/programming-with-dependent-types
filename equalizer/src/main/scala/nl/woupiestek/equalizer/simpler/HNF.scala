@@ -49,7 +49,7 @@ object HNF {
     Task(normalize(_, _, pivot, heap, _))
 
   final case class Task(run: (Int, List[(Task, Task)], List[Task]) => While[HNF]) {
-    def value(arity: Int): While[HNF] = run(0, Nil, Nil)
+    def value(arity: Int): While[HNF] = run(arity, Nil, Nil)
   }
 
   type K = Map[String, Either[Task, Int]] => Task
