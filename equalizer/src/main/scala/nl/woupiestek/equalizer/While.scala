@@ -29,7 +29,9 @@ object While {
         suspend(f(a))
       }
 
-      @tailrec override def tailrecM[A, B](f: A => While[A \/ B])(a: A): While[B] =
+      @tailrec override def tailrecM[A, B](
+          f: A => While[A \/ B]
+      )(a: A): While[B] =
         f(a).exhaust match {
           case -\/(b) => tailrecM(f)(b)
           case \/-(b) => point(b)

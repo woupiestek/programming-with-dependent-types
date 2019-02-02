@@ -19,12 +19,16 @@ object EndingStream {
 
   val instance: Monad[EndingStream] with BindRec[EndingStream] =
     new Monad[EndingStream] with BindRec[EndingStream] {
-      override def tailrecM[A, B](f: A => EndingStream[A \/ B])(a: A): EndingStream[B] =
+      override def tailrecM[A, B](
+          f: A => EndingStream[A \/ B]
+      )(a: A): EndingStream[B] =
         bind(f(a))(_.fold(tailrecM(f), point(_)))
 
       override def point[A](a: => A): EndingStream[A] = cons(a, nil)
 
-      override def bind[A, B](fa: EndingStream[A])(f: A => EndingStream[B]): EndingStream[B] =
+      override def bind[A, B](
+          fa: EndingStream[A]
+      )(f: A => EndingStream[B]): EndingStream[B] =
         fa.unfold().cata({ case (h, t) => concat(f(h), bind(t)(f)) }, nil)
     }
 
