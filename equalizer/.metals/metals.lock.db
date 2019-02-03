@@ -1,0 +1,6 @@
+#FileLock
+#Sun Feb 03 09:27:05 CET 2019
+hostName=192.168.178.23
+id=168b277db02239f2de0f0ce195e86ef719825a8e9a2
+method=file
+server=192.168.178.23\:51407

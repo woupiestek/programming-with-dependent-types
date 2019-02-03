@@ -10,6 +10,7 @@ import scalaz._
 import scala.language.higherKinds
 
 class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
+  import R._
 
   lazy val term: R[T] =
     (name |@| list(mod))((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))

@@ -1,4 +1,39 @@
-# 30/12/18
+# 3/2/18
+## Modularisation of parsing
+Idea: read the symbols into a tree structure that reflects the structure of the 
+parser, then use an applicativeplus
+```
+P[I] -> (I -> P[I])*
+R[I] -> i × (R[I]*)
+```
+
+## Extremism
+I created a derivative parser according to the instructions at:
+http://matt.might.net/articles/parsing-with-derivatives/
+The structure merely recognizes whether a string matches, and
+does not build up any structure based on what it matches. I wanted
+to bolt this structure on, but things started to cancel out.
+
+What we need is a fast ApplicativePlus/Alternative/Monoid-of-functors,
+lazy, memoized and recursive.
+
+Once we have that, the only thing missing is a function 
+`(I => F[O]) => F[O]` which we use to feed data from a stream into the parser.
+Now I'd swear there is an even better way:
+Stuff the 'I => Boolean' in the same datastructure
+For each i:I, map the whole structure (lazyly) to get the next step...
+one problem: were do all the structure building steps go?
+
+Something like this might work:
+F[(I => Boolean)\/ B]
+We now have to be careful about what the map does, however,
+to keep it functioning as anything like a derivative.
+Perhaps there are some thing we cannot cleanly separate.
+
+
+
+
+
 
 # 16/12/18
 Now what?
