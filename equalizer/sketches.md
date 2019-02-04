@@ -1,13 +1,43 @@
+# 4/2/18
+
+Simple idea: where the derivative recognizer uses booleans, the parser uses 
+'sets' of values.
+
+## folding out
+
+I am stuck on the last bit: getting the values out at the end. That is not part
+of the applicative plus specification.
+
+One option is a foldable structure, were all the matching structures are
+generated one by one. Trying to construct one shows some assumptions
+fatally wrong. Just consider the following rules:
+
+```scala
+1. empty.foldMap(f) == empty
+2. (a <+> b).foldMap(f) == a.foldMap(f) append b.foldMap(g)
+3. a.point.foldMap(f) == f(a)
+4. (a <*> g.point).foldMap(f) == a.foldMap(f compose g)
+5. (a <*> empty) == empty
+6. (a <*> (b <+> c)) == (a <*> b) <+> (a <*> c)
+```
+
+Rule 4. is the idea I needed and missed. Rules 2. and 6. show what is difficult.
+Getting the types right will be hell.
+
 # 3/2/18
+
 ## Modularisation of parsing
+
 Idea: read the symbols into a tree structure that reflects the structure of the 
 parser, then use an applicativeplus
-```
-P[I] -> (I -> P[I])*
-R[I] -> i × (R[I]*)
+
+```scala
+P[I] => (I => P[I])*
+R[I] => i × (R[I]*)
 ```
 
 ## Extremism
+
 I created a derivative parser according to the instructions at:
 http://matt.might.net/articles/parsing-with-derivatives/
 The structure merely recognizes whether a string matches, and
@@ -30,29 +60,25 @@ We now have to be careful about what the map does, however,
 to keep it functioning as anything like a derivative.
 Perhaps there are some thing we cannot cleanly separate.
 
-
-
-
-
-
 # 16/12/18
+
 Now what?
 
 The terms kan be normalized to the form:
 `\ab.cd`
-where `a` is a list of variables, 
+where `a` is a list of variables,
 `b` is a list of equation of terms,
-`c` is a variable and 
+`c` is a variable and
 `d` is a list of terms that serve are arguments.
 The domain of this term is determined by `ab`, and this has
 become a more or less independent form `\a.cd`.
 
-I don't see how any of there terms could fail at this point. Every condition 
+I don't see how any of there terms could fail at this point. Every condition
 just transforms into new stricter conditions on application. The only thing
 that makes sense now, is to somehow simplify the domains.
 
 The fact that the domains are independent has some curious consequences.
-`\ab.cd = \ef.gh` requires that `b |= f`, `f |= b` and roughly `b, f |= cd = gh`. 
+`\ab.cd = \ef.gh` requires that `b |= f`, `f |= b` and roughly `b, f |= cd = gh`.
 Equations become collection of clauses, that contain equations of either
 simpler terms, or of simpler form. Here we run into the headache of keeping
 track of variables.
@@ -63,6 +89,7 @@ important, as these can be assumed. But it is an essential part of the equality.
 
 The `b, f |= cd = gh` part is the hardest. The lead variables make it possible
 to match up equations, then use a from of pattern mathcing.
+
 - `a, (b |= cd = ef) |= cg = hi`
 - `a |= b`, `a, d = g |= ef = hi`
 
@@ -101,6 +128,7 @@ at the same time, we want to keep trakc of  lot of different types--otherwise,
 why not just use prolog?
 
 # 3/9/18
+
 It just occurred to me tht if you just have declared rules in a
 database, you can simply search a rule that fits best. No need
 to have functions from the start.
@@ -113,6 +141,7 @@ beta clause  (forall (var,type)* gamma)
 gamma clause typing, equation ...
 
 # 2/9/18
+
        forall(x: A)(M: B) <=> fun(x: A)M: prod(x: A)B
  M: A, forall(x: B)(N: Z) <=> forall(y: prod(x: A)B)(N[x = yM]: Z)
         M: A, N[x = M]: B <=> x: A = M; N: B
@@ -149,9 +178,8 @@ typeOf(fun(x: A)M) = prod(x: A)typeOf(M)
 
 This is beyond my abilities now. I need to break it down further.
 
-
-
 # 1/9/18
+
 A more complete term language:
 Term = Var | \Var: Type. Term | Term Term | Var: Type = Term; Term | refl Term Term
 Type = Var | forall Var: Type. Type | path Term Term
