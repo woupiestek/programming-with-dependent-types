@@ -29,4 +29,31 @@ object RingFunctor {
         case (c: NERF[A], d: NERF[A => B]) => Ap(c, d)
       }
     }
+
+  private final case class FoldRight[A, B](
+      fa: RF[A],
+      z: Need[B],
+      f: (A, => B) => B
+  )
+
+  implicit def isFoldable: Foldable[RF] = new Foldable[RF] {
+
+    def foldMap[A, B](fa: RF[A])(f: A => B)(implicit F: scalaz.Monoid[B]): B =
+      fa match {
+        case Empty      => F.zero
+        case Point(a)   => f(a.value)
+        case Plus(a, b) => F.append(foldMap(a)(f), foldMap(b)(f))
+        case Ap(a, b)   => foldMap(a)(c => foldMap(b)(d => f(d(c))))
+      }
+
+    def foldRight[A, B](fa: RF[A], z: => B)(f: (A, => B) => B): B = {
+      fa match {
+        case Empty      => z
+        case Point(a)   => f(a.value, z)
+        case Plus(a, b) => foldRight(a, foldRight(b, z)(f))(f)
+        case Ap(a, b) =>
+          foldRight(a, z)((c, y) => foldRight(b, y)((d, x) => f(d(c), x)))
+      }
+    }
+  }
 }

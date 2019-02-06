@@ -16,7 +16,7 @@ fatally wrong. Just consider the following rules:
 1. empty.foldMap(f) == empty
 2. (a <+> b).foldMap(f) == a.foldMap(f) append b.foldMap(g)
 3. a.point.foldMap(f) == f(a)
-4. (a <*> g.point).foldMap(f) == a.foldMap(f compose g)
+4. (a <*> b).foldMap(f) == a.foldMap(c => b.foldMap(d => f(d(c))))
 5. (a <*> empty) == empty
 6. (a <*> (b <+> c)) == (a <*> b) <+> (a <*> c)
 ```

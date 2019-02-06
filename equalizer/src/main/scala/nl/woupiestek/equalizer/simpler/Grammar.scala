@@ -2,15 +2,15 @@ package nl.woupiestek.equalizer.simpler
 
 import java.lang.Character._
 
-import nl.woupiestek.equalizer.parsing.Rule
-import nl.woupiestek.equalizer.parsing.Rule._
-import scalaz.Scalaz._
+import nl.woupiestek.equalizer.parsing.ParserT
+import nl.woupiestek.equalizer.parsing.ParserT._
 import scalaz._
+import scalaz.Scalaz._
 
 import scala.language.higherKinds
 
-class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
-  import R._
+class Grammar[T, F[_]](implicit T: TermLike[String, T], F: ApplicativePlus[F]) {
+  type R[A] = ParserT[F, Char, A]
 
   lazy val term: R[T] =
     (name |@| list(mod))((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))
@@ -23,10 +23,12 @@ class Grammar[T, R[_]](implicit T: TermLike[String, T], R: Rule[R, Char]) {
       ) <+>
       term.map(x => T.operate(x, _))
 
-  val space: R[Unit] = readWhile[R, Char, Unit](isWhitespace)(_ => ())
+  val space: R[Unit] = readWhile[F, Char, Unit](isWhitespace(_: Char))(_ => ())
 
   val name: R[String] =
-    (readIf(isUpperCase) |@| readIf(isLetterOrDigit).list <* space) { (h, t) =>
+    (readIf[F, Char](isUpperCase(_: Char)) |@| readIf[F, Char](
+      isLetterOrDigit(_: Char)
+    ).list <* space) { (h, t) =>
       (h :: t).foldLeft(new StringBuilder)(_ += _).toString
     }
 
