@@ -23,18 +23,17 @@ class Grammar[T, F[_]](implicit T: TermLike[String, T], F: ApplicativePlus[F]) {
       ) <+>
       term.map(x => T.operate(x, _))
 
-  val space: R[Unit] = readWhile[F, Char, Unit](isWhitespace(_: Char))(_ => ())
+  val space: R[Unit] = If(isWhitespace).scanMap(_ => ())
 
   val name: R[String] =
-    (readIf[F, Char](isUpperCase(_: Char)) |@| readIf[F, Char](
-      isLetterOrDigit(_: Char)
-    ).list <* space) { (h, t) =>
-      (h :: t).foldLeft(new StringBuilder)(_ += _).toString
+    (If(isUpperCase).read[F] |@| If(isLetterOrDigit).read[F].list <* space) {
+      (h, t) =>
+        (h :: t).toList.mkString
     }
 
   def symbol(c: Char): R[Char] = is(c) <* space
 
-  private def is(c: Char): R[Char] = readIf(_ == c)
+  private def is(c: Char): R[Char] = If((_: Char) == c).read[F]
 
   def keyword(s: String): R[Unit] =
     s.foldLeft(().pure[R])(_ <* is(_)) <* space
