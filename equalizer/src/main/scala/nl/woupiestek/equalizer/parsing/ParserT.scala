@@ -5,48 +5,57 @@ import scalaz.Scalaz._
 import ParserT._
 import scala.collection.mutable
 
-sealed abstract class ParserT[F[_], I, O] {
-  def value: F[O]
-  def derive(i: I): ParserT[F, I, O]
+sealed abstract class ParserT[-I, +O] {
+  def value[F[_]: ApplicativePlus, P >: O]: F[P]
+  def derive(i: I): ParserT[I, O]
 
-  def parse[G[_]: Foldable](input: G[I]): F[O] = {
-    def dm = memoized((p: ParserT[F, I, O]) => memoized((i: I) => p.derive(i)))
+  def parse[F[_]: ApplicativePlus, G[_]: Foldable, J <: I, P >: O](
+      input: G[J]
+  ): F[P] = {
+    def dm = memoized((p: ParserT[I, O]) => memoized((i: I) => p.derive(i)))
 
-    input.foldLeft(this)(dm(_)(_)).value
+    input.foldLeft(this)(dm(_)(_)).value[F, P]
   }
 
 }
+
 object ParserT {
+  private case object Empty extends ParserT[Any, Nothing] {
+    def value[F[_]: ApplicativePlus, B >: Nothing] = ApplicativePlus[F].empty[B]
+    def derive(i: Any) = this
+  }
 
-  implicit def isApplicativePlus[F[_], I](
-      implicit F: ApplicativePlus[F]
-  ): ApplicativePlus[({ type G[O] = ParserT[F, I, O] })#G] = {
-    type G[O] = ParserT[F, I, O]
+  implicit def isApplicativePlus[I]
+      : ApplicativePlus[({ type G[O] = ParserT[I, O] })#G] = {
+    type G[O] = ParserT[I, O]
     new ApplicativePlus[G] {
-      def empty[A]: G[A] = new G[A] { self =>
-        def value = F.empty
-        def derive(i: I) = self
+      def empty[A]: G[A] = Empty
+
+      def point[A](a: => A): G[A] = new ParserT[I, A] {
+        def value[F[_]: ApplicativePlus, B >: A] = ApplicativePlus[F].point(a)
+        def derive(i: I) = Empty
       }
 
-      def point[A](a: => A): G[A] = new G[A] {
-        def value = F.point(a)
-        def derive(i: I) = empty[A]
-      }
+      def ap[A, B](fa: => G[A])(f: => G[A => B]): G[B] =
+        new G[B] {
+          def value[F[_]: ApplicativePlus, C >: B] =
+            ApplicativePlus[F].ap(fa.value[F, A])(f.value[F, A => C])
 
-      def ap[A, B](fa: => G[A])(f: => G[A => B]): G[B] = new G[B] {
-        def value = F.ap(fa.value)(f.value)
+          def derive(i: I) =
+            plus(ap(fa.derive(i))(f), ap(new G[A] {
+              def value[F[_]: ApplicativePlus, C >: A] = fa.value[F, C]
+              def derive(j: I) = Empty
+            })(f.derive(i)))
+        }
 
-        def derive(i: I) =
-          plus(ap(fa.derive(i))(f), ap(new G[A] {
-            def value = fa.value
-            def derive(j: I) = empty[A]
-          })(f.derive(i)))
-      }
-
-      def plus[A](a: G[A], b: => G[A]): G[A] = new G[A] {
-        def value = F.plus(a.value, b.value)
-        def derive(i: I) = plus(a.derive(i), b.derive(i))
-      }
+      def plus[A](a: G[A], b: => G[A]): G[A] =
+        if (a == Empty) b
+        else
+          new G[A] {
+            def value[F[_]: ApplicativePlus, B >: A] =
+              ApplicativePlus[F].plus(a.value[F, B], b.value[F, B])
+            def derive(i: I) = plus(a.derive(i), b.derive(i))
+          }
     }
   }
 
@@ -62,24 +71,19 @@ object ParserT {
   }
 
   case class If[I](f: I => Boolean) extends AnyVal {
-    def read[F[_]](implicit F: ApplicativePlus[F]): ParserT[F, I, I] =
-      new ParserT[F, I, I] {
-        def value = ApplicativePlus[F].empty
+    def one: ParserT[I, I] =
+      new ParserT[I, I] {
+        def value[F[_]: ApplicativePlus, J >: I] = ApplicativePlus[F].empty
         def derive(i: I) =
-          if (f(i)) isApplicativePlus[F, I].point(i)
-          else isApplicativePlus[F, I].empty
+          if (f(i)) isApplicativePlus[I].point(i)
+          else Empty
       }
 
-    def scanMap[F[_],B](
-        f: I => B
-    )(implicit B: scalaz.Monoid[B], F: ApplicativePlus[F]): ParserT[F, I, B] =
+    def scanMap[B](f: I => B)(implicit B: scalaz.Monoid[B]): ParserT[I, B] =
       scanRight(B.zero)((i, b) => B.append(f(i), b))
 
-    def scanRight[F[_],B](
-        z: => B
-    )(f: (I, => B) => B)(implicit F: ApplicativePlus[F]): ParserT[F, I, B] =
-      (read[F] |@| scanRight(z)(f))(f(_, _)) <+> isApplicativePlus[F, I]
-        .point(z)
+    def scanRight[B](z: => B)(f: (I, => B) => B): ParserT[I, B] =
+      (one |@| scanRight(z)(f))(f(_, _)) <+> isApplicativePlus[I].point(z)
   }
 
   private def memoized[A, B](f: A => B): A => B = {
