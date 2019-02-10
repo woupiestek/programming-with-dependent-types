@@ -4,8 +4,9 @@ import scalaz._
 
 import scala.annotation.tailrec
 
-final case class While[T](next: () => T \/ While[T]) {
-  @tailrec def exhaust: T = next() match {
+sealed trait While[T] {
+  def next: T \/ While[T]
+  @tailrec def exhaust: T = next match {
     case -\/(x) => x
     case \/-(x) => x.exhaust
   }
@@ -13,7 +14,7 @@ final case class While[T](next: () => T \/ While[T]) {
 
 object While {
 
-  def cons[T](t: => T \/ While[T]) = While(() => t)
+  def cons[T](t: => T \/ While[T]) = new While[T] { def next = t }
 
   def ana[A, B](f: A => B \/ A)(a: => A): While[B] = cons(f(a).map(ana(f)(_)))
 

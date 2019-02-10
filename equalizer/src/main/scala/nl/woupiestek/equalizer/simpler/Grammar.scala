@@ -7,13 +7,13 @@ import nl.woupiestek.equalizer.parsing.ParserT._
 import scalaz._
 import scalaz.Scalaz._
 
-class Grammar[T](implicit T: TermLike[String, T]) {
+object Grammar {
   type P[A] = ParserT[Char, A]
 
-  lazy val term: P[T] =
+  def term[T](implicit T: TermLike[String, T]): P[T] =
     (name |@| list(mod))((x, y) => y.foldLeft(T.variable(x))((a, b) => b(a)))
 
-  private lazy val mod: P[T => T] =
+  private def mod[T](implicit T: TermLike[String, T]): P[T => T] =
     ((keyword("be") *> name) |@| term)((x, y) => T.let(x, y, _)) <+>
       (keyword("for") *> name).map(x => T.lambda(x, _)) <+>
       ((keyword("if") *> term) |@| (keyword("is") *> term))(
