@@ -61,9 +61,9 @@ object ParserT {
 
   implicit class applicativePlusOps[R[_], O](rule: R[O])(
       implicit R: ApplicativePlus[R]
-  ) {
+  ) { //not stack safe
     def nel: R[NonEmptyList[O]] = (rule |@| rule.list)(NonEmptyList.nel)
-
+//not stack safe
     def list: R[IList[O]] = rule.nel.map(_.list) <+> IList.empty[O].point[R]
 
     def maybe: R[Maybe[O]] =
@@ -81,7 +81,7 @@ object ParserT {
 
     def scanMap[B](f: I => B)(implicit B: scalaz.Monoid[B]): ParserT[I, B] =
       scanRight(B.zero)((i, b) => B.append(f(i), b))
-
+//not stack safe
     def scanRight[B](z: => B)(f: (I, => B) => B): ParserT[I, B] =
       (one |@| scanRight(z)(f))(f(_, _)) <+> isApplicativePlus[I].point(z)
   }

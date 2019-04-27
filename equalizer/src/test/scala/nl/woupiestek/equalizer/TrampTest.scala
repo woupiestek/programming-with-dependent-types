@@ -7,7 +7,7 @@ import scala.util.control.TailCalls._
 import scala.annotation.tailrec
 
 class TrampTest extends FunSpec {
-  private val many = 100000000
+  private val many = 10000000
 
   describe("baseline") {
     @tailrec def even(n: Int, result: Boolean = true): Boolean = {
@@ -19,7 +19,7 @@ class TrampTest extends FunSpec {
       info("start")
       val startTime = System.nanoTime
       info("result: " + even(many))
-      info("nanos: " + (System.nanoTime - startTime))
+      info("millis: " + (System.nanoTime - startTime) / 1.0e6)
       succeed
     }
 
@@ -40,7 +40,7 @@ class TrampTest extends FunSpec {
       info("start")
       val startTime = System.nanoTime
       info("result: " + even(many).result)
-      info("nanos: " + (System.nanoTime - startTime))
+      info("millis: " + (System.nanoTime - startTime) / 1.0e6)
       succeed
     }
   }
@@ -60,7 +60,7 @@ class TrampTest extends FunSpec {
       info("start")
       val startTime = System.nanoTime
       info("result: " + even(many).exhaust)
-      info("nanos: " + (System.nanoTime - startTime))
+      info("millis: " + (System.nanoTime - startTime) / 1.0e6)
       succeed
     }
   }
@@ -85,14 +85,14 @@ class TrampTest extends FunSpec {
       info("start")
       val startTime = System.nanoTime
       While2.extract(countdown(100))
-      info("nanos: " + (System.nanoTime - startTime))
+      info("millis: " + (System.nanoTime - startTime) / 1.0e6)
     }
 
     it("passes the even/odd test") {
       info("start")
       val startTime = System.nanoTime
       info("result: " + While2.extract(even(many)))
-      info("nanos: " + (System.nanoTime - startTime))
+      info("millis: " + (System.nanoTime - startTime) / 1.0e6)
       succeed
     }
   }
