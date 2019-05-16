@@ -6,7 +6,7 @@ object Analyzer2 {
 
   final case class SentenceTask(
       sentence: Sentence,
-      values: List[Value]
+      values: Heap
   )
 
   final case class EvaluatedSentence(
@@ -64,11 +64,15 @@ object Analyzer2 {
 
   type Heap = Map[String, Either[Value, TermTask]]
 
-  final case class EvaluatedTerm(
+  trait EvaluatedTerm
+  final case class EvaluatedApplication(
       head: Value,
-      tail: List[Either[Value, TermTask]],
-      args: List[Value]
-  )
+      tail: List[Either[Value, TermTask]]
+  ) extends EvaluatedTerm
+  final case class EvaluatedAbstraction(
+      varName: String,
+      body: TermTask
+  ) extends EvaluatedTerm
 
   @tailrec def eval(
       term: Term,
@@ -79,12 +83,7 @@ object Analyzer2 {
     case Abstraction(varName, body) =>
       stack match {
         case Nil =>
-          eval(
-            body,
-            heap + (varName -> Left(Value(varName, args.length))),
-            Nil,
-            Value(varName, args.length) :: args
-          )
+          EvaluatedAbstraction(varName, TermTask(body, heap - varName))
         case h :: t => eval(body, heap + (varName -> h), t, args)
       }
     case Application(operator, operand) =>
@@ -98,8 +97,8 @@ object Analyzer2 {
       )
     case TermVar(name) =>
       heap.get(name) match {
-        case None                        => EvaluatedTerm(Value(name, -1), stack, args)
-        case Some(Left(value))           => EvaluatedTerm(value, stack, args)
+        case None                        => EvaluatedApplication(Value(name, -1), stack)
+        case Some(Left(value))           => EvaluatedApplication(value, stack)
         case Some(Right(TermTask(t, h))) => eval(t, h, stack, args)
       }
   }

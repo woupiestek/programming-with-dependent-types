@@ -6,15 +6,11 @@ object Analyzer {
 
   final case class Value(name: String, offset: Int)
 
-  type Sequent = (Boolean, Int, List[(Int, List[Value])], List[Value])
+  type Sequent = (Int, Set[Int], Set[Value])
 
-  type Pattern = (Value, List[Task])
-
-  type Result = (List[(Pattern, Pattern, Sequent)], Int)
-
-  def analyze(sentence: Sentence): Result =
+  def analyze(sentence: Sentence): Sequ =
     analyze(
-      (sentence, Map.empty[String, Task], (true, 0, Nil, Nil)) :: Nil,
+      (sentence, Map.empty[String, Task], (0, Set.empty[Int], Set.empty[Value])) :: Nil,
       Nil,
       1,
       0
@@ -22,38 +18,26 @@ object Analyzer {
 
   @tailrec def analyze(
       in: List[(Sentence, Map[String, Task], Sequent)],
-      out: List[(Pattern, Pattern, Sequent)],
+      out: List[(Task, Task, Sequent)],
       offset: Int,
       varOffset: Int
-  ): Result = in match {
-    case Nil => (out, offset)
-    case (h, heap, (k, i, j, vars)) :: t =>
+  ): Sequ = in match {
+    case Nil => catalyze(out, Map.empty)
+    case (h, heap, (i, j, vars)) :: t =>
       h match {
         case Equation(left, right) =>
-          val lValue = evaluate(left, heap, Nil, Nil, varOffset)
-          val rValue = evaluate(
-            right,
-            heap,
-            lValue.args.reverse.map(ValueTask(_)),
-            lValue.args,
-            lValue.varOffset
-          )
           analyze(
             t,
-            (
-              (lValue.operator, lValue.operands),
-              (rValue.operator, rValue.operands),
-              (k, i, j, rValue.args ++ vars)
-            ) :: out,
+            (TermTask(left, heap), TermTask(right, heap), (i, j, vars)) :: out,
             offset,
-            rValue.varOffset
+            varOffset
           )
         case Implication(ante, con) =>
           analyze(
-            (ante, heap, (k, i, (offset, vars) :: j, vars)) :: (
+            (ante, heap, (i, j + offset, vars)) :: (
               con,
               heap,
-              (!k, offset, Nil, Nil)
+              (offset, Set.empty[Int], Set.empty[Value])
             ) :: t,
             out,
             offset + 1,
@@ -65,13 +49,33 @@ object Analyzer {
             (
               body,
               heap + (varName -> ValueTask(value)),
-              (k, i, j, value :: vars)
+              (i, j, vars + value)
             ) :: t,
             out,
             offset,
             varOffset
           )
       }
+  }
+
+  final case class Sequ(
+      left: Task,
+      right: Task,
+      ante: Set[Sequ],
+      args: Set[Value]
+  )
+
+  def catalyze(
+      in: List[(Task, Task, Sequent)],
+      out: Map[Int, Sequ]
+  ): Sequ = in match {
+    case Nil => out(0)
+    case (p, q, (r, s, t)) :: u =>
+      catalyze(
+        u,
+        out + (r ->
+          Sequ(p, q, out.collect { case (i, j) if s(i) => j }.toSet, t))
+      )
   }
 
   sealed trait Task
