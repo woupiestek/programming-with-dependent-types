@@ -6,34 +6,26 @@ object Analyzer3 {
 
   final case class Value(name: String, level: Int)
   final case class A(sentence: Sentence, args: List[Value])
-  final case class E(
-      lOperator: Value,
-      lOperands: List[Either[Value, Task]],
-      rOperator: Value,
-      rOperands: List[Either[Value, Task]]
-  )
   final case class Task(term: Term, heap: Heap)
   type Heap = Map[String, Either[Value, Task]]
 
   final case class Sequent(
-      equations: List[E],
+      equations: List[(NF, NF)],
       antes: List[Sequent],
       values: List[Value]
   )
 
   //switching to eager evaluation
-  @tailrec def deepAnalysis(
-      sentence: Sentence
-  ): Sequent = {
-    def helper(
+  def deepAnalysis(sentence: Sentence): Sequent = {
+    @tailrec def helper(
         in: List[A],
-        out: List[(Sentence, List[E], List[A], List[Value])],
+        out: List[(Sentence, List[(NF, NF)], List[A], List[Value])],
         offset: Int
     ): Sequent = in match {
       case Nil =>
         out.foldLeft(Map.empty[Sentence, Sequent]) {
-          case (out, (a, b, c, d)) =>
-            out + (a -> Sequent(b, c.map(_.sentence).flatMap(out.get), d))
+          case (o, (a, b, c, d)) =>
+            o + (a -> Sequent(b, c.map(_.sentence).map(o), d))
         }(sentence)
       case A(h0, h1) :: t =>
         val (es, as, vs, o2) = analyze(h0, Nil, h1, offset)
@@ -47,7 +39,7 @@ object Analyzer3 {
       antes: List[A],
       values: List[Value],
       offset: Int
-  ): (List[E], List[A], List[Value], Int) = sentence match {
+  ): (List[(NF, NF)], List[A], List[Value], Int) = sentence match {
     case Generalization(varName, body) =>
       analyze(
         body,
@@ -61,77 +53,73 @@ object Analyzer3 {
       val heap = values.foldRight(Map.empty[String, Either[Value, Task]])(
         (x, y) => y + (x.name -> Left(x))
       )
-      val (equations, args, offset2) =
-        equate(
-          (Right(Task(left, heap)), Right(Task(right, heap))) :: Nil,
-          Nil,
-          values,
-          offset
+
+      val (lValue, lOffset) = fullEval(Task(left, heap), offset)
+      val (rValue, rOffset) =
+        fullEval(
+          Task(right, heap),
+          lOffset
         )
-      (equations, antes, args, offset2)
+      (equate((lValue, rValue) :: Nil), antes, values, rOffset)
   }
 
-  @tailrec def equate(
-      in: List[(Either[Value, Task], Either[Value, Task])],
-      out: List[E],
-      args: List[Value],
+  def equate(in: List[(NF, NF)]) = {
+    @tailrec def helper(
+        in: List[(NF, NF)],
+        out: List[(NF, NF)]
+    ): List[(NF, NF)] = in match {
+      case Nil => out
+      case h :: t =>
+        h match {
+          case (NF(a, b, c), NF(d, e, f)) =>
+            val i = c.indexOf(a)
+            if (c.length == f.length &&
+                b.length == e.length &&
+                i == f.indexOf(d) && (i >= 0 || a == d))
+              helper(
+                b.map(x => x.copy(args = x.args ++ c))
+                  .zip(e.map(x => x.copy(args = x.args ++ f))) ++ t,
+                out
+              )
+            else
+              helper(t, h :: out)
+        }
+    }
+
+    helper(in, Nil)
+  }
+
+  final case class NF(operand: Value, operands: List[NF], args: List[Value])
+
+  def fullEval(
+      task: Task,
       offset: Int
-  ): (List[E], List[Value], Int) = in match {
-    case Nil => (out, args, offset)
-    case h :: t =>
-      h match {
-        case (Right(Task(left, lHeap)), Right(Task(right, rHeap))) =>
-          val (lOperator, lOperands, lArgs, lOffset) =
-            eval(left, lHeap, Nil, Nil, offset)
-          val (rOperator, rOperands, rArgs, rOffset) =
-            eval(right, rHeap, lArgs.map(Left(_)).reverse, Nil, lOffset)
-          val lOperands2 = lOperands ++ rArgs.map(Left(_)).reverse
-          if (lOperator == rOperator && lOperands2.length == rOperands.length) {
-            equate(
-              lOperands2.zip(rOperands) ++ t,
-              out,
-              rArgs ++ lArgs ++ args,
-              rOffset
-            )
-          } else {
-            equate(
-              t,
-              E(lOperator, lOperands2, rOperator, rOperands) :: out,
-              rArgs ++ lArgs ++ args,
-              rOffset
-            )
-          }
-        case (Right(Task(left, lHeap)), Left(rOperator)) =>
-          val (lOperator, lOperands2, lArgs, lOffset) =
-            eval(left, lHeap, Nil, Nil, offset)
-          val rOperands = lArgs.map(Left(_)).reverse
-          if (lOperator == rOperator && lOperands2.length == rOperands.length) {
-            equate(lOperands2.zip(rOperands) ++ t, out, lArgs ++ args, lOffset)
-          } else {
-            equate(
-              t,
-              E(lOperator, lOperands2, rOperator, rOperands) :: out,
-              lArgs ++ args,
-              lOffset
-            )
-          }
-        case (Left(rOperator), Right(Task(left, lHeap))) =>
-          val (lOperator, lOperands2, lArgs, lOffset) =
-            eval(left, lHeap, Nil, Nil, offset)
-          val rOperands = lArgs.map(Left(_)).reverse
-          if (lOperator == rOperator && lOperands2.length == rOperands.length) {
-            equate(lOperands2.zip(rOperands) ++ t, out, lArgs ++ args, lOffset)
-          } else {
-            equate(
-              t,
-              E(lOperator, lOperands2, rOperator, rOperands) :: out,
-              lArgs ++ args,
-              lOffset
-            )
-          }
-        case (Left(lOperator), Left(rOperator)) =>
-          equate(t, E(lOperator, Nil, rOperator, Nil) :: out, args, offset)
+  ): (NF, Int) = {
+    @tailrec def helper(
+        in: List[Task],
+        out: List[(Task, Value, List[Either[Value, Task]], List[Value])],
+        offset: Int
+    ): (NF, Int) =
+      in match {
+        case Nil =>
+          val nf = out.foldLeft(Map.empty[Task, NF]) {
+            case (o, (a, b, c, d)) =>
+              o + (a -> NF(b, c.map {
+                case Left(e)  => NF(e, Nil, Nil)
+                case Right(t) => o(t)
+              }, d))
+          }(task)
+          (nf, offset)
+        case Task(x, y) :: t =>
+          val (a, b, c, d) = eval(x, y, Nil, Nil, offset)
+          helper(
+            b.collect { case Right(x) => x } ++ t,
+            (Task(x, y), a, b, c) :: out,
+            d
+          )
       }
+    val (a, b, c, d) = eval(task.term, task.heap, Nil, Nil, offset)
+    helper(b.collect { case Right(x) => x }, (task, a, b, c) :: Nil, d)
   }
 
   @tailrec def eval(
