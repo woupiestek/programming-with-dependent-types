@@ -6,133 +6,121 @@ object Analyzer {
 
   final case class Value(name: String, offset: Int)
 
-  type Sequent = (Int, Set[Int], Set[Value])
-
-  def analyze(sentence: Sentence): Sequ =
-    analyze(
-      (sentence, Map.empty[String, Task], (0, Set.empty[Int], Set.empty[Value])) :: Nil,
-      Nil,
-      1,
-      0
-    )
-
-  @tailrec def analyze(
-      in: List[(Sentence, Map[String, Task], Sequent)],
-      out: List[(Task, Task, Sequent)],
-      offset: Int,
-      varOffset: Int
-  ): Sequ = in match {
-    case Nil => catalyze(out, Map.empty)
-    case (h, heap, (i, j, vars)) :: t =>
-      h match {
-        case Equation(left, right) =>
-          analyze(
-            t,
-            (TermTask(left, heap), TermTask(right, heap), (i, j, vars)) :: out,
-            offset,
-            varOffset
-          )
-        case Implication(ante, con) =>
-          analyze(
-            (ante, heap, (i, j + offset, vars)) :: (
-              con,
-              heap,
-              (offset, Set.empty[Int], Set.empty[Value])
-            ) :: t,
-            out,
-            offset + 1,
-            varOffset
-          )
-        case Generalization(varName, body) =>
-          val value = Value(varName, varOffset)
-          analyze(
-            (
-              body,
-              heap + (varName -> ValueTask(value)),
-              (i, j, vars + value)
-            ) :: t,
-            out,
-            offset,
-            varOffset
-          )
-      }
-  }
-
-  final case class Sequ(
-      left: Task,
-      right: Task,
-      ante: Set[Sequ],
+  final case class Sequent(
+      left: Lambda,
+      right: Lambda,
+      ante: Set[Sequent],
       args: Set[Value]
   )
 
-  def catalyze(
-      in: List[(Task, Task, Sequent)],
-      out: Map[Int, Sequ]
-  ): Sequ = in match {
-    case Nil => out(0)
-    case (p, q, (r, s, t)) :: u =>
-      catalyze(
-        u,
-        out + (r ->
-          Sequ(p, q, out.collect { case (i, j) if s(i) => j }.toSet, t))
-      )
+  def judge(
+      sequent: Sequent,
+      conjunction: List[Sequent],
+      disjuntion: List[List[Sequent]],
+      offset: Int
+  ): Boolean = sequent match {
+    case Sequent(left, right, ante, args) =>
+      (left, right) match {
+        case (Pattern(lOperator, lOperands), Pattern(rOperator, rOperands)) =>
+          if (lOperator == rOperator && lOperands.length == rOperands.length) {
+            (lOperands.zip(rOperands).map {
+              case (l, r) => Sequent(l(Nil), r(Nil), ante, args)
+            } ++ conjunction) match {
+              case Nil    => true
+              case h :: t => judge(h, t, disjuntion, offset)
+            }
+          } else {
+            ??? //still not there
+          }
+        case _ =>
+          val value = Value("$", offset)
+          val s = Pattern(value, Nil) :: Nil
+          judge(
+            Sequent(left(s), right(s), ante, args + value),
+            conjunction,
+            disjuntion,
+            offset + 1
+          )
+      }
   }
 
-  sealed trait Task
-  final case class TermTask(term: Term, heap: Map[String, Task]) extends Task
-  final case class ValueTask(value: Value) extends Task
+  def analyze(sentence: Sentence): Sequent = {
+    @tailrec def helper(
+        in: List[(Sentence, Set[Sentence], Set[Value])],
+        out: List[(Sentence, Lambda, Lambda, Set[Sentence], Set[Value])],
+        offset: Int
+    ): Sequent = in match {
+      case Nil =>
+        out.foldLeft(Map.empty[Sentence, Sequent]) {
+          case (o, (s, l, r, as, vs)) => o + (s -> Sequent(l, r, as.map(o), vs))
+        }(sentence)
+      case (h, antes, values) :: t =>
+        h match {
+          case Equation(left, right) =>
+            val heap = values.groupBy(_.name).map {
+              case (k, v) => k -> Pattern(v.maxBy(_.offset), Nil)
+            }
+            helper(
+              t,
+              (
+                (
+                  h,
+                  evaluate(left, heap, Nil),
+                  evaluate(right, heap, Nil),
+                  antes,
+                  values
+                )
+              ) :: out,
+              offset
+            )
+          case Generalization(varName, body) =>
+            helper(
+              (body, antes, values + Value(varName, offset)) :: in,
+              out,
+              offset + 1
+            )
+          case Implication(ante, con) =>
+            helper(
+              (ante, Set.empty[Sentence], values) :: (con, antes + ante, values) :: in,
+              out,
+              offset
+            )
+        }
+    }
 
-  final case class Evaluated(
-      operator: Value,
-      operands: List[Task],
-      args: List[Value],
-      varOffset: Int
-  )
+    helper(((sentence, Set.empty[Sentence], Set.empty[Value])) :: Nil, Nil, 0)
+  }
+
+  sealed abstract class Lambda extends (List[Lambda] => Lambda)
+  final case class Pattern(operator: Value, operands: List[Lambda])
+      extends Lambda {
+    def apply(lambdas: List[Lambda]): Lambda =
+      Pattern(operator, operands ++ lambdas)
+  }
+  final case class Closure(term: Term, heap: Map[String, Lambda])
+      extends Lambda {
+    def apply(lambdas: List[Lambda]): Lambda = evaluate(term, heap, lambdas)
+  }
 
   @tailrec def evaluate(
       term: Term,
-      heap: Map[String, Task],
-      stack: List[Task],
-      args: List[Value],
-      varOffset: Int
-  ): Evaluated = term match {
+      heap: Map[String, Lambda],
+      stack: List[Lambda]
+  ): Lambda = term match {
     case Application(operator, operand) =>
-      evaluate(
-        operator,
-        heap,
-        TermTask(operand, heap) :: stack,
-        args,
-        varOffset
-      )
+      evaluate(operator, heap, Closure(operand, heap) :: stack)
     case Abstraction(varName, body) =>
       stack match {
-        case Nil =>
-          val value = Value(varName, varOffset)
-          evaluate(
-            body,
-            heap + (varName -> ValueTask(value)),
-            Nil,
-            value :: args,
-            varOffset + 1
-          )
-        case h :: t =>
-          evaluate(body, heap + (varName -> h), t, args, varOffset)
+        case Nil    => Closure(term, heap)
+        case h :: t => evaluate(body, heap + (varName -> h), t)
       }
     case Let(varName, value, body) =>
-      evaluate(
-        body,
-        heap + (varName -> TermTask(value, heap)),
-        stack,
-        args,
-        varOffset
-      )
+      evaluate(body, heap + (varName -> Closure(value, heap)), stack)
     case TermVar(varName) =>
       heap.get(varName) match {
-        case Some(TermTask(t, h)) =>
-          evaluate(t, h, stack, args, varOffset)
-        case Some(ValueTask(value)) => Evaluated(value, stack, args, varOffset)
-        case None =>
-          Evaluated(Value(varName, -1), stack, args, varOffset)
+        case Some(Closure(t, h)) => evaluate(t, h, stack)
+        case Some(Pattern(x, y)) => Pattern(x, y ++ stack)
+        case None                => Pattern(Value(varName, -1), stack)
       }
   }
 
