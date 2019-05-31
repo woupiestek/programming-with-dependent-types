@@ -55,3 +55,4 @@ project/plugins/project/
 *.class
 *.log
 
+.vscode

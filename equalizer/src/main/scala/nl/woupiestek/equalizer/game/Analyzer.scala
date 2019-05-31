@@ -1,22 +1,15 @@
 package nl.woupiestek.equalizer.game
 
 import scala.annotation.tailrec
-import scalaz._
+import scalaz.{Value => _, _}
 import Scalaz._
+import Lambda._
 
 object Analyzer {
 
-  final case class Value(name: String, offset: Int)
-
   type System = Option[List[(Pattern, Pattern, Set[Value])]]
 
-  final case class Sequent(eqs: System, ante: Set[Sequent], args: Set[Value]) {
-    lazy val pivots: Set[Value] = eqs.toSet.flatMap(
-      _.flatMap {
-        case (Pattern(a, _), Pattern(b, _), _) => Set(a, b).filter(args)
-      }
-    )
-  }
+  final case class Sequent(eqs: System, ante: Set[Sequent], args: Set[Value])
 
   sealed abstract class Vars[X] extends (Int => (X, Int))
   implicit val isMonadRec: Monad[Vars] with BindRec[Vars] = new Monad[Vars]
@@ -45,31 +38,31 @@ object Analyzer {
     def apply(v1: Int): (Value, Int) = (Value(name, v1), 1 + v1)
   }
 
-  def analyze(sentence: Sentence): Vars[Sequent] = {
-    def equate(
-        in: List[(Lambda, Lambda, Set[Value])],
-        out: List[(Pattern, Pattern, Set[Value])]
-    ): Vars[Option[List[(Pattern, Pattern, Set[Value])]]] =
-      in match {
-        case Nil => Monad[Vars].point(Some(out))
-        case h :: t =>
-          h match {
-            case (Pattern(lx, ly), Pattern(rx, ry), vs) =>
-              if (lx == rx && ly.length == ry.length)
-                equate(ly.zip(ry).map {
-                  case (l, r) => (l(Nil), r(Nil), vs)
-                } ++ t, out)
-              else if (vs(lx) || vs(rx)) Monad[Vars].point(None)
-              else equate(t, (Pattern(lx, ly), Pattern(rx, ry), vs) :: out)
-            case (l, r, vs) =>
-              for {
-                v <- mark("$")
-                s = Pattern(v, Nil) :: Nil
-                y <- equate((l(s), r(s), vs + v) :: t, out)
-              } yield y
-          }
+  def equate(
+    in: List[(Lambda, Lambda, Set[Value])],
+    out: List[(Pattern, Pattern, Set[Value])]
+): Vars[Option[List[(Pattern, Pattern, Set[Value])]]] =
+  in match {
+    case Nil => Monad[Vars].point(Some(out))
+    case h :: t =>
+      h match {
+        case (Pattern(lx, ly), Pattern(rx, ry), vs) =>
+          if (lx == rx && ly.length == ry.length)
+            equate(ly.zip(ry).map {
+              case (l, r) => (l(Nil), r(Nil), vs)
+            } ++ t, out)
+          else if (vs(lx) || vs(rx)) Monad[Vars].point(None)
+          else equate(t, (Pattern(lx, ly), Pattern(rx, ry), vs) :: out)
+        case (l, r, vs) =>
+          for {
+            v <- mark("$")
+            s = Pattern(v, Nil) :: Nil
+            y <- equate((l(s), r(s), vs + v) :: t, out)
+          } yield y
       }
+  }
 
+  def analyze(sentence: Sentence): Vars[Sequent] = {
     def helper(
         in: List[(Sentence, Set[Sentence], Set[Value])],
         out: List[
@@ -112,39 +105,6 @@ object Analyzer {
     }
 
     helper(((sentence, Set.empty[Sentence], Set.empty[Value])) :: Nil, Nil)
-  }
-
-  sealed abstract class Lambda extends (List[Lambda] => Lambda)
-  final case class Pattern(operator: Value, operands: List[Lambda])
-      extends Lambda {
-    def apply(lambdas: List[Lambda]): Lambda =
-      Pattern(operator, operands ++ lambdas)
-  }
-  final case class Closure(term: Term, heap: Map[String, Lambda])
-      extends Lambda {
-    def apply(lambdas: List[Lambda]): Lambda = evaluate(term, heap, lambdas)
-  }
-
-  @tailrec def evaluate(
-      term: Term,
-      heap: Map[String, Lambda],
-      stack: List[Lambda]
-  ): Lambda = term match {
-    case Application(operator, operand) =>
-      evaluate(operator, heap, Closure(operand, heap) :: stack)
-    case Abstraction(varName, body) =>
-      stack match {
-        case Nil    => Closure(term, heap)
-        case h :: t => evaluate(body, heap + (varName -> h), t)
-      }
-    case Let(varName, value, body) =>
-      evaluate(body, heap + (varName -> Closure(value, heap)), stack)
-    case TermVar(varName) =>
-      heap.get(varName) match {
-        case Some(Closure(t, h)) => evaluate(t, h, stack)
-        case Some(Pattern(x, y)) => Pattern(x, y ++ stack)
-        case None                => Pattern(Value(varName, -1), stack)
-      }
   }
 
 }
