@@ -1,3 +1,41 @@
+
+
+# 2/6/19
+
+Finally working on the type checker as I should.
+
+To design a runtime for it:
+- generating fresh variables
+- call-by-need semantics
+  that requires a heap... but we could try to use 'the' heap
+- deep recursion
+
+## learnings
+- Skolemize, to reduce the problem to dependent equation solving.
+- Conjunction-of-clauses may not be a good normal form for my purposes.
+- Suspending terms with `() => eval(...)` leads to uncontrolled recursion, and 
+  no efficient option for adding variables to the stack
+- Normalized terms and 'tasks' should both by valid arguments.
+- A strategy is needed to deal with unbound variables. They are the reason I 
+  hang onto the names. Perhaps we can split into three kinds: 
+    existentially bound,
+    universally bound,
+    unbound
+  trouble with unbound is that existentials aren't depending on them.
+- We keep needing fresh variables deep into the process, and we also have to
+  keep track of the list of universally bound variables the exitstential ones
+  have to be applied to.
+- I use a neat trick for putting recursive structure together after breaking
+  them down, but it won't handle equivalent subsentences correctly.
+
+## variables
+Every variable has a unique position in the source. So, we can use positions
+to prevent variables capture: book keep where the binding happened.
+
+## another idea
+Learn Haskell and do this in Haskell. Simply use the state monad
+Or use the state monad of Scalaz en hope it works out...
+
 # 4/2/18
 
 Simple idea: where the derivative recognizer uses booleans, the parser uses 

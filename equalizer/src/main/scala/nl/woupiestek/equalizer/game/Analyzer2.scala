@@ -4,11 +4,11 @@ import scala.annotation.tailrec
 
 object Analyzer2 {
 
-  def play(prop: Prop, offset: Int): (List[Prop], Int) = {
+  def play(prop: Prop, offset: Int): (Set[Prop], Int) = {
     val (props, offset1) =
       break(prop.pattern, prop.left, prop.right, false, offset)
     val (args2, offset2) =
-      prop.args.foldLeft[(List[Prop], Int)]((Nil, offset1)) {
+      prop.args.foldLeft((Set.empty[Prop], offset1)) {
         case ((out, o1), p) =>
           val (qs, o2) = break(p.pattern, p.left, p.right, true, o1)
           (out ++ qs.map {
@@ -19,19 +19,53 @@ object Analyzer2 {
     (props.map { case (l, r) => Prop(prop.pattern, l, r, args2) }, offset2)
   }
 
+  def play2(prop: Prop, offset: Int): Option[(Set[Prop], Int)] = {
+    def fit(p: Pattern, q: Pattern): Boolean =
+      (p.operator == q.operator && p.operands.length <= q.operands.length)
+
+    def recombine(
+        a: Pattern,
+        b: Pattern,
+        c: Pattern,
+        d: Pattern,
+        delta: Set[Prop],
+        gamma: Set[Prop]
+    ) = {
+      val x = delta.map(q => q.copy(args = q.args ++ gamma))
+      val (y, z) =
+        a.operands.zip(b.operands).foldLeft((Set.empty[Prop], offset)) {
+          case ((u, v), (l, r)) =>
+            val (l2, r2, o) = equate(prop.pattern, l, r, v)
+            (u + Prop(prop.pattern, l2, r2, Set.empty), o)
+        }
+      (x + Prop(prop.pattern, c, d, y ++ gamma), z)
+    }
+
+    prop.args.collectFirst {
+      case p if fit(p.left, prop.left) =>
+        recombine(p.left, prop.left, p.right, prop.right, p.args, prop.args - p)
+      case p if fit(p.left, prop.right) =>
+        recombine(p.left, prop.right, prop.left, p.right, p.args, prop.args - p)
+      case p if fit(p.right, prop.left) =>
+        recombine(p.right, prop.left, p.left, prop.right, p.args, prop.args - p)
+      case p if fit(p.right, prop.right) =>
+        recombine(p.right, prop.right, prop.left, p.left, p.args, prop.args - p)
+    }
+  }
+
   def break(
       pattern: (String, Int) => Pattern,
       left: Lambda,
       right: Lambda,
       example: Boolean,
       offset: Int
-  ): (List[(Pattern, Pattern)], Int) = {
+  ): (Set[(Pattern, Pattern)], Int) = {
 
     def helper(
         in: List[(Lambda, Lambda)],
-        out: List[(Pattern, Pattern)],
+        out: Set[(Pattern, Pattern)],
         offset: Int
-    ): (List[(Pattern, Pattern)], Int) =
+    ): (Set[(Pattern, Pattern)], Int) =
       in match {
         case Nil => (out, offset)
         case (l, r) :: t =>
@@ -41,18 +75,18 @@ object Analyzer2 {
               p.operands.length == q.operands.length) {
             helper(p.operands.zip(q.operands) ++ t, out, o)
           } else {
-            helper(t, (p, q) :: out, o)
+            helper(t, out + ((p, q)), o)
           }
       }
 
-    helper((left, right) :: Nil, Nil, offset)
+    helper((left, right) :: Nil, Set.empty, offset)
   }
 
   final case class Prop(
       pattern: (String, Int) => Pattern,
       left: Pattern,
       right: Pattern,
-      args: List[Prop]
+      args: Set[Prop]
   )
 
   def skolemize(sentence: Sentence): (Prop, Int) = {
