@@ -1,5 +1,17 @@
 
 
+# 3/6/19
+
+I am rewriting formulas to equivalents, which chould be easier to evaluate. This
+ involves making a lot of copies. That is why I think it would be nice to keep 
+track of formulas modulo equivalence. Equivalence classes of syntax, that is
+what I want.
+
+## new idea
+normalize to a kind of disjunction normal form, 
+until 
+
+
 # 2/6/19
 
 Finally working on the type checker as I should.

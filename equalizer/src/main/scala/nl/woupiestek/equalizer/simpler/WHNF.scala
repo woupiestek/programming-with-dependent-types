@@ -1,43 +1,44 @@
 package nl.woupiestek.equalizer.simpler
 
 
-import nl.woupiestek.equalizer.While
-import nl.woupiestek.equalizer.While._
 import nl.woupiestek.equalizer.simpler.BreakDown._
+import scalaz._
 import scalaz.Scalaz._
+import scalaz.Free._
+import nl.woupiestek.equalizer.simpler.BreakDown._
 
 sealed abstract class WHNF
 
 object WHNF {
 
   case class WApp(
-    eqs: List[(While[WHNF], While[WHNF])],
-    tail: List[While[WHNF]],
+    eqs: List[(Trampoline[WHNF], Trampoline[WHNF])],
+    tail: List[Trampoline[WHNF]],
     head: String) extends WHNF
 
   def app(
-    eqs: List[(While[WHNF], While[WHNF])],
-    tail: List[While[WHNF]],
-    head: String): While[WHNF] =
-    WApp(eqs, tail, head).asInstanceOf[WHNF].pure[While]
+    eqs: List[(Trampoline[WHNF], Trampoline[WHNF])],
+    tail: List[Trampoline[WHNF]],
+    head: String): Trampoline[WHNF] =
+    WApp(eqs, tail, head).asInstanceOf[WHNF].pure[Trampoline]
 
   case class WAbs(
     head: String,
     body: BreakDown,
-    heap: Map[String, While[WHNF]],
-    eqs: List[(While[WHNF], While[WHNF])]) extends WHNF
+    heap: Map[String, Trampoline[WHNF]],
+    eqs: List[(Trampoline[WHNF], Trampoline[WHNF])]) extends WHNF
 
   def abs(
     head: String,
     body: BreakDown,
-    heap: Map[String, While[WHNF]],
-    eqs: List[(While[WHNF], While[WHNF])]): While[WHNF] =
-    WAbs(head, body, heap, eqs).asInstanceOf[WHNF].pure[While]
+    heap: Map[String, Trampoline[WHNF]],
+    eqs: List[(Trampoline[WHNF], Trampoline[WHNF])]): Trampoline[WHNF] =
+    WAbs(head, body, heap, eqs).asInstanceOf[WHNF].pure[Trampoline]
 
   def normalize(
     pivot: BreakDown,
-    heap: Map[String, While[WHNF]]): While[WHNF] = pivot match {
-    case Id(a) => heap.getOrElse(a, app(Nil, Nil, a))
+    heap: Map[String, Trampoline[WHNF]]): Trampoline[WHNF] = pivot match {
+    case Iden(a) => heap.getOrElse(a, app(Nil, Nil, a))
     case Abs(a, b) => abs(a, b, heap, Nil)
     case App(a, b) => normalize(a, heap).flatMap {
       case WApp(c, d, e) => app(c, normalize(b, heap) :: d, e)

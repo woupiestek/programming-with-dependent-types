@@ -1,8 +1,8 @@
 package nl.woupiestek.equalizer.simpler
 
-import nl.woupiestek.equalizer.While
-import nl.woupiestek.equalizer.While._
+import scalaz._
 import scalaz.Scalaz._
+import scalaz.Free._
 
 final case class HNF2(snf: SNF2, eqs: List[CNF2])
 
@@ -20,9 +20,9 @@ object HNF2 {
 
   type Stack = List[Task]
 
-  final case class Task(run: (Stack, Int) => While[HNF2])
+  final case class Task(run: (Stack, Int) => Trampoline[HNF2])
 
-  final case class Term(run: (Heap, Stack, Int) => While[HNF2])
+  final case class Term(run: (Heap, Stack, Int) => Trampoline[HNF2])
 
   val instance: TermLike[String, Term] = new TermLike[String, Term] {
     override def variable(i: String): Term =
@@ -69,7 +69,7 @@ object HNF2 {
       )
   }
 
-  private def complete(i: Either[String, Int], s: Stack, a: Int): While[HNF2] =
+  private def complete(i: Either[String, Int], s: Stack, a: Int): Trampoline[HNF2] =
     s.traverse(_.run(Nil, a))
       .map((s: List[HNF2]) => HNF2(SNF2(a, i, s), Nil))
 }

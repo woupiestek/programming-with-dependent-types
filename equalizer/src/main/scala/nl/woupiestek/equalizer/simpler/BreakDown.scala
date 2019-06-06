@@ -1,14 +1,13 @@
 package nl.woupiestek.equalizer.simpler
 
-import nl.woupiestek.equalizer.While
-import nl.woupiestek.equalizer.While._
-import scalaz.Scalaz._
+import scalaz._
+import Scalaz._
+import Free._
 
 sealed abstract class BreakDown
 
 object BreakDown {
-
-  case class Id(id: String) extends BreakDown
+  case class Iden(id: String) extends BreakDown
 
   case class Abs(id: String, body: BreakDown) extends BreakDown
 
@@ -30,7 +29,7 @@ object BreakDown {
     entries match {
       case Nil => (eqs, ars)
       case h :: t => h match {
-        case (p, v, Id(k)) =>
+        case (p, v, Iden(k)) =>
           val w = v.collect { case (i, j) if j == k => (i, p) }
           arrows(t, eqs ++ w, ars, next)
         case (p, v, Abs(a, b)) =>
@@ -64,7 +63,7 @@ object BreakDown {
     stack: List[Task] = Nil,
     eqs: List[(Task, Task)] = Nil,
     arity: Int = 0): HNF[Task] = pivot match {
-    case Id(string) => heap.get(string) match {
+    case Iden(string) => heap.get(string) match {
       case Some(Left(Task(a, b))) => normalize(a, heap ++ b, stack, eqs, arity)
       case Some(Right(a)) => HNF(Right(a), stack, eqs, arity)
       case None => HNF(Left(string), stack, eqs, arity)
@@ -87,15 +86,15 @@ object BreakDown {
     domain: List[(NF, NF)],
     arity: Int)
 
-  final case class Task2(run:(List[Task2], List[(NF, NF)], Int) => While[NF])
+  final case class Task2(run:(List[Task2], List[(NF, NF)], Int) => Trampoline[NF])
 
   def normalize2(
     pivot: BreakDown,
     heap: Map[String, Either[Task2, Int]],
     stack: List[Task2],
     eqs: List[(NF, NF)],
-    arity: Int): While[NF] = pivot match {
-    case Id(string) => heap.get(string) match {
+    arity: Int): Trampoline[NF] = pivot match {
+    case Iden(string) => heap.get(string) match {
       case Some(Left(a)) => suspend(a.run(stack, eqs, arity))
       case Some(Right(a)) => stack
         .traverse(_.run(Nil, Nil, arity))

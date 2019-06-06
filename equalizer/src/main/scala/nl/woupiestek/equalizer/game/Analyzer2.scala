@@ -99,7 +99,7 @@ object Analyzer2 {
     ): (Prop, Int) = in match {
       case Nil =>
         (out.foldLeft(Map.empty[Sentence, Prop]) {
-          case (a, (b, e, c, d, f)) => a + (b -> Prop(e, c, d, f.map(a)))
+          case (a, (b, e, c, d, f)) => a + (b -> Prop(e, c, d, f.map(a).toSet))
         }(sentence), offset)
       case (a, b, c) :: t =>
         val u = if (a) Nil else c.values.filter(x => !x.operator.example).toList
