@@ -29,4 +29,31 @@ object Lambda {
         case None                => Pattern(varName, stack)
       }
   }
+
+  def prettyPrint(lambda: Lambda): String = lambda match {
+    case Lambda.Pattern(operator, operands) =>
+      (operator :: operands.map(prettyPrint)).mkString("(", " ", ")")
+    case Lambda.Closure(term, heap) =>
+      val h = heap
+        .map { case (k, v) => s"$k:${prettyPrint(v)}" }
+        .mkString(",")
+      s"(${Term.prettyPrint(term)}|$h)"
+  }
+
+  def free(lambda: Lambda): Set[String] = {
+    @annotation.tailrec
+    def helper(lambdas: List[Lambda], out: Set[String]): Set[String] =
+      lambdas match {
+        case Nil => out
+        case h :: t =>
+          h match {
+            case Closure(term, heap) =>
+              helper(t, Term.free(term) -- heap.keySet ++ out)
+            case Pattern(operator, operands) =>
+              helper(operands ++ lambdas, out + operator)
+          }
+      }
+    helper(lambda :: Nil, Set.empty)
+  }
+
 }

@@ -25,6 +25,14 @@ object Term {
       }
     helper((term, Set.empty[String]) :: Nil, Set.empty[String])
   }
+
+  def prettyPrint(term: Term): String = term match {
+    case TermVar(name)              => name
+    case Abstraction(varName, body) => s"\\$varName.${prettyPrint(body)}"
+    case Application(x, y)          => s"(${prettyPrint(x)} ${prettyPrint(y)})"
+    case Let(varName, value, context) =>
+      s"(${prettyPrint(context)}|$varName:${prettyPrint(value)})"
+  }
 }
 
 sealed abstract class Sentence

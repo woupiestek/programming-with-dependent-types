@@ -16,40 +16,26 @@ class GameTests extends FunSpec {
     it("generates a disjunctive normal form") {
       (1 to 11)
         .map(sentence(_, Nil).run(random))
-        .map(Analyzer3.analyze(_,Map.empty,Set.empty,false))
+        .map(Analyzer3.analyze(_, Map.empty, Set.empty, false))
         .map(stringify)
         .foreach(println)
     }
 
   }
-
-  def stringify(result: Set[Set[Analyzer3.Atom]]): String = {
-    def forTerm(term: Term): String = term match {
-      case TermVar(name)              => name
-      case Abstraction(varName, body) => s"\\$varName.${forTerm(body)}"
-      case Application(x, y)          => s"(${forTerm(x)} ${forTerm(y)})"
-      case Let(varName, value, context) =>
-        s"(${forTerm(context)}|$varName:${forTerm(value)})"
-    }
-    def forLambda(pattern: Lambda): String = pattern match {
-      case Lambda.Pattern(operator, operands) =>
-        s"(${(operator :: operands.map(forLambda)).mkString(" ")})"
-      case Lambda.Closure(term, heap) =>
-        val h = heap
-          .map { case (k, v) => s"$k:${forLambda(v)}" }
-          .mkString(",")
-        s"(${forTerm(term)}|$h)"
-    }
-    result
-      .map(_.map {
-        case Analyzer3.Equals(_, l, r)  => s"${forLambda(l)}==${forLambda(r)}"
-        case Analyzer3.Differs(_, l, r) => s"${forLambda(l)}!=${forLambda(r)}"
-      }.mkString("&"))
-      .mkString("|")
-  }
 }
 
 object GameTests {
+
+  def stringify(result: Set[Set[Analyzer3.Atom]]): String = {
+    result
+      .map(_.map {
+        case Analyzer3.Equals(_, l, r) =>
+          s"${Lambda.prettyPrint(l)}==${Lambda.prettyPrint(r)}"
+        case Analyzer3.Differs(_, l, r) =>
+          s"${Lambda.prettyPrint(l)}!=${Lambda.prettyPrint(r)}"
+      }.mkString("&"))
+      .mkString("|")
+  }
 
   type Gen[X] = Reader[Random, X]
   def gen[X](f: Random => X): Gen[X] = Reader(f)
