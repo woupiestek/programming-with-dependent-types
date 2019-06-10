@@ -2,24 +2,16 @@ package nl.woupiestek.equalizer.game
 
 import scala.annotation.tailrec
 
-sealed abstract class Lambda extends (List[Lambda] => Lambda)
+sealed abstract class Lambda
 object Lambda {
-  final case class Value(name: String, offset: Int)
-
-  final case class Pattern(operator: Value, operands: List[Lambda])
-      extends Lambda {
-    def apply(lambdas: List[Lambda]): Lambda =
-      Pattern(operator, operands ++ lambdas)
-  }
-  final case class Closure(term: Term, heap: Map[String, Lambda])
-      extends Lambda {
-    def apply(lambdas: List[Lambda]): Lambda = evaluate(term, heap, lambdas)
-  }
+  final case class Pattern(operator: String, operands: List[Lambda])
+      extends Lambda
+  final case class Closure(term: Term, heap: Map[String, Lambda]) extends Lambda
 
   @tailrec def evaluate(
       term: Term,
-      heap: Map[String, Lambda],
-      stack: List[Lambda]
+      heap: Map[String, Lambda] = Map.empty,
+      stack: List[Lambda] = Nil
   ): Lambda = term match {
     case Application(operator, operand) =>
       evaluate(operator, heap, Closure(operand, heap) :: stack)
@@ -34,7 +26,7 @@ object Lambda {
       heap.get(varName) match {
         case Some(Closure(t, h)) => evaluate(t, h, stack)
         case Some(Pattern(x, y)) => Pattern(x, y ++ stack)
-        case None                => Pattern(Value(varName, -1), stack)
+        case None                => Pattern(varName, stack)
       }
   }
 }

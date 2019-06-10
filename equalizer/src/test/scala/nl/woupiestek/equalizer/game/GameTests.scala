@@ -14,10 +14,9 @@ class GameTests extends FunSpec {
   describe("Analyzer3.analyze") {
 
     it("generates a disjunctive normal form") {
-
-      (0 to 10)
+      (1 to 11)
         .map(sentence(_, Nil).run(random))
-        .map(Analyzer3.analyze(_).run(0))
+        .map(Analyzer3.analyze(_,Map.empty,Set.empty,false))
         .map(stringify)
         .foreach(println)
     }
@@ -25,14 +24,21 @@ class GameTests extends FunSpec {
   }
 
   def stringify(result: Set[Set[Analyzer3.Atom]]): String = {
-    def forLambda(pattern: Analyzer3.Lambda): String = pattern match {
-      case Analyzer3.Pattern(operator, operands) =>
-        s"(${operator}${operands.map(forLambda).mkString})"
-      case Analyzer3.Name(term, heap) =>
+    def forTerm(term: Term): String = term match {
+      case TermVar(name)              => name
+      case Abstraction(varName, body) => s"\\$varName.${forTerm(body)}"
+      case Application(x, y)          => s"(${forTerm(x)} ${forTerm(y)})"
+      case Let(varName, value, context) =>
+        s"(${forTerm(context)}|$varName:${forTerm(value)})"
+    }
+    def forLambda(pattern: Lambda): String = pattern match {
+      case Lambda.Pattern(operator, operands) =>
+        s"(${(operator :: operands.map(forLambda)).mkString(" ")})"
+      case Lambda.Closure(term, heap) =>
         val h = heap
           .map { case (k, v) => s"$k:${forLambda(v)}" }
-          .mkString("[", ",", "]")
-        s"($term$h)"
+          .mkString(",")
+        s"(${forTerm(term)}|$h)"
     }
     result
       .map(_.map {
