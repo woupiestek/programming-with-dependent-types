@@ -1,4 +1,81 @@
 
+# 1/7/19
+
+## weak exponentials
+Suppose:
+- `A = { x: a | alpha(x) }`
+- `B = { x: b | beta(x) }`
+- `C = { x: c | gamma(x) }`
+- `f: A -> B`
+Then:
+` f => C = { (x: b, y: a -> c) | beta(x), forall z:a. f(z) = x, alpha(z) -> gamma(y(z)) } `
+While this is already a weakening, because a clause shows up, the 
+predicates can contains nested clauses. Not completely evaluating lambda 
+expressions becomes more valuable. 
+
+On one hand, it would be nice to reduce all the way down to nomral forms and 
+compare those. On the other, this is only valid if reductions are equal, which 
+is avoided for a simpler type checker. Lambda expression equivalence needs
+working out.
+
+## limited to free variables
+Terms define behavior outside their proper domains and can be distiguished on 
+that account. In other words, although there are restrictions on what values a
+variable can take encoded in the type, the equivalence on lambda expressions
+doesn't care about these equivalences.
+
+This locks together now:
+- Extensional equivalence means that two lambda expressions give the same 
+outputs for the same inputs, given inputs *in the domain*. Extensionally 
+equivalent terms may therefore differ on inputs outside of the domain. The
+type checker will ignored this, however, and consider counter examples
+to equivalene outside the domains to be proper evidence of inequality. I.e. 
+```(\x \y x == y -> x) != (\x \y x == y -> y)``` because any pair of elements
+counts as evidence against equality.
+
+Path types are supposed to give back extensionality in a way. It is sort of 
+clear what that would look like now. The type `{x:a|M==N} -> B` has a path type, 
+where a path `P:B -> Q:B` is a term `R` such that `RM = P` and `RN = Q`. 
+Larger sets of equations simply lead to higher arity `R` and nested clauses 
+are functions of paths.
+
+# 30/6/19
+
+## Weak exponentials
+The basic idea is that the language is the internal language of a locally 
+Cartesian closed category. That requires limits and fibred exponentials. This
+is a problem, because comparing functions is not necessarily decidable, and
+apparently quite complex if possible. However, weakened versions of these 
+structures are porbabaly good enough. In other words, rather than having
+fibred exponentials, have weak fibred exponentials.
+
+If `f: A -> B` is a function, then de fibred exponential type `f => C` consist 
+of pairs `(x:B,y:A_b -> C)`, or rather there should be functions 
+`dom: (f => C) -> B` and `apply: { (x: f => C, y:A) | dom(x) == f(y) } -> C` 
+such that for each `g: D -> B` and `h: { (d:D,a:A) | g(d) == f(a) } -> C` there 
+is a unique `h':D -> f => C` such that `dom ¤ h' = g` and `apply ¤ h' = h`.
+The weakening is precisely that the uniqueness above is dropped. There may be
+multiple `h'` such that the composition is `h`.
+
+Obviously, `f => C` is not a proper expression, because it contains a function.
+Instead the types would have a lambda expression for `f`. Part of the weakening 
+could be that `f => C` is actually `B * (A => C)` for a lambda expresion type
+`A => C`. I think it should be harder: assuming `C = { d:D | F(d) }` take
+`{ (b:B,c:A => C)| forall a. f(a) = b -> F(c(a)) }`.
+Assumed here is that every member `f => C` canonically extends to a 
+function `A => C`, defined by its lambda expression, since the lambda expression
+expresses operations that don't care about the constraint on the inputs.
+However, `C` can be a solution set, and express constraints that only hold
+for certain values of `A`.
+This looks like it kickstarts the escalating complexity of first order logic
+with lambda expressions, but maybe not?
+1. formulas on the right hand side of the arrow are limited to equations.
+2. equality of lambda expressions has to be consistent, but it doesn't have to
+be extensial equality, i.e. a lot of equalities are allowed to be false.
+
+The weaker equality of lambda expressions means that Church encodings for other 
+data types won't work well. Other structure, like colimits and recursive
+types may therefore need some help.
 
 # 3/6/19
 
