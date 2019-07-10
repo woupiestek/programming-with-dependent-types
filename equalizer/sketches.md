@@ -1,8 +1,14 @@
 
+# 10/7/19
+
+Dealing with right recursion: `X = A | X ~ B` to `X' = A ~ (X' | B)`.
+Otherwise the breadth is infinite.
+
 # 9/7/19
 
-Its breadth first search, so the idea to create a list of alternatives,
-
+Its just breadth first search.
+Every parser reduces to a list of `Write(_)` and `FlatMap(Read,_)`
+The first one represent the matches, the second one the differentials.
 
 # 7/7/19
 

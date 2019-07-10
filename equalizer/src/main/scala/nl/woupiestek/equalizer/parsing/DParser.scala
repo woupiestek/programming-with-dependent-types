@@ -2,74 +2,68 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
-import scala.annotation.tailrec
 
-sealed abstract class DParser[-I] {
-  final def d(i: I): DParser[I] = ???
-}
+sealed abstract class DParser[-I, +O]
 
 object DParser {
-  private final class Lazy[+I](f: => I) {
-    lazy val value = f
-  }
 
-  private final case object Empty extends DParser[Any]
-  private final case object Read extends DParser[Any]
-  private final case class Sum[I](left: DParser[I], right: DParser[I])
-      extends DParser[I]
-  private final case class Write[I](i: I) extends DParser[I]
-  private final case class Suspend[I](f: Lazy[DParser[I]]) extends DParser[I]
+  private final case object Empty extends DParser[Any, Nothing]
+  private final case object Read extends DParser[Any, Nothing]
+  private final case class Sum[I, O](left: DParser[I, O], right: DParser[I, O])
+      extends DParser[I, O]
+  private final case class Write[O](o: O) extends DParser[Any, O]
+  private final case class FlatMap[I, O, P](
+      dpi: DParser[I, O],
+      dpj: O => DParser[I, P]
+  ) extends DParser[I, P]
 
-  private final case class FlatMap[I, J](dpi: DParser[I], dpj: I => DParser[J])
-      extends DParser[J]
-  
-  def simplify[J](dp: DParser[J]): DParser[J] = {
-    @tailrec def helper[X](
-        head: DParser[X],
-        tail: X => DParser[J]
-    ): DParser[J] = head match {
-      case Empty            => Empty
-      case f: FlatMap[x, X] => helper[x](
-        f.dpi, f.dpj(_).flatMap(tail))
-      case w: Write[X] =>
-        helper2(tail(w.i)) match {
-          case FlatMap(x, y) => helper(x, y)
-          case other         => other //not flatmap
-        }
-      case Suspend(f) => helper(f.value, tail)
-      case _          => FlatMap(head, tail) // head is Read or Sum
+  def first[I, O](dp: DParser[I, O]): DParser[I, O] = {
+
+    def helper1[X](
+        dpx: DParser[I, X],
+        f: X => DParser[I, O],
+        out: DParser[I, O]
+    ): DParser[I, O] = dpx match {
+      case Empty               => out
+      case g: FlatMap[I, w, X] => helper1(g.dpi, g.dpj(_: w).flatMap(f), out)
+      case Read                => read[I, X].flatMap(f) <+> out
+      case Sum(left, right)    => helper1(left, f, right.flatMap(f) <+> out)
+      case Write(x)            => helper0(f(x), out)
     }
 
-    def helper2(head: DParser[J]): DParser[J] = {
-      var result = head
-      while (head.isInstanceOf[Suspend[J]]) {
-        result = result.asInstanceOf[Suspend[J]].f.value
-      }
-      result
+    def helper0(
+        dpx: DParser[I, O],
+        out: DParser[I, O]
+    ): DParser[I, O] = dpx match {
+      case f: FlatMap[I, x, O] => helper1(f.dpi, f.dpj, out)
+      case Sum(left, right)    => helper0(left, right <+> out)
+      case Empty               => out
+      case _                   => dpx <+> out
     }
 
-    helper2(dp) match {
-      case FlatMap(x, y) => helper(x, y)
-      case other         => other //not flatmap
+    helper0(dp, empty)
+  }
+
+  def read[I, O]: DParser[I, O] = Read
+
+  def write[I, O](o: O): DParser[I, O] = Write(o)
+  def pause[I]: DParser[I, Unit] = write(())
+  def suspend[I, O](dpi: => DParser[I, O]): DParser[I, O] =
+    pause[I].flatMap((_: Unit) => dpi)
+
+  def empty[I, O]: DParser[I, O] = Empty
+
+  implicit def isMonadPlus[I]
+      : MonadPlus[({ type DPI[+O] = DParser[I, O] })#DPI] = {
+    type DPI[+O] = DParser[I, O]
+    new MonadPlus[DPI] {
+      def bind[A, B](fa: DPI[A])(f: A => DPI[B]): DPI[B] = FlatMap(fa, f)
+      def empty[A]: DPI[A] = Empty.asInstanceOf[DPI[A]]
+      def plus[A](a: DPI[A], b: => DPI[A]): DPI[A] = Sum(a, b)
+      def point[A](a: => A): DPI[A] = write(a)
     }
   }
 
-  def suspend[I](dpi: => DParser[I]): DParser[I] = {
-    Suspend(new Lazy(dpi))
-  }
-
-  def write[I](i: I): DParser[I] = Write(i)
-
-  def empty[I]: DParser[I] = Empty
-
-  implicit val isMonadPlus: MonadPlus[DParser] = new MonadPlus[DParser] {
-    def bind[A, B](fa: DParser[A])(f: A => DParser[B]): DParser[B] =
-      FlatMap(fa, f)
-    def empty[A]: DParser[A] = Empty
-    def plus[A](a: DParser[A], b: => DParser[A]): DParser[A] = Sum(a, b)
-    def point[A](a: => A): DParser[A] = suspend(Write(a))
-  }
-
-  implicit def isMonoid[I]: Monoid[DParser[I]] = isMonadPlus.monoid
+  implicit def isMonoid[I, O]: Monoid[DParser[I, O]] = isMonadPlus[I].monoid
 
 }
