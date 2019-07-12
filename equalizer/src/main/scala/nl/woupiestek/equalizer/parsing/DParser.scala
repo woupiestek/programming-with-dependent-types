@@ -17,53 +17,74 @@ object DParser {
       dpj: O => DParser[I, P]
   ) extends DParser[I, P]
 
-  def first[I, O](dp: DParser[I, O]): DParser[I, O] = {
+  def read[I, O]: DParser[I, O] = Read
+  def write[I, O](o: O): DParser[I, O] = Write(o)
+  private val Pause = Write(())
+  def suspend[I, O](dpi: => DParser[I, O]): DParser[I, O] =
+    FlatMap(Pause, (_: Unit) => dpi)
+  def empty[I, O]: DParser[I, O] = Empty
 
+  private class Instances[I] {
+    type F[+O] = DParser[I, O]
+    val monadPlus: MonadPlus[F] = new MonadPlus[F] {
+      def bind[A, B](fa: F[A])(f: A => F[B]): F[B] =
+        fa match {
+          case Empty               => Empty
+          case g: FlatMap[I, x, A] => FlatMap(g.dpi, g.dpj(_: x).flatMap(f))
+          case Write(o)            => f(o)
+          case _                   => FlatMap(fa, f)
+        }
+      def empty[A]: F[A] = Empty
+      def plus[A](a: F[A], b: => F[A]): F[A] =
+        if (a == Empty) b else if (b == Empty) a else Sum(a, b)
+      def point[A](a: => A): F[A] = Write(a)
+    }
+  }
+
+  implicit def monadPlus[I]: MonadPlus[({ type F[+O] = DParser[I, O] })#F] =
+    new Instances[I].monadPlus
+  implicit def monoid[I, O]: Monoid[DParser[I, O]] = monadPlus.monoid[O]
+
+  type Out[-I, +O] = Stream[Either[I => DParser[I, O], O]]
+
+  def stream[I, O, Z](read: (I => DParser[I, O]) => Z, write: O => Z)(
+      dp: DParser[I, O]
+  ): Stream[Z] = {
     def helper1[X](
         dpx: DParser[I, X],
         f: X => DParser[I, O],
         out: DParser[I, O]
-    ): DParser[I, O] = dpx match {
-      case Empty               => out
+    ): Stream[Z] = dpx match {
+      case Empty               => stream(read, write)(out)
       case g: FlatMap[I, w, X] => helper1(g.dpi, g.dpj(_: w).flatMap(f), out)
-      case Read                => read[I, X].flatMap(f) <+> out
-      case Sum(left, right)    => helper1(left, f, right.flatMap(f) <+> out)
-      case Write(x)            => helper0(f(x), out)
+      case Read =>
+        read((i: I) => f(i.asInstanceOf[X])) #:: stream(read, write)(out)
+      case Sum(left, right) => helper1(left, f, Sum(right.flatMap(f), out))
+      case Write(x)         => helper0(f(x), out)
     }
 
     def helper0(
         dpx: DParser[I, O],
         out: DParser[I, O]
-    ): DParser[I, O] = dpx match {
+    ): Stream[Z] = dpx match {
+      case Empty               => stream(read, write)(out)
       case f: FlatMap[I, x, O] => helper1(f.dpi, f.dpj, out)
-      case Sum(left, right)    => helper0(left, right <+> out)
-      case Empty               => out
-      case _                   => dpx <+> out
+      case Read =>
+        read((i: I) => Write(i.asInstanceOf[O])) #:: stream(read, write)(out)
+      case Sum(left, right) => helper0(left, Sum(right, out))
+      case Write(o)         => write(o) #:: stream(read, write)(out)
     }
 
-    helper0(dp, empty)
+    helper0(dp, Empty)
   }
 
-  def read[I, O]: DParser[I, O] = Read
+  //P => 1 + (O + (I => P)) * P
+  def derive[I, O](dp: DParser[I, O], i: I): DParser[I, O] = 
+    stream((_: I => DParser[I, O])(i), (_: O) => Empty)(dp).fold(Empty)(_ <+> _)
+  
 
-  def write[I, O](o: O): DParser[I, O] = Write(o)
-  def pause[I]: DParser[I, Unit] = write(())
-  def suspend[I, O](dpi: => DParser[I, O]): DParser[I, O] =
-    pause[I].flatMap((_: Unit) => dpi)
-
-  def empty[I, O]: DParser[I, O] = Empty
-
-  implicit def isMonadPlus[I]
-      : MonadPlus[({ type DPI[+O] = DParser[I, O] })#DPI] = {
-    type DPI[+O] = DParser[I, O]
-    new MonadPlus[DPI] {
-      def bind[A, B](fa: DPI[A])(f: A => DPI[B]): DPI[B] = FlatMap(fa, f)
-      def empty[A]: DPI[A] = Empty.asInstanceOf[DPI[A]]
-      def plus[A](a: DPI[A], b: => DPI[A]): DPI[A] = Sum(a, b)
-      def point[A](a: => A): DPI[A] = write(a)
-    }
-  }
-
-  implicit def isMonoid[I, O]: Monoid[DParser[I, O]] = isMonadPlus[I].monoid
+  def matches[I, O](dp: DParser[I, O]): List[O] = 
+    stream((_: I => DParser[I, O]) => Nil, List(_: O))(dp).flatten.toList
+  
 
 }
