@@ -1,4 +1,9 @@
 
+
+
+# 13/7/19
+Thoroughly reworked parsing. Wonder how these new versions will work.
+
 # 10/7/19
 
 Dealing with right recursion: `X = A | X ~ B` to `X' = A ~ (X' | B)`.
