@@ -19,7 +19,7 @@ object DParser {
 
   def read[I]: DParser[I, I] = Read
   def readIf[I](f: I => Boolean): DParser[I, I] =
-    read.flatMap((i: I) => if (f(i)) write(i) else empty)
+    monadPlus.bind(read[I])((i: I) => if (f(i)) write(i) else empty)
   def write[I, O](o: O): DParser[I, O] = Write(o)
   private val Pause = Write(())
   def suspend[I, O](dpo: => DParser[I, O]): DParser[I, O] =
