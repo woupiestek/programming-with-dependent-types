@@ -1,7 +1,15 @@
 
+# 19/7/19
+
+## more simplifying assumptions
+
+Keep track of positions to tell variables apart. Only top level functions,
+types and all.
+
 
 
 # 13/7/19
+
 Thoroughly reworked parsing. Wonder how these new versions will work.
 
 # 10/7/19
