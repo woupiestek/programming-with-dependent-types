@@ -4,7 +4,7 @@ import scalaz._
 import scala.annotation.tailrec
 
 final class Reader[S, +A] private (
-    val resume: (Int, S) => Either[Reader[S, A], A]
+    private val resume: (Int, S) => Either[Reader[S, A], A]
 ) {
   def flatMap[A0 >: A, B](g: A0 => Reader[S, B]): Reader[S, B] = {
     lazy val result: Reader[S, B] = new Reader(

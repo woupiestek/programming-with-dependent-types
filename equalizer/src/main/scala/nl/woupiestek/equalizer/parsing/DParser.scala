@@ -3,7 +3,9 @@ package nl.woupiestek.equalizer.parsing
 import scalaz._
 import scalaz.Scalaz._
 
-sealed abstract class DParser[-I, +O]
+sealed abstract class DParser[-I, +O] {
+  def isEmpty: Boolean = this == DParser.Empty
+}
 
 object DParser {
 
@@ -38,7 +40,7 @@ object DParser {
         }
       def empty[A]: F[A] = Empty
       def plus[A](a: F[A], b: => F[A]): F[A] =
-        if (a == Empty) b else if (b == Empty) a else Plus(a, b)
+        if (a.isEmpty) b else if (b.isEmpty) a else Plus(a, b)
       def point[A](a: => A): F[A] = Write(a)
     }
   }
@@ -69,10 +71,154 @@ object DParser {
     helper0(dp)
   }
 
+  def fold2[I, O, Z: Monoid](
+      recursionLimit: Int
+  )(read: Option[I], write: O => Z)( //todo: create two methods
+      dp: DParser[I, O]
+  ): Z = {
+
+    def helper1[X](
+        dpx: DParser[I, X],
+        f: X => DParser[I, O],
+        limit: Int,
+        todo: DParser[I, O]
+    ): (Z, DParser[I, O]) = {
+      if (limit > 0) {
+        dpx match {
+          case Empty =>
+            todo match {
+              case Empty => (Monoid[Z].zero, Empty)
+              case _     => helper0(todo, limit - 1, Empty)
+            }
+          case g: FlatMap[I, w, X] =>
+            helper1(g.dpo, g.dpp(_: w).flatMap(f), limit - 1, todo)
+          case Read =>
+            read match {
+              case None =>
+                todo match {
+                  case Empty => (Monoid[Z].zero, Empty)
+                  case _     => helper0(todo, limit - 1, Empty)
+                }
+              case Some(i) => helper0(f(i.asInstanceOf[X]), limit - 1, todo)
+            }
+          case Plus(left, right) =>
+            helper1(left, f, limit - 1, right.flatMap(f) |+| todo)
+          case Write(x) => helper0(f(x), limit - 1, todo)
+        }
+      } else {
+        (Monoid[Z].zero, dpx.flatMap(f) |+| todo)
+      }
+    }
+
+    def helper0(
+        dpx: DParser[I, O],
+        limit: Int,
+        todo: DParser[I, O]
+    ): (Z, DParser[I, O]) =
+      if (limit > 0) {
+        dpx match {
+          case Empty =>
+            todo match {
+              case Empty => (Monoid[Z].zero, Empty)
+              case _     => helper0(todo, limit - 1, Empty)
+            }
+          case FlatMap(dpo, dpp) => helper1(dpo, dpp, limit - 1, todo)
+          case Read =>
+            read match {
+              case None =>
+                todo match {
+                  case Empty => (Monoid[Z].zero, Empty)
+                  case _     => helper0(todo, limit - 1, Empty)
+                }
+              case Some(i) => (write(i.asInstanceOf[O]), todo)
+            }
+          case Plus(left, right) =>
+            helper0(left, limit - 1, right |+| todo)
+          case Write(o) => (write(o), todo)
+        }
+      } else {
+        (Monoid[Z].zero, dpx |+| todo)
+      }
+
+    var done = Monoid[Z].zero
+    var todo = dp
+    while (!todo.isEmpty) {
+      val (d, t) = helper0(todo, recursionLimit, Empty)
+      todo = t
+      done = done |+| d
+    }
+    done
+  }
+
   def derive[I, O](dp: DParser[I, O], i: I): DParser[I, O] =
     fold((_: I => DParser[I, O])(i), (_: O) => Empty)(dp)
 
   def matches[I, O](dp: DParser[I, O]): Stream[O] =
     fold((_: I => Stream[O]) => Stream.empty, Stream(_: O))(dp)
 
+  def derive2[I, O](
+      recursionLimit: Int
+  )(i: I)(
+      dp: DParser[I, O]
+  ): DParser[I, O] = {
+
+    def helper1[X](
+        dpx: DParser[I, X],
+        f: X => DParser[I, O],
+        limit: Int,
+        todo: DParser[I, O]
+    ): (DParser[I, O], DParser[I, O]) = {
+      if (limit > 0) {
+        dpx match {
+          case Empty | Write(_) =>
+            todo match {
+              case Empty | Write(_) => (Empty, Empty)
+              case _                => helper0(todo, limit - 1, Empty)
+            }
+          case g: FlatMap[I, w, X] =>
+            helper1(g.dpo, g.dpp(_: w).flatMap(f), limit - 1, todo)
+          case Read =>
+            val d0 = f(i.asInstanceOf[X])
+            val (d1, t) = helper0(todo, limit - 1, Empty)
+            (d0 |+| d1, t)
+          case Plus(left, right) =>
+            helper1(left, f, limit - 1, right.flatMap(f) |+| todo)
+        }
+      } else {
+        (Empty, dpx.flatMap(f) |+| todo)
+      }
+    }
+
+    def helper0(
+        dpx: DParser[I, O],
+        limit: Int,
+        todo: DParser[I, O]
+    ): (DParser[I, O], DParser[I, O]) =
+      if (limit > 0) {
+        dpx match {
+          case Empty | Write(_) =>
+            todo match {
+              case Empty | Write(_) => (Empty, Empty)
+              case _                => helper0(todo, limit - 1, Empty)
+            }
+          case FlatMap(dpo, dpp) => helper1(dpo, dpp, limit - 1, todo)
+          case Read =>
+            val (d, t) = helper0(todo, limit - 1, Empty)
+            (write[I, O](i.asInstanceOf[O]) |+| d, t)
+          case Plus(left, right) =>
+            helper0(left, limit - 1, right |+| todo)
+        }
+      } else {
+        (Empty, dpx |+| todo)
+      }
+
+    var done = empty[I, O]
+    var todo = dp
+    while (!todo.isEmpty) {
+      val (d, t) = helper0(todo, recursionLimit, Empty)
+      todo = t
+      done = done |+| d
+    }
+    done
+  }
 }

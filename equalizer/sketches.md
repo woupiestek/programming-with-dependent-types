@@ -1,12 +1,186 @@
 
+# 21/7/19
+
+Replace separate predicates with functions `a0 -> ... -> an -> Proposition`.
+Perhaps that causes problems as we can now introduce functions that take
+propositions as arguments. The promise of extensional equivalence is avoided.
+Another interesting issue is--should `Proposition` just be `Type`? I think that
+in the case of modest sets and assemblies, `Proposition` is the power set of the
+natural numbers and `Type` is the sets of partial equivalence relations on the
+natural numbers, so there is an inclusion.
+
+I think it is a moot point: I have target runtimes in mind, and `Type` is 
+supposed to represent a set of types that means something in that runtime.
+Some runtimes will give nice interpretations to propositions, others won't.
+The proposition have their own purpose, however. Alongside supercombinator
+declarations the core language allows assertions of propositions, for two
+purposes: before compilation the assertions are checked to guarantee certain
+results and when imported as modules, the asserted statements are treated as
+assumptions.
+
+Concern: there are a number of *native functions* to construct expressions
+construction. I don't think we can treat these like other symbols. E.g. 
+`typeOf (lambda ...)` should be equivalent to something like
+`product (typeOf ...)` and this recursive pattern matching and rewriting 
+should be done while checking asserted propositions. The problem is that
+the tactic for making equivalences computable is ignored here. Couple of 
+solutions:
+- allow special cases. Just treat some functions different from others.
+- make the resolver powerful enough to take these equations into account, 
+  i.e. the extra equivalences are propositions, and we generally allow
+  these proposition to affect how equations are solved.
+- have some algebraic types at the top level. Perhaps all of `Proposition`,
+  `Type` and `Value` are, despite the speical role of `Proposition`.
+  Fair and scary a the same time.
+
+## Algebraics?
+The requirement of injectiveness makes this awkward, like we need to add a 
+*bottom* to every type, to make this work. Let's just go with it. Also, we are
+straying from the initial idea of how to compare functions. Algebraic types
+allow systematic search, giving a different way to assess whether a proposition
+is true.
+
+This is a set back. `typeOf` is a recursive function. A logic processor that
+avoids recursive types cannot reason about it properly.
+
+There is an advantage, which is that less has to come from nothing.
+
+## weak W-types
+Perhaps *W-types* can reduce our pain. For any `f: A -> B` approximate `W(f)` 
+with a simpler `W = B * (A -> W)`. We would combine this with finite types, 
+probably, especially for `B`. Is that possible?
+`cons: (A -> W(A, B)) -> B -> W(A, B)`, `dom: W(A,B) -> B`, 
+`fun: W(A,B) -> A -> W(A,B)`. Then, hopefully:
+`W(f) = { w: W(A, B) | \a: A. dom (fun w a) = f a }`
+This could work for proper W-types. Are our types of this sort?
+
+Consider:
+
+- `product: (Value -> Type) -> Type -> Type`  
+- `lambda: (Value -> Value) -> Type -> Value`
+
+I assume that for `Type`, `product: B` and I guess `A = Value + 1`, which
+does pose a challenge. `Value`, however, is not a proper W-type!
+
+## review
+Many constraints are formulated in terms of `typeOf` which means that 
+`typeOf` cannot be an opaque function symbol. The system needs a way to 
+rewrite it.
+
+So, imagine that `Value` is actually a more complicated type `X -> Y` and
+e.g. `typeOf v = v .getType`. This shifts the problem to value constructors,
+but that may be okay? `lambda f d .getType = product (\y(f y .getType)) d`.
+This leads to more class // interface like structures, which have reduction 
+rules. 
+
+```c#
+interface Value {
+  Type dom
+  (Value -> Value) fun
+  Type type = product dom \(v: Value)((fun v).type)
+}
+```
+
+No matter how well this works, we firstly add in complicated recursive types
+that can firstly, can screw up the type checker and secondly, in order to have 
+different kinds of Value, we need to support values with different members, e.g.
+a dependent product would look like this:
+
+```c#
+interface Value {
+  (Type type = coproduct fun
+  (Value -> Type) fun 
+  Value first
+  Value second) |
+  second.type = fun(first)
+}
+```
+
+This is pretty much a complete dynamic language. Are there upsides?
+I suppose the nominal system does help: it gives a place to leave 
+the constraints.
+
+## Recursive products
+I think I need mutually recursive products. Type declaration may not be
+necessary, but they might be useful. Constructors do need special care: 
+recursive elements refer to themselves. Hence there should be fixpoint
+constructors that allow such constructions. These should exist as top level
+functions because we want to lambda lift everything. This means there is
+a constructor declaration, that takes a function with an extra argument, and
+produces a product.
+When comparing... *records* the checker compares the members and ultimately
+constructors, deliberately failing to look further than whether the same own
+members get called to avoid endless loop in the checkers.
+
+At least a limited form of recursive product of injective is injective, 
+thanks to closure under transfinite composition (actually its opposite) for
+injective maps. Injectives lift the map `0 -> 1` and therefore have default
+elements. Hence all type in this language have default elements and only
+contraints can protect against them.
+
+## Other side effecting declarations
+So beside function and type declarations, and assert commands for the checker to 
+check, there could be run commands, or compile commands for the rest of the 
+interpreter.
+
+# 20/7/19
+
+Expose classes & methods, with signatures, but what does that mean?
+Classes get replaced with predicates--but do these predicates have signatures?
+```Y = {(x0:X0,...,xn:Xn)| ... }```
+In that case the predicates needs equations and membership, like a topos.
+
+What is hard here is that we define predicates for later use.
+```Y = {(x0,...,xn)| ... }```
+
+Look, the real structure is layered.
+
+- There is a basis of *injective* types and functions that have arrow types.
+  The large types are limits of these. Quantifying over all large types must be
+  impossible, so it isn't possible to equate functions that have literally the
+  same code, but are between different types. That kind of quantification does
+  not work here.
+- There are arrow types for the injectives, and here there should be a strict
+  equality relation. The result is a left exact category with weak exponential,
+  assuming that the space of functions `{(x0: a0, ..., xn: an)|E} -> b` can be
+  *covered* by the type `a0 -> ... -> an -> b`. This is the core assumption, 
+  that could turn out to be fatal, but it is related to the notion.
+  Powersets, sets with defualt elements etc. are examples of injectives. Could
+  be an intuition for what the basic types are.
+- Do not forget equality types for: `{(x0: a0, ..., xn: an)|E} -> b`. 
+  I think this works: `{(a*,g,h) | E -> g(a*)=f(a*) }`. This betrays that the
+  injectives are not just regular injectives however.
+- So that is basically what a file should look like:
+  Declarations of functions between limits of injectives,
+  and predicates (actually sets of equations) defined on products of injectives.
+  no lambda's aren needed at this stage, as long as partial application is
+  allowed. functions between predciates, that is actually the case.  
+- Building on all this, there is a *universe of small types* which is a function
+  `typeOf: Value -> Type`. First order dependent products are supposed to show
+  up here, as functions `product: (Value -> Type) -> Type -> Type`, 
+  `lambda: (Value -> Value) -> Type -> Value` for example. This shows the first
+  examples of injectives as well.
+- Note that to approximate some languages, multiple universes may be needed. 
+  Note that properly evalutating terms requires special resolution rules,
+  which may be complicated for any build in monad.
+  Note that this core language forces the type of a function to be specified
+  form the start, so type inference requires equation solving.
+
+### Collect
+
+- `product: (Value -> Type) -> Type -> Type`  
+- `lambda: (Value -> Value) -> Type -> Value`
+- `coproduct: (Value -> Type) -> Type -> Type`
+- `pair: (Value -> Type) -> Value -> Value -> Value` 
+  (with constraint `x0 x1 = typeOf x2`)
+
+
 # 19/7/19
 
 ## more simplifying assumptions
 
-Keep track of positions to tell variables apart. Only top level functions,
-types and all.
-
-
+Keep track of positions to tell variables apart. 
+Only top level functions, types and all.
 
 # 13/7/19
 
