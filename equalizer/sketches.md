@@ -1,3 +1,57 @@
+# 26/7/19
+
+Maybe we could do something with method declarations instead: `x.m = ...`
+This only makes sense if methods are functions, though. Why not just allow 
+recursive functions?
+
+Just keep it simple. `x`, `x:A = M; N`, `M N`, `\x:A.M`, `M.m`, `{m M}`, `M[0]`,
+`[M]`
+
+
+# 25/7/19
+
+The types are arrows and recursive products. Perhaps these can be nested in
+mutually recursive type declarations.
+
+The terms are more complicated. One idea is that injectives have default 
+members, so the members of recursive products can be build up from nothing
+by attaching members step by step. Added to this is a notation for fix points.
+
+Something like this:
+
+```ts
+type F = {true X false X} -> X
+  where X = F -> F 
+
+function f {x A y B z C} Z = x.m y w where w = z.k x
+
+function w {x A y B z C} Z = {field0 M field1 N field2 P} where a = x.m y w
+
+assert forall x M = N -> P = Q
+```
+
+Missing here is anything about modules, compilation or execution.
+
+# 23/7/19
+
+## Top down operator precedence parser
+I think I got it down to this
+The parser is applicative-error plus *guards*:
+`Read(f: I => P[I,O]): P[I,O]`
+I keep wanting to change this, but we cannot forget that the point is to
+limit the way in which parsers can depend on input symbols.
+
+I have some proble here concerning whitespace etc., because I cannot seem to
+define it in these terms. The trouble there is that rather than failing,
+or providing a parser, we need to keep the current symbol unread.
+We could break it up:
+`Read(f: I => P[I,O]): P[I,O]`
+`Advance: P[I, Unit]`
+The first one simply looks at the current symbol without advancing,
+the second actually moves the parser to the next symbol. 
+I guess I am missing something, perhaps somthing special about whitespace,
+like `Unit` being a monad. I.e. `ReadWhile(f: I => Boolean, ???)`
+Something like a `*` operator for these parsers.
 
 # 21/7/19
 
