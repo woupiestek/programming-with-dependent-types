@@ -1,3 +1,47 @@
+# 27/7/19
+
+## JSON TDOP
+
+The full power of a parser comes from a `MonadPlus` structure on a generic parser
+type `P`, together with a single `read:P[IA]` where `IA` is the input alphabet.
+This read stand for the effect of reading a single symbol form input and moving
+forward. Main concern about this parsing algebra is that it is hard to implement
+efficiently. After all, the parser for the next symbol can depend on the
+abstract syntax tree (AST) that has been generated up to that point--i.e. too 
+much feedback is allowed.
+
+A step weaker is `ApplicativePlus` with `readIf: (IA => Boolean) => P[IA]`. 
+Basically, the next parser depends on the current input symbol. Choice of parser
+is now limited to a finite list. This is still powerful enough to describe 
+parsers for many context-free languages, however.
+
+The next step break the parser into a parser and lexer, each of which give up
+on a different power. The lexer breaks up de input and labels the fragments
+as token, which the parser then combines into ASTs.
+
+The parser can now be `Applicative` with `read[AST]: (IA => P[AST]) => P[AST]`,
+using a top-down-operator-precendence-like strategy. I.e. if the current token 
+is an operator, the parser for the next token produces a suitable function.
+
+It makes sene for the lexer to avoid the `Applicative` part and to focus on the
+`PlusEmpty` part... and that kind of works. Added `Functor` to analyse the
+matched characters, `pop:P[List[IA]]` to return chucks of symbols and stop 
+reading and both `read[AST]: (IA => P[AST]) => P[AST]` and `readIfEqual`.
+
+Lexing strings and numbers of JSON was really hard. How can this be improved?
+
+- Break these token up into smaller parts. The problem here is that lexers won't
+  know that certain token can only appear in certain contexts, which becomes a 
+  problem with strings, because segments of string can look like anything.
+- Double pass: go through the input symbols a second time after lexing, to 
+  unescape the escape sequences, and to break up numbers into signs, integer, 
+  fractional and exponential parts.
+- Input manipulation: especially useful to deal with escape codes inside strings. 
+
+Actually, different strategies make sense for different problems. Numbers can
+be broken up. For strings it makes more sense to do one of the others, because
+strings can contain all of the other tokens, and cause confusion that way.
+
 # 26/7/19
 
 Maybe we could do something with method declarations instead: `x.m = ...`

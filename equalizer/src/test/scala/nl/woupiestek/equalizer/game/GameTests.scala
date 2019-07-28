@@ -37,8 +37,8 @@ object GameTests {
       .mkString("|")
   }
 
-  type Gen[X] = Reader[Random, X]
-  def gen[X](f: Random => X): Gen[X] = Reader(f)
+  type Gen[X] = scalaz.Reader[Random, X]
+  def gen[X](f: Random => X): Gen[X] = scalaz.Reader(f)
 
   def choose[X](options: List[Gen[X]]): Gen[X] =
     gen(_.nextInt(options.length)).flatMap(options)
