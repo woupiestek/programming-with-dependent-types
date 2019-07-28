@@ -33,13 +33,12 @@ class JSON[A[_]: Applicative, B](
   }
 
   private val _value: PartialFunction[Token, A[B]] = {
-    case False         => output.boolean(false).point[A]
+    case Bool(value)   => output.boolean(value).point[A]
     case LeftBrace     => _object.map(output.`object`)
     case LeftBracket   => _array.map(output.array)
     case Null          => output.`null`.point[A]
     case Number(value) => output.number(value).point[A]
     case Text(value)   => unescapeText(value).map(output.string)
-    case True          => output.boolean(true).point[A]
   }
 
   private val _array: A[List[B]] = {
@@ -119,8 +118,7 @@ object JSON {
   sealed abstract class Token(val kind: String)
   final case class Text(value: List[Char]) extends Token("string")
   final case class Number(value: List[Char]) extends Token("number")
-  final case object True extends Token("true") //tokenizer could know from the lack of quotes...
-  final case object False extends Token("false")
+  final case class Bool(value: Boolean) extends Token("boolean")
   final case object Null extends Token("null")
   final case object LeftBracket extends Token("[")
   final case object RightBracket extends Token("]")
@@ -159,9 +157,11 @@ object JSON {
     val string: A[Token] = {
       //leave the escapes alone for now!
       lazy val _string: A[List[Char]] =
-        input.readIfEqual('\"', input.pop) <+>
-          input.readIfEqual('\\', input.read(_ => _string)) <+>
-          input.read(_ => _string)
+        input.read {
+          case '\"' => input.pop
+          case '\\' => input.read(_ => _string)
+          case _    => _string
+        }
 
       input.readIfEqual('"', _string.map(Text(_)))
     }
@@ -211,9 +211,9 @@ object JSON {
     val token: A[Token] = {
       string <+>
         number <+>
-        keyword("false", False) <+>
+        keyword("false", Bool(false)) <+>
         keyword("null", Null) <+>
-        keyword("true", True) <+>
+        keyword("true", Bool(true)) <+>
         symbol('[', LeftBracket) <+>
         symbol(']', RightBracket) <+>
         symbol('{', LeftBrace) <+>

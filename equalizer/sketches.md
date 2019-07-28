@@ -54,8 +54,8 @@ a choice made in the parser, that differs from simply accept or reject. Maybe
 JSON wasn't a good test case.
 
 The lexer can be brought down to basically `PlusEmpty`, `Functor`,
-`readIf(f: AI => Boolean)` and `pop: P[List[AI]]` provided that no token is 
-wasted. The parser has to take care of errors.
+`readIf: (AI => Boolean) => P[AI]` and `pop: P[List[AI]]` provided that no token
+is wasted. The parser has to take care of errors.
 
 # 26/7/19
 
