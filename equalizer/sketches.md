@@ -42,6 +42,21 @@ Actually, different strategies make sense for different problems. Numbers can
 be broken up. For strings it makes more sense to do one of the others, because
 strings can contain all of the other tokens, and cause confusion that way.
 
+## Experimenting
+Allowing invalid token and soritng them out later seems to work well.
+With number we run into trouble: there is no 'end-of-number' operator,
+that says when to stop reading more token. Fascinating--it appears an expression
+cannot simply end, it must be forcefully broken off.
+
+What we haven't considered yet is operator precedence. i.e. the higher binding 
+power of `.` are supposed to safe us here. Strangely this still looks like 
+a choice made in the parser, that differs from simply accept or reject. Maybe
+JSON wasn't a good test case.
+
+The lexer can be brought down to basically `PlusEmpty`, `Functor`,
+`readIf(f: AI => Boolean)` and `pop: P[List[AI]]` provided that no token is 
+wasted. The parser has to take care of errors.
+
 # 26/7/19
 
 Maybe we could do something with method declarations instead: `x.m = ...`

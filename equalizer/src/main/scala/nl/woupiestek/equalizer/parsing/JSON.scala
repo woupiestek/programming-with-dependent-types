@@ -11,9 +11,12 @@ class JSON[A[_]: Applicative, B](
 ) {
 
   private val _object: A[Map[String, B]] = {
-    def keyed(key: String) = matchMap(
-      Colon -> Apply[A].apply2(value, tail)((v, m) => m + (key -> v))
-    )
+    def keyed(key: List[Char]) =
+      matchMap(
+        Colon -> Apply[A].apply3(unescapeText(key), value, tail)(
+          (k, v, m) => m + (k -> v)
+        )
+      )
     lazy val tail: A[Map[String, B]] = matchMap(
       RightBrace -> Map.empty[String, B].point[A],
       Comma -> input.read {
@@ -35,7 +38,7 @@ class JSON[A[_]: Applicative, B](
     case LeftBracket   => _array.map(output.array)
     case Null          => output.`null`.point[A]
     case Number(value) => output.number(value).point[A]
-    case Text(value)   => output.string(value).point[A]
+    case Text(value)   => unescapeText(value).map(output.string)
     case True          => output.boolean(true).point[A]
   }
 
@@ -70,6 +73,40 @@ class JSON[A[_]: Applicative, B](
 
   private def wrong[X](next: Token, needed: => String): A[X] =
     error.raise(s"$needed needed, but ${next.kind} found.")
+
+  private def unescapeText(value: List[Char]): A[String] = {
+    val hex =
+      (('0' to '9').map(c => c -> -'0') ++
+        ('A' to 'Z').map(c => c -> (c - 'A' + 10)) ++
+        ('a' to 'z').map(c => c -> (c - 'a' + 10))).toMap
+
+    def helper(in: List[Char], out: A[List[Char]]): A[String] = in match {
+      case Nil | '"' :: Nil => out.map(_.mkString)
+      case h :: t =>
+        h match {
+          case '\\' =>
+            t match {
+              case '\\' :: u => helper(u, out.map('\\' :: _))
+              case '\"' :: u => helper(u, out.map('\"' :: _))
+              case 'b' :: u  => helper(u, out.map('\b' :: _))
+              case 'f' :: u  => helper(u, out.map('\f' :: _))
+              case 'n' :: u  => helper(u, out.map('\n' :: _))
+              case 'r' :: u  => helper(u, out.map('\r' :: _))
+              case 't' :: u  => helper(u, out.map('\t' :: _))
+              case 'u' :: a :: b :: c :: d :: u
+                  if hex.contains(a) && hex.contains(b) && hex
+                    .contains(c) && hex.contains(d) =>
+                val e = ((hex(a) << 12) + (hex(b) << 8) + (hex(c) << 4) + hex(
+                  d
+                )).toChar
+                helper(u, out.map(e :: _))
+              case _ => error.raise("invalid escape code")
+            }
+          case _ => helper(t, out.map(h :: _))
+        }
+    }
+    helper(value.tail, List.empty[Char].point[A])
+  }
 }
 
 object JSON {
@@ -80,8 +117,8 @@ object JSON {
   //this wouldn't allow putting positions in error messages however...
 
   sealed abstract class Token(val kind: String)
-  final case class Text(value: String) extends Token("string")
-  final case class Number(value: String) extends Token("number")
+  final case class Text(value: List[Char]) extends Token("string")
+  final case class Number(value: List[Char]) extends Token("number")
   final case object True extends Token("true") //tokenizer could know from the lack of quotes...
   final case object False extends Token("false")
   final case object Null extends Token("null")
@@ -102,7 +139,7 @@ object JSON {
     def boolean(bool: Boolean): B
     def array(b: List[B]): B
     def `null`: B
-    def number(str: String): B
+    def number(value: List[Char]): B
   }
 
   trait Error[A[_]] {
@@ -120,65 +157,13 @@ object JSON {
     implicit def monoid[X]: Monoid[A[X]] = PlusEmpty[A].monoid[X]
 
     val string: A[Token] = {
-      //here we are overriding the character stream itself,
-      //which is why we cannot let the input do this for us.
-      //escape sequences are like embedded pops...
-
-      //adding a feature for modestly rewriting the input stream,
-      //like removing and adding a few symbols,
-      //that could help here.
-
+      //leave the escapes alone for now!
       lazy val _string: A[List[Char]] =
-        input.readIfEqual('\"', input.pop.map(_ => List.empty[Char])) <+>
-          input.readIfEqual(
-            '\\',
-            _escape('"', '"') <+>
-              _escape('\\', '\\') <+>
-              _escape('/', '/') <+>
-              _escape('b', '\b') <+>
-              _escape('f', '\f') <+>
-              _escape('n', '\n') <+>
-              _escape('r', '\r') <+>
-              _escape('t', '\t') <+>
-              _unicode
-          ) <+>
-          input.read(c => _string.map(c :: _))
+        input.readIfEqual('\"', input.pop) <+>
+          input.readIfEqual('\\', input.read(_ => _string)) <+>
+          input.read(_ => _string)
 
-      def _escape(c0: Char, c1: Char) =
-        input.readIfEqual(c0, _string.map(c1 :: _))
-
-      lazy val _unicode: A[List[Char]] = {
-
-        val _hex =
-          (('0' to '9').map(c => c -> -'0') ++
-            ('A' to 'Z').map(c => c -> (c - 'A' + 10)) ++
-            ('a' to 'z').map(c => c -> (c - 'a' + 10))).toList
-
-        def readHex[Z](next: (Int => A[List[Char]])): A[List[Char]] = {
-          _hex.foldMap { case (c, i) => input.readIfEqual(c, next(i)) }
-        }
-
-        input.readIfEqual(
-          'u',
-          readHex(
-            a =>
-              readHex(
-                b =>
-                  readHex(
-                    c =>
-                      readHex { d =>
-                        val e =
-                          ((a << 12) + (b << 8) + (c << 4) + d).toChar
-                        _string.map(e :: _)
-                      }
-                  )
-              )
-          )
-        )
-
-      }
-
-      input.readIfEqual('"', _string.map(chars => Text(chars.mkString)))
+      input.readIfEqual('"', _string.map(Text(_)))
     }
 
     val number: A[Token] = {
@@ -187,30 +172,26 @@ object JSON {
           .foldMap(d => input.readIfEqual(d, _digits(next))) <+>
           next
 
-      val __exponential = input.readIfEqual('+', _digits(input.pop)) <+>
-        input.readIfEqual('-', _digits(input.pop)) <+>
-        _digits(input.pop)
-
-      val _exponential: A[List[Char]] =
-        input.readIfEqual('e', __exponential) <+>
-          input.readIfEqual('E', __exponential) <+>
+      val exponential: A[List[Char]] = {
+        val signed =
+          input.readIfEqual('+', _digits(input.pop)) <+>
+            input.readIfEqual('+', _digits(input.pop)) <+>
+            _digits(input.pop)
+        input.readIfEqual('e', signed) <+>
+          input.readIfEqual('E', signed) <+>
           input.pop
+      }
 
-      val _fraction: A[List[Char]] =
-        input.readIfEqual('.', _digits(_exponential)) <+>
-          input.pop
+      val fraction: A[List[Char]] =
+        input.readIfEqual('.', _digits(exponential)) <+> exponential
 
-      val _uint: A[List[Char]] =
-        input.readIfEqual('0', _fraction) <+>
-          ('1' to '9').toList
-            .foldMap(d => input.readIfEqual(d, _digits(_fraction)))
+      val int: A[List[Char]] = {
+        val uint = input.readIfEqual('0', input.pop) <+>
+          ('1' to '9').toList.foldMap(input.readIfEqual(_, _digits(fraction)))
+        (input.readIfEqual('-', uint) <+> uint)
+      }
 
-      val _int: A[List[Char]] = _uint <+> input.readIfEqual(
-        '-',
-        _uint
-      )
-
-      _int.map(chars => Text(chars.mkString))
+      int.map(Number(_))
     }
 
     def keyword(chars: String, token: Token): A[Token] =
@@ -228,8 +209,8 @@ object JSON {
       ) <+> input.pop.map(_ => ())
 
     val token: A[Token] = {
-
-      number <+> string <+>
+      string <+>
+        number <+>
         keyword("false", False) <+>
         keyword("null", Null) <+>
         keyword("true", True) <+>
@@ -239,7 +220,6 @@ object JSON {
         symbol('}', RightBrace) <+>
         symbol(':', Colon) <+>
         symbol(',', Comma)
-
     }
   }
 
