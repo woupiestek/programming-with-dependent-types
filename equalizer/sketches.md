@@ -1,3 +1,71 @@
+
+# 3/8/19
+
+Recursive type equations suggest that expressions of a recursive type have
+infinitely many different types at once, rather that having an option of
+being folded or unfolded explicitly. This ambiguity is undesirable.
+
+## types explored again
+Function types are strictly necessary. Distinct cartesian products are really
+nice to have, and possibly not optional in a language that isn't generic. 
+Then the recrusive types are supposed to solve a lot of problem generically,
+rather than having to come up with separate solutions every time.
+```
+Gamma, x: A |- M: B
+-------------------
+Gamma |- x -> M: A -> B
+
+Gamma |- M: A -> B   Gamma |- N: A
+----------------------------------  (application should bind more tightly I think)
+Gamma |- M N: B
+
+(x -> M)N  ==  x = N; M
+
+Gamma |- M: A   Gamma |- N: B
+-----------------------------
+Gamma |- <M, N> : <A, B>
+
+Gamma |- M: <A, B>
+----------------- (here elimination binds more tightly too)
+Gamma |- M_0: A
+
+<M, N>_0  ==  M
+
+
+
+Gamma, x: A |- M: F(A)
+----------------------
+Gamma |- x @ M: t @ F(t)
+
+Gamma |- M: t @ F(t)
+-------------------- (it is a pattern)
+Gamma |- M': F(t @ F(t))
+
+(x @ M)'  ==  x = (x @ M); M
+```
+No starting point for the fix point operator, 
+since the starting point is bottom every time.
+
+# 31/7/19
+
+## the language
+types: [T, *] | T -> T | {V:T,}
+functions: \ (V:Y,)*.T, T T, V, V=T,T, [(T,)*], [(V,)*]=T;T, {(V:T,)*}, 
+  {(V:V,)*}=T;T
+proposition: &V:T.P, P && P, P => P, T == T
+keyword: 'type', 'def', 'assert', 'fix'
+
+identifiers
+operators
+parentheses, brackets and braces
+colon, comma, is, backslash
+
+~ Proposition is like a build in type
+~ connected to build in functions... which don't need theis own syntax...
+forall: (T -> Omega) -> Omega
+&&, ->: Omega -> Omega -> Omega
+==: T -> T -> Omega
+
 # 27/7/19
 
 ## JSON TDOP
@@ -307,7 +375,7 @@ Otherwise the breadth is infinite.
 # 9/7/19
 
 Its just breadth first search.
-Every parser reduces to a list of `Write(_)` and `FlatMap(Read,_)`
+Every parser reduces to a list of `Point(_)` and `FlatMap(Read,_)`
 The first one represent the matches, the second one the differentials.
 
 # 7/7/19

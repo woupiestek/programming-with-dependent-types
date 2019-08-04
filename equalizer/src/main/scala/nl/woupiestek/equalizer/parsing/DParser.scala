@@ -13,7 +13,7 @@ object DParser {
   private final case object Read extends DParser[Any, Nothing]
   private final case class Plus[I, O](left: DParser[I, O], right: DParser[I, O])
       extends DParser[I, O]
-  private final case class Write[+O](o: O) extends DParser[Any, O]
+  private final case class Point[+O](o: O) extends DParser[Any, O]
   private final case class FlatMap[I, O, P](
       dpo: DParser[I, O],
       dpp: O => DParser[I, P]
@@ -22,8 +22,8 @@ object DParser {
   def read[I]: DParser[I, I] = Read
   def readIf[I](f: I => Boolean): DParser[I, I] =
     monadPlus.bind(read[I])((i: I) => if (f(i)) write(i) else empty)
-  def write[I, O](o: O): DParser[I, O] = Write(o)
-  private val Pause = Write(())
+  def write[I, O](o: O): DParser[I, O] = Point(o)
+  private val Pause = Point(())
   def suspend[I, O](dpo: => DParser[I, O]): DParser[I, O] =
     FlatMap(Pause, (_: Unit) => dpo)
   def empty[I, O]: DParser[I, O] = Empty
@@ -35,13 +35,13 @@ object DParser {
         fa match {
           case Empty               => Empty
           case g: FlatMap[I, x, A] => FlatMap(g.dpo, g.dpp(_: x).flatMap(f))
-          case Write(o)            => f(o)
+          case Point(o)            => f(o)
           case _                   => FlatMap(fa, f)
         }
       def empty[A]: F[A] = Empty
       def plus[A](a: F[A], b: => F[A]): F[A] =
         if (a.isEmpty) b else if (b.isEmpty) a else Plus(a, b)
-      def point[A](a: => A): F[A] = Write(a)
+      def point[A](a: => A): F[A] = Point(a)
     }
   }
 
@@ -57,7 +57,7 @@ object DParser {
       case g: FlatMap[I, w, X] => helper1(g.dpo, g.dpp(_: w).flatMap(f))
       case Read                => read((i: I) => helper0(f(i.asInstanceOf[X])))
       case Plus(left, right)   => helper1(left, f) |+| helper1(right, f)
-      case Write(x)            => helper0(f(x))
+      case Point(x)            => helper0(f(x))
     }
 
     def helper0(dpx: DParser[I, O]): Z = dpx match {
@@ -65,7 +65,7 @@ object DParser {
       case FlatMap(dpo, dpp) => helper1(dpo, dpp)
       case Read              => read((i: I) => write(i.asInstanceOf[O]))
       case Plus(left, right) => helper0(left) |+| helper0(right)
-      case Write(o)          => write(o)
+      case Point(o)          => write(o)
     }
 
     helper0(dp)
@@ -91,9 +91,9 @@ object DParser {
     ): (DParser[I, O], DParser[I, O]) = {
       if (limit > 0) {
         dpx match {
-          case Empty | Write(_) =>
+          case Empty | Point(_) =>
             todo match {
-              case Empty | Write(_) => (Empty, Empty)
+              case Empty | Point(_) => (Empty, Empty)
               case _                => helper0(todo, limit - 1, Empty)
             }
           case g: FlatMap[I, w, X] =>
@@ -117,9 +117,9 @@ object DParser {
     ): (DParser[I, O], DParser[I, O]) =
       if (limit > 0) {
         dpx match {
-          case Empty | Write(_) =>
+          case Empty | Point(_) =>
             todo match {
-              case Empty | Write(_) => (Empty, Empty)
+              case Empty | Point(_) => (Empty, Empty)
               case _                => helper0(todo, limit - 1, Empty)
             }
           case FlatMap(dpo, dpp) => helper1(dpo, dpp, limit - 1, todo)

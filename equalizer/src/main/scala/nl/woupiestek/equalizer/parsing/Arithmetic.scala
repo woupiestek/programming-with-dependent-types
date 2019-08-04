@@ -14,20 +14,25 @@ class Arithmetic[P[_]: Applicative](effects: Effects[P, Token]) {
   )
 
   def expression(rbp: Int): P[Double] = {
-    lazy val ops = operations
-      .filterKeys(_.lbp > rbp)
-      .mapValues(
-        op =>
-          Apply[P].apply2(expression(Minus.lbp), tail)(
-            (right: Double, next: Double => Double) =>
-              (left: Double) => next(op(left, right))
-          )
-      )
+
     lazy val tail: P[Double => Double] =
-      effects.read(ops.getOrElse(_, effects.reject))
+      effects.read(
+        key =>
+          operations
+            .get(key)
+            .fold(effects.reject[Double => Double])(
+              op =>
+                if (key.lbp > rbp)
+                  Apply[P].apply2(expression(key.lbp), tail)(
+                    (right: Double, next: Double => Double) =>
+                      (left: Double) => next(op(left, right))
+                  )
+                else effects.reject[Double => Double]
+            )
+      )
 
     effects.read {
-      case Constant(value) => tail.map(_(value))
+      case Constant(value) => tail.map(_(value)) //fail...
       case LeftParen =>
         expression(0) <*> effects.read {
           case RightParen => tail
