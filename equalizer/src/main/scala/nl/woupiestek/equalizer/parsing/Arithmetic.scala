@@ -4,9 +4,12 @@ import scalaz._
 import Scalaz._
 import Arithmetic._
 
-class Arithmetic[P[_]: Applicative](effects: Effects[P, Token]) {
+class Arithmetic[P[_]: Applicative](
+    effects: Effects[P, Token]
+) {
 
-  private val operations: Map[Token, (Double, Double) => Double] = Map(
+  private val operations
+      : Map[Token, (Double, Double) => Double] = Map(
     Arithmetic.Divide -> (_ / _),
     Arithmetic.Plus -> (_ + _),
     Minus -> (_ - _),
@@ -23,10 +26,15 @@ class Arithmetic[P[_]: Applicative](effects: Effects[P, Token]) {
             .fold(effects.reject[Double => Double])(
               op =>
                 if (key.lbp > rbp)
-                  Apply[P].apply2(expression(key.lbp), tail)(
-                    (right: Double, next: Double => Double) =>
-                      (left: Double) => next(op(left, right))
-                  )
+                  Apply[P]
+                    .apply2(expression(key.lbp), tail)(
+                      (
+                          right: Double,
+                          next: Double => Double
+                      ) =>
+                        (left: Double) =>
+                          next(op(left, right))
+                    )
                 else effects.reject[Double => Double]
             )
       )

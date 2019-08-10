@@ -4,16 +4,22 @@ import scala.annotation.tailrec
 
 sealed abstract class Trampoline[+A] {
 
-  def flatMap[A0 >: A, B](f: A0 => Trampoline[B]): Trampoline[B]
+  def flatMap[A0 >: A, B](
+      f: A0 => Trampoline[B]
+  ): Trampoline[B]
 
   @tailrec final def run(stackLimit: Int): A = {
 
-    def helper[B](ta: Trampoline[B], limit: Int): Trampoline[B] =
+    def helper[B](
+        ta: Trampoline[B],
+        limit: Int
+    ): Trampoline[B] =
       ta match {
         case FlatMap(a, b) if (limit > 0) => {
           helper(a, limit - 1) match {
-            case Pure(c) => helper(b(c), limit - 1) //need no TCO
-            case c       => c.flatMap(b)
+            case Pure(c) =>
+              helper(b(c), limit - 1) //need no TCO
+            case c => c.flatMap(b)
           }
         }
         case _ => ta
@@ -29,15 +35,22 @@ sealed abstract class Trampoline[+A] {
 object Trampoline {
 
   final case class Pure[+A](a: A) extends Trampoline[A] {
-    def flatMap[A0 >: A, B](f: A0 => Trampoline[B]): Trampoline[B] = f(a)
+    def flatMap[A0 >: A, B](
+        f: A0 => Trampoline[B]
+    ): Trampoline[B] = f(a)
   }
-  final case class FlatMap[Z, +A](a: Trampoline[Z], b: Z => Trampoline[A])
-      extends Trampoline[A] {
-    def flatMap[A0 >: A, B](f: A0 => Trampoline[B]): Trampoline[B] =
+  final case class FlatMap[Z, +A](
+      a: Trampoline[Z],
+      b: Z => Trampoline[A]
+  ) extends Trampoline[A] {
+    def flatMap[A0 >: A, B](
+        f: A0 => Trampoline[B]
+    ): Trampoline[B] =
       copy(b = b(_: Z).flatMap(f))
   }
 
-  def suspend[A](a: => Trampoline[A]) = FlatMap(Pure(()), (_: Unit) => a)
+  def suspend[A](a: => Trampoline[A]) =
+    FlatMap(Pure(()), (_: Unit) => a)
 
   def tailRecM[A, B](
       a: A

@@ -13,9 +13,10 @@ class JSON[A[_]: Applicative, B](
   private val _object: A[Map[String, B]] = {
     def keyed(key: List[Char]) =
       matchMap(
-        Colon -> Apply[A].apply3(unescapeText(key), value, tail)(
-          (k, v, m) => m + (k -> v)
-        )
+        Colon -> Apply[A]
+          .apply3(unescapeText(key), value, tail)(
+            (k, v, m) => m + (k -> v)
+          )
       )
     lazy val tail: A[Map[String, B]] = matchMap(
       RightBrace -> Map.empty[String, B].point[A],
@@ -38,7 +39,8 @@ class JSON[A[_]: Applicative, B](
     case LeftBracket   => _array.map(output.array)
     case Null          => output.`null`.point[A]
     case Number(value) => output.number(value).point[A]
-    case Text(value)   => unescapeText(value).map(output.string)
+    case Text(value) =>
+      unescapeText(value).map(output.string)
   }
 
   private val _array: A[List[B]] = {
@@ -49,9 +51,16 @@ class JSON[A[_]: Applicative, B](
       )
 
     input.read(
-      _value andThen ((head: A[B]) => Apply[A].apply2(head, tail)(_ :: _)) orElse {
+      _value andThen (
+          (head: A[B]) =>
+            Apply[A].apply2(head, tail)(_ :: _)
+        ) orElse {
         case RightBracket => List.empty[B].point[A]
-        case other        => wrong(other, "boolean, [, ], {, null, number or string")
+        case other =>
+          wrong(
+            other,
+            "boolean, [, ], {, null, number or string"
+          )
       }
     )
   }
@@ -59,18 +68,28 @@ class JSON[A[_]: Applicative, B](
   val value: A[B] = input.read(
     _value orElse {
       case other =>
-        wrong(other, "boolean, [, {, null, number or string")
+        wrong(
+          other,
+          "boolean, [, {, null, number or string"
+        )
     }
   )
 
   private def matchMap[X](seq: (Token, A[X])*): A[X] = {
     val map = seq.toMap
     input.read(
-      next => map.getOrElse(next, wrong(next, map.keys.mkString(" or ")))
+      next =>
+        map.getOrElse(
+          next,
+          wrong(next, map.keys.mkString(" or "))
+        )
     )
   }
 
-  private def wrong[X](next: Token, needed: => String): A[X] =
+  private def wrong[X](
+      next: Token,
+      needed: => String
+  ): A[X] =
     error.raise(s"$needed needed, but ${next.kind} found.")
 
   private def unescapeText(value: List[Char]): A[String] = {
@@ -79,23 +98,31 @@ class JSON[A[_]: Applicative, B](
         ('A' to 'Z').map(c => c -> (c - 'A' + 10)) ++
         ('a' to 'z').map(c => c -> (c - 'a' + 10))).toMap
 
-    def helper(in: List[Char], out: A[List[Char]]): A[String] = in match {
+    def helper(
+        in: List[Char],
+        out: A[List[Char]]
+    ): A[String] = in match {
       case Nil | '"' :: Nil => out.map(_.mkString)
       case h :: t =>
         h match {
           case '\\' =>
             t match {
-              case '\\' :: u => helper(u, out.map('\\' :: _))
-              case '\"' :: u => helper(u, out.map('\"' :: _))
-              case 'b' :: u  => helper(u, out.map('\b' :: _))
-              case 'f' :: u  => helper(u, out.map('\f' :: _))
-              case 'n' :: u  => helper(u, out.map('\n' :: _))
-              case 'r' :: u  => helper(u, out.map('\r' :: _))
-              case 't' :: u  => helper(u, out.map('\t' :: _))
+              case '\\' :: u =>
+                helper(u, out.map('\\' :: _))
+              case '\"' :: u =>
+                helper(u, out.map('\"' :: _))
+              case 'b' :: u => helper(u, out.map('\b' :: _))
+              case 'f' :: u => helper(u, out.map('\f' :: _))
+              case 'n' :: u => helper(u, out.map('\n' :: _))
+              case 'r' :: u => helper(u, out.map('\r' :: _))
+              case 't' :: u => helper(u, out.map('\t' :: _))
               case 'u' :: a :: b :: c :: d :: u
-                  if hex.contains(a) && hex.contains(b) && hex
+                  if hex.contains(a) && hex
+                    .contains(b) && hex
                     .contains(c) && hex.contains(d) =>
-                val e = ((hex(a) << 12) + (hex(b) << 8) + (hex(c) << 4) + hex(
+                val e = ((hex(a) << 12) + (hex(b) << 8) + (hex(
+                  c
+                ) << 4) + hex(
                   d
                 )).toChar
                 helper(u, out.map(e :: _))
@@ -116,9 +143,12 @@ object JSON {
   //this wouldn't allow putting positions in error messages however...
 
   sealed abstract class Token(val kind: String)
-  final case class Text(value: List[Char]) extends Token("string")
-  final case class Number(value: List[Char]) extends Token("number")
-  final case class Bool(value: Boolean) extends Token("boolean")
+  final case class Text(value: List[Char])
+      extends Token("string")
+  final case class Number(value: List[Char])
+      extends Token("number")
+  final case class Bool(value: Boolean)
+      extends Token("boolean")
   final case object Null extends Token("null")
   final case object LeftBracket extends Token("[")
   final case object RightBracket extends Token("]")
@@ -152,7 +182,8 @@ object JSON {
   class Tokenizer[A[_]: PlusEmpty: Functor, B](
       input: LexInput[Char, A]
   ) {
-    implicit def monoid[X]: Monoid[A[X]] = PlusEmpty[A].monoid[X]
+    implicit def monoid[X]: Monoid[A[X]] =
+      PlusEmpty[A].monoid[X]
 
     val string: A[Token] = {
       //leave the escapes alone for now!
@@ -187,7 +218,9 @@ object JSON {
 
       val int: A[List[Char]] = {
         val uint = input.readIfEqual('0', input.pop) <+>
-          ('1' to '9').toList.foldMap(input.readIfEqual(_, _digits(fraction)))
+          ('1' to '9').toList.foldMap(
+            input.readIfEqual(_, _digits(fraction))
+          )
         (input.readIfEqual('-', uint) <+> uint)
       }
 

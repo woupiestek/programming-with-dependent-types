@@ -1,9 +1,13 @@
 package nl.woupiestek.equalizer
 import scala.annotation.tailrec
 
-final case class Trampoline2[+A](resume: Int => Either[Trampoline2[A], A]) {
+final case class Trampoline2[+A](
+    resume: Int => Either[Trampoline2[A], A]
+) {
 
-  final def flatMap[A0 >: A, B](g: A0 => Trampoline2[B]): Trampoline2[B] = {
+  final def flatMap[A0 >: A, B](
+      g: A0 => Trampoline2[B]
+  ): Trampoline2[B] = {
     lazy val result: Trampoline2[B] = Trampoline2(
       limit =>
         if (limit > 0) {
@@ -16,16 +20,18 @@ final case class Trampoline2[+A](resume: Int => Either[Trampoline2[A], A]) {
     result
   }
 
-  @tailrec final def exhaust(stackLimit: Int): A = resume(stackLimit) match {
-    case Right(value) => value
-    case Left(x)      => x.exhaust(stackLimit)
-  }
+  @tailrec final def exhaust(stackLimit: Int): A =
+    resume(stackLimit) match {
+      case Right(value) => value
+      case Left(x)      => x.exhaust(stackLimit)
+    }
 
 }
 
 object Trampoline2 {
 
-  def pure[A](a: => A): Trampoline2[A] = Trampoline2(_ => Right(a))
+  def pure[A](a: => A): Trampoline2[A] =
+    Trampoline2(_ => Right(a))
   def suspend[A](ta: => Trampoline2[A]): Trampoline2[A] =
     pure(()).flatMap((_: Unit) => ta)
 

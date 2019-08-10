@@ -18,16 +18,19 @@ class Grammar[F[+ _]: MonadPlus, T, D](
     ParserT.error(message)
 
   lazy val whitespace: Q[Unit] =
-    (readIf(Character.isWhitespace(_: Char)) *> whitespace) <+> ().point[Q]
+    (readIf(Character.isWhitespace(_: Char)) *> whitespace) <+> ()
+      .point[Q]
 
-  def token(char: Char): Q[Unit] = readIf(_ == char) *> whitespace
+  def token(char: Char): Q[Unit] =
+    readIf(_ == char) *> whitespace
 
   def matchChars(chars: List[Char]): Q[Unit] = chars match {
     case Nil    => ().point[Q]
     case h :: t => readIf(_ == h) *> matchChars(t)
   }
 
-  def matchString(string: String) = matchChars(string.toList)
+  def matchString(string: String) =
+    matchChars(string.toList)
 
   def token(string: String): Q[Unit] =
     matchString(string) *> whitespace
@@ -45,16 +48,21 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       p: Q[A]
   )(separator: Q[Unit]): Q[List[A]] = {
     lazy val tail: Q[List[A]] =
-      (p <*> separator *> tail.map((t: List[A]) => (_: A) :: t)) <+>
+      (p <*> separator *> tail.map(
+        (t: List[A]) => (_: A) :: t
+      )) <+>
         List.empty[A].point[Q]
     tail
   }
 
-  def parenthetical[A](p: Q[A]) = token('(') *> p <* token(')') //
+  def parenthetical[A](p: Q[A]) =
+    token('(') *> p <* token(')') //
 
   def tupled[A](p: Q[A]): Q[List[A]] =
     token('<') *>
-      separated(p <+> error("improper tuple member"))(token(',')) <*
+      separated(p <+> error("improper tuple member"))(
+        token(',')
+      ) <*
       token('>')
 
   val arrow = token("->")
@@ -101,7 +109,9 @@ class Grammar[F[+ _]: MonadPlus, T, D](
         error("not a delimited def")
 
     def elim: Q[D => D] =
-      (readIf(_ == '_') *> integer.map((i: Int) => D.project(_, i))) <+>
+      (readIf(_ == '_') *> integer.map(
+        (i: Int) => D.project(_, i)
+      )) <+>
         token('\'').map(_ => D.unfold(_)) <+>
         unit.map((operand: D) => D.application(_, operand)) <+>
         ((d: D) => d).point[Q]
@@ -115,7 +125,9 @@ class Grammar[F[+ _]: MonadPlus, T, D](
         (token('=') *> (intros <*> token(';') *> intros.map(
           (c: D) => (b: D) => D.let(_, b, c)
         ))) <+>
-          (arrow *> intros.map((b: D) => D.abstraction(_, b))) <+>
+          (arrow *> intros.map(
+            (b: D) => D.abstraction(_, b)
+          )) <+>
           (fix *> intros.map((b: D) => D.fix(_, b)))
       }) <+>
         (unit <*> elims)
