@@ -5,7 +5,21 @@ import scalaz.Scalaz._
 
 final case class ParserT[F[+ _], -I, +E, +O](
     val rules: F[ParserT.RuleT[F, I, E, O]]
-) extends AnyVal
+) extends AnyVal {
+
+  def matches(implicit F: MonadPlus[F]): F[O] =
+    rules
+      .filter(_.isInstanceOf[ParserT.Write[F, O]])
+      .map(_.asInstanceOf[ParserT.Write[F, O]].value)
+
+  def errors(implicit F: MonadPlus[F]): F[E] =
+    rules
+      .filter(_.isInstanceOf[ParserT.Error[F, E]])
+      .map(_.asInstanceOf[ParserT.Error[F, E]].value)
+
+  def derive(i: I)(implicit F: MonadPlus[F]): ParserT[F, I, E, O] =
+    ParserT(rules.flatMap(_.derive(i).rules))
+}
 
 object ParserT {
 

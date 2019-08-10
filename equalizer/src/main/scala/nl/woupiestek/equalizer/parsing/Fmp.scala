@@ -2,6 +2,7 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
+import scala.annotation.tailrec
 
 sealed abstract class Fmp[+O] {
   def isEmpty: Boolean = this == Fmp.Empty
@@ -40,20 +41,29 @@ object Fmp {
     }
 
     def foldRight[A, B](fa: Fmp[A], z: => B)(f: (A, => B) => B): B = {
-      def helper1[C](pc: Fmp[C], g: C => Fmp[A], b: => B): B = pc match {
-        case Empty             => b
-        case fm: FlatMap[d, C] => helper1(fm.dpo, fm.dpp(_: d).flatMap(g), b)
-        case Plus(left, right) => helper1(left, g, helper1(right, g, b))
-        case Point(o)          => helper0(g(o), b)
+      @tailrec def helper(todo: List[Fmp[A]], done: List[A]): B = todo match {
+        case Nil => done.foldLeft(z)((b, a) => f(a, b))
+        case h :: t =>
+          h match {
+            case Empty => helper(t, done)
+            case fm: FlatMap[b, A] =>
+              fm.dpo match {
+                case Empty => helper(t, done)
+                case gm: FlatMap[c, d] =>
+                  val h0 = gm.dpo.flatMap(gm.dpp(_: c).flatMap(fm.dpp))
+                  helper(h0 :: t, done)
+                case Plus(left, right) =>
+                  val h0 = left.flatMap(fm.dpp)
+                  val h1 = right.flatMap(fm.dpp)
+                  helper(h0 :: h1 :: t, done)
+                case Point(o) => helper(fm.dpp(o) :: t, done)
+              }
+            case Plus(left, right) => helper(left :: right :: t, done)
+            case Point(o)          => helper(t, o :: done)
+          }
       }
 
-      def helper0(pa: Fmp[A], b: => B): B = pa match {
-        case Empty             => b
-        case FlatMap(dpo, dpp) => helper1(dpo, dpp, b)
-        case Plus(left, right) => helper0(left, helper0(right, b))
-        case Point(o)          => f(o, b)
-      }
-      helper0(fa, z)
+      helper(fa :: Nil, Nil)
     }
   }
 }
