@@ -14,14 +14,16 @@ object ParserT {
     def bind[P, I0 <: I, E0 >: E](
         f: O => ParserT[F, I0, E0, P]
     ): ParserT[F, I0, E0, P]
+    final def asParser[I0 <: I, E0 >: E, O0 >: O]: ParserT[F, I0, E0, O0] =
+      ParserT(this.point[F])
   }
 
   private final class Write[F[+ _]: MonadPlus, A](a: => A)
       extends RuleT[F, Any, Nothing, A] {
     def bind[B, I0, E0](
         f: A => ParserT[F, I0, E0, B]
-    ): ParserT[F, I0, E0, B] = f(a)
-    def value: A = a
+    ): ParserT[F, I0, E0, B] = f(value)
+    lazy val value: A = a
     def derive(i: Any): ParserT[F, Any, Nothing, A] =
       ParserT(PlusEmpty[F].empty)
   }
@@ -31,22 +33,20 @@ object ParserT {
     def bind[B, I0, E0 >: E](
         f: Nothing => ParserT[F, I0, E0, B]
     ): ParserT[F, I0, E0, B] = ParserT(this.point[F])
-    def value: E = e
+    lazy val value: E = e
     def derive(i: Any): ParserT[F, Any, E, Nothing] =
       ParserT(PlusEmpty[F].empty)
   }
 
-  private final class Read[F[+ _]: MonadPlus, -I, +E, +A](
-      select: I => ParserT[F, I, E, A]
+  private final class Derive[F[+ _]: MonadPlus, -I, +E, +A](
+      d: => I => ParserT[F, I, E, A]
   ) extends RuleT[F, I, E, A] {
     def bind[B, I0 <: I, E0 >: E](
         f: A => ParserT[F, I0, E0, B]
     ): ParserT[F, I0, E0, B] =
-      read[F, I0, E0, B](
-        select(_: I0).asInstanceOf[ParserT[F, I0, E0, A]].flatMap(f)
-      )
-    def derive(i: I): ParserT[F, I, E, A] =
-      select(i)
+      new Derive(d(_: I0).asInstanceOf[ParserT[F, I0, E0, A]].flatMap(f))
+        .asParser[I0, E0, B]
+    def derive(i: I) = d(i)
   }
 
   private final class Instances[F[+ _]: MonadPlus, I, E] {
@@ -64,16 +64,14 @@ object ParserT {
       : MonadPlus[({ type P[+O] = ParserT[F, I, E, O] })#P] =
     new Instances[F, I, E].monadPlus
 
-  def read[F[+ _]: MonadPlus, I, E, A](
-      select: I => ParserT[F, I, E, A]
-  ): ParserT[F, I, E, A] =
-    ParserT(
-      new Read[F, I, E, A](select)
-        .asInstanceOf[RuleT[F, I, E, A]]
-        .point[F]
-    )
   def error[F[+ _]: MonadPlus, I, E, A](e: => E): ParserT[F, I, E, A] =
-    ParserT(new Error[F, E](e).asInstanceOf[RuleT[F, I, E, A]].point[F])
+    new Error[F, E](e).asParser[I, E, A]
   def write[F[+ _]: MonadPlus, I, E, A](a: => A): ParserT[F, I, E, A] =
-    ParserT(new Write[F, A](a).point[F])
+    new Write[F, A](a).asParser[I, E, A]
+  def read[F[+ _]: MonadPlus, I, E]: ParserT[F, I, E, I] =
+    new Derive[F, I, E, I](
+      (_: I).point[({ type P[+O] = ParserT[F, I, E, O] })#P]
+    ).asParser[I, E, I]
+  def readIf[F[+ _]: MonadPlus, I, E](f: I => Boolean): ParserT[F, I, E, I] =
+    read[F, I, E].filter(f)
 }
