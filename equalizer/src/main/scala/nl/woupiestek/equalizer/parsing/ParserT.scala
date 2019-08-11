@@ -28,9 +28,6 @@ object ParserT {
 
   sealed abstract class RuleT[F[+ _]: MonadPlus, -I, +E, +O] {
     def derive(i: I): ParserT[F, I, E, O]
-    def bind[P, I0 <: I, E0 >: E](
-        f: O => ParserT[F, I0, E0, P]
-    ): ParserT[F, I0, E0, P]
     final def asParser[I0 <: I, E0 >: E, O0 >: O]
         : ParserT[F, I0, E0, O0] =
       ParserT(this.point[F])
@@ -38,22 +35,18 @@ object ParserT {
 
   private final class Write[F[+ _]: MonadPlus, A](a: => A)
       extends RuleT[F, Any, Nothing, A] {
-    def bind[B, I0, E0](
-        f: A => ParserT[F, I0, E0, B]
-    ): ParserT[F, I0, E0, B] = f(value)
     lazy val value: A = a
-    def derive(i: Any): ParserT[F, Any, Nothing, A] =
+    private lazy val _d: ParserT[F, Any, Nothing, A] =
       ParserT(PlusEmpty[F].empty)
+    def derive(i: Any): ParserT[F, Any, Nothing, A] = _d
   }
 
   private final class Error[F[+ _]: MonadPlus, E](e: => E)
       extends RuleT[F, Any, E, Nothing] {
-    def bind[B, I0, E0 >: E](
-        f: Nothing => ParserT[F, I0, E0, B]
-    ): ParserT[F, I0, E0, B] = ParserT(this.point[F])
     lazy val value: E = e
-    def derive(i: Any): ParserT[F, Any, E, Nothing] =
+    private lazy val _d: ParserT[F, Any, E, Nothing] =
       ParserT(PlusEmpty[F].empty)
+    def derive(i: Any): ParserT[F, Any, E, Nothing] = _d
   }
 
   private final class Derive[F[+ _]: MonadPlus, I, E, A](
@@ -84,7 +77,11 @@ object ParserT {
     implicit val monadPlus: MonadPlus[P] =
       new MonadPlus[P] {
         def bind[A, B](fa: P[A])(f: A => P[B]): P[B] =
-          ParserT(fa.rules.flatMap(_.bind(f).rules))
+          ParserT(
+            new Derive(fa.derive(_: I).flatMap(f))
+              .asInstanceOf[RuleT[F, I, E, B]]
+              .point[F] <+> fa.matches.flatMap(f(_).rules)
+          )
         def empty[A]: P[A] = ParserT(PlusEmpty[F].empty)
         def plus[A](a: P[A], b: => P[A]): P[A] =
           ParserT(a.rules <+> b.rules)
@@ -111,6 +108,5 @@ object ParserT {
     ).asParser[I, E, I]
   def readIf[F[+ _]: MonadPlus, I, E](
       f: I => Boolean
-  ): ParserT[F, I, E, I] =
-    read[F, I, E].filter(f)
+  ): ParserT[F, I, E, I] = read[F, I, E].filter(f)
 }

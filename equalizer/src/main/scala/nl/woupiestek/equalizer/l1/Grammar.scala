@@ -18,7 +18,8 @@ class Grammar[F[+ _]: MonadPlus, T, D](
     ParserT.error(message)
 
   lazy val whitespace: Q[Unit] =
-    (readIf(Character.isWhitespace(_: Char)) *> whitespace) <+> ()
+    (readIf(Character.isWhitespace(_: Char))
+      .flatMap(_ => whitespace)) <+> ()
       .point[Q]
 
   def token(char: Char): Q[Unit] =
@@ -37,22 +38,28 @@ class Grammar[F[+ _]: MonadPlus, T, D](
 
   val identifier: Q[String] = {
     lazy val iPart: Q[Char => List[Char]] =
-      (readIf(Character.isJavaIdentifierPart(_: Char)) <*> iPart)
-        .map((t: List[Char]) => (_: Char) :: t) <+>
+      readIf(Character.isJavaIdentifierPart(_: Char))
+        .flatMap(
+          (h1: Char) =>
+            iPart.map(
+              (t: Char => List[Char]) =>
+                (h0: Char) => h0 :: t(h1)
+            )
+        ) <+>
         whitespace.map(_ => (_: Char) :: Nil)
     (readIf(Character.isJavaIdentifierStart(_: Char)) <*> iPart)
-      .map(_.mkString) <* whitespace
+      .map(_.mkString)
   }
 
   def separated[A](
       p: Q[A]
   )(separator: Q[Unit]): Q[List[A]] = {
-    lazy val tail: Q[List[A]] =
-      (p <*> separator *> tail.map(
-        (t: List[A]) => (_: A) :: t
-      )) <+>
-        List.empty[A].point[Q]
-    tail
+    lazy val q: Q[List[A]] = for {
+      h <- p
+      _ <- separator
+      t <- q <+> List.empty[A].point[Q]
+    } yield h :: t
+    q
   }
 
   def parenthetical[A](p: Q[A]) =
@@ -74,13 +81,13 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       (arrow *> bound.map((t: T) => T.arrow(_, t))) <+>
         ((t: T) => t).point[Q]
 
-    lazy val bound: Q[T] =
-      identifier <*> {
-        (fix *> bound.map(c => T.fix(_, c))) <+>
+    def bound: Q[T] =
+      identifier.flatMap { (a: String) =>
+        (fix *> bound.map(T.fix(a, _))) <+>
           (token('=') *> bound <* token(';') <*> bound.map(
-            (c: T) => (b: T) => T.let(_, b, c)
+            (c: T) => (b: T) => T.let(a, b, c)
           )) <+>
-          arrowTail.map((_: T => T).compose(T.variable(_)))
+          arrowTail.map((_: T => T)(T.variable(a)))
       } <+>
         ({
           parenthetical(bound) <+>
@@ -92,12 +99,13 @@ class Grammar[F[+ _]: MonadPlus, T, D](
   }
 
   val integer: Q[Int] = {
-    lazy val digits: Q[Int => Int] =
-      (readIf(Character.isDigit(_: Char))
-        .map((c: Char) => (acc: Int) => 10 * acc + c - '0') <*> digits
-        .map((f: Int => Int) => f.compose(_: Int => Int))) <+>
-        ((i: Int) => i).point[Q]
-    digits.map(_(0))
+    val digit: Q[Int] = readIf(Character.isDigit(_: Char))
+      .map((c: Char) => c - '0')
+    lazy val digits: Q[Int] = for {
+      h <- digit
+      t <- digits <+> 0.point[Q]
+    } yield 10 * h + t
+    digits
   }
 
   val defExp: Q[D] = {
@@ -115,20 +123,23 @@ class Grammar[F[+ _]: MonadPlus, T, D](
         token('\'').map(_ => D.unfold(_)) <+>
         unit.map((operand: D) => D.application(_, operand)) <+>
         ((d: D) => d).point[Q]
+
     def elims: Q[D => D] =
-      elim <*> elims
-        .map((f: D => D) => f.compose(_: D => D)) <+>
+      (for {
+        f <- elim
+        g <- elims
+      } yield f.andThen(g)) <+>
         ((d: D) => d).point[Q]
 
     def intros: Q[D] =
-      (identifier <*> {
+      (identifier.flatMap { (a: String) =>
         (token('=') *> (intros <*> token(';') *> intros.map(
-          (c: D) => (b: D) => D.let(_, b, c)
+          (c: D) => (b: D) => D.let(a, b, c)
         ))) <+>
           (arrow *> intros.map(
-            (b: D) => D.abstraction(_, b)
+            (b: D) => D.abstraction(a, b)
           )) <+>
-          (fix *> intros.map((b: D) => D.fix(_, b)))
+          (fix *> intros.map((b: D) => D.fix(a, b)))
       }) <+>
         (unit <*> elims)
 

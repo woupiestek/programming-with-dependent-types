@@ -3,27 +3,23 @@ package nl.woupiestek.equalizer.parsing
 import scalaz._
 import scalaz.Scalaz._
 import scala.collection.mutable
+import scala.annotation.tailrec
 
-sealed abstract class Fmp[+O] {
-  def isEmpty: Boolean = this == Fmp.Empty
-}
+sealed abstract class Fmp[+O]
 
 object Fmp {
 
   private final case object Empty extends Fmp[Nothing]
   private final case class Plus[O](
       left: Fmp[O],
-      right: Fmp[O]
+      right: () => Fmp[O]
   ) extends Fmp[O]
-  private final case class Point[+O](o: O) extends Fmp[O]
+  private final case class Point[+O](o: () => O)
+      extends Fmp[O]
   private final case class FlatMap[O, P](
       dpo: Fmp[O],
       dpp: O => Fmp[P]
   ) extends Fmp[P]
-
-  private val Pause: Fmp[Unit] = Point(())
-  def suspend[I, O](dpo: => Fmp[O]): Fmp[O] =
-    FlatMap(Pause, (_: Unit) => dpo)
 
   implicit val monadPlus: MonadPlus[Fmp] =
     new MonadPlus[Fmp] {
@@ -32,15 +28,13 @@ object Fmp {
           case Empty => Empty
           case g: FlatMap[x, A] =>
             FlatMap(g.dpo, g.dpp(_: x).flatMap(f))
-          case Point(o) => f(o)
           case _        => FlatMap(fa, f)
         }
       def empty[A]: Fmp[A] = Empty
       def plus[A](a: Fmp[A], b: => Fmp[A]): Fmp[A] =
-        if (a.isEmpty) b
-        else if (b.isEmpty) a
-        else Plus(a, b)
-      def point[A](a: => A): Fmp[A] = Point(a)
+        if (a == Empty) b
+        else Plus(a, () => b)
+      def point[A](a: => A): Fmp[A] = Point(() => a)
     }
 
   implicit val foldable: Foldable[Fmp] = new Foldable[Fmp] {
@@ -58,18 +52,19 @@ object Fmp {
       todo.push(fa)
       var done: () => B = () => z
 
-      def bind[C](fc: Fmp[C], g: C => Fmp[A]): Unit =
+      @tailrec def bind[C](
+          fc: Fmp[C],
+          g: C => Fmp[A]
+      ): Unit =
         fc match {
           case Empty => ()
           case gm: FlatMap[c, d] =>
-            todo.push(
-              gm.dpo.flatMap(gm.dpp(_: c).flatMap(g))
-            )
+            bind(gm.dpo, gm.dpp(_: c).flatMap(g))
           case Plus(left, right) =>
-            todo.push(right.flatMap(g))
-            todo.push(left.flatMap(g))
+            todo.push(right().flatMap(g))
+            bind(left, g)
           case Point(o) =>
-            todo.push(g(o))
+            todo.push(g(o()))
         }
 
       while (todo.nonEmpty) {
@@ -77,9 +72,9 @@ object Fmp {
           case Empty             => ()
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
           case Plus(left, right) =>
-            todo.push(right)
+            todo.push(right())
             todo.push(left)
-          case Point(o) => done = () => f(o, done())
+          case Point(o) => done = () => f(o(), done())
         }
       }
       done()
