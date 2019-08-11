@@ -12,10 +12,9 @@ object Fmp {
   private final case object Empty extends Fmp[Nothing]
   private final case class Plus[O](
       left: Fmp[O],
-      right: () => Fmp[O]
+      right: Fmp[O]
   ) extends Fmp[O]
-  private final case class Point[+O](o: () => O)
-      extends Fmp[O]
+  private final case class Point[+O](o: O) extends Fmp[O]
   private final case class FlatMap[O, P](
       dpo: Fmp[O],
       dpp: O => Fmp[P]
@@ -24,17 +23,11 @@ object Fmp {
   implicit val monadPlus: MonadPlus[Fmp] =
     new MonadPlus[Fmp] {
       def bind[A, B](fa: Fmp[A])(f: A => Fmp[B]): Fmp[B] =
-        fa match {
-          case Empty => Empty
-          case g: FlatMap[x, A] =>
-            FlatMap(g.dpo, g.dpp(_: x).flatMap(f))
-          case _        => FlatMap(fa, f)
-        }
+        FlatMap(fa, f)
       def empty[A]: Fmp[A] = Empty
       def plus[A](a: Fmp[A], b: => Fmp[A]): Fmp[A] =
-        if (a == Empty) b
-        else Plus(a, () => b)
-      def point[A](a: => A): Fmp[A] = Point(() => a)
+        Plus(a, b)
+      def point[A](a: => A): Fmp[A] = Point(a)
     }
 
   implicit val foldable: Foldable[Fmp] = new Foldable[Fmp] {
@@ -61,10 +54,10 @@ object Fmp {
           case gm: FlatMap[c, d] =>
             bind(gm.dpo, gm.dpp(_: c).flatMap(g))
           case Plus(left, right) =>
-            todo.push(right().flatMap(g))
+            todo.push(right.flatMap(g))
             bind(left, g)
           case Point(o) =>
-            todo.push(g(o()))
+            todo.push(g(o))
         }
 
       while (todo.nonEmpty) {
@@ -72,9 +65,9 @@ object Fmp {
           case Empty             => ()
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
           case Plus(left, right) =>
-            todo.push(right())
+            todo.push(right)
             todo.push(left)
-          case Point(o) => done = () => f(o(), done())
+          case Point(o) => done = () => f(o, done())
         }
       }
       done()

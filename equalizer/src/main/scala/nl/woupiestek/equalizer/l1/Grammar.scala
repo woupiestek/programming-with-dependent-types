@@ -52,7 +52,7 @@ class Grammar[F[+ _]: MonadPlus, T, D](
   }
 
   def separated[A](
-      p: Q[A]
+      p: => Q[A]
   )(separator: Q[Unit]): Q[List[A]] = {
     lazy val q: Q[List[A]] = for {
       h <- p
@@ -62,10 +62,10 @@ class Grammar[F[+ _]: MonadPlus, T, D](
     q
   }
 
-  def parenthetical[A](p: Q[A]) =
+  def parenthetical[A](p: => Q[A]) =
     token('(') *> p <* token(')') //
 
-  def tupled[A](p: Q[A]): Q[List[A]] =
+  def tupled[A](p: => Q[A]): Q[List[A]] =
     token('<') *>
       separated(p <+> error("improper tuple member"))(
         token(',')
