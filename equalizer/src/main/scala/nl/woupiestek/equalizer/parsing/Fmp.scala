@@ -2,7 +2,7 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
-import scala.annotation.tailrec
+import scala.collection.mutable
 
 sealed abstract class Fmp[+O] {
   def isEmpty: Boolean = this == Fmp.Empty
@@ -54,36 +54,35 @@ object Fmp {
     def foldRight[A, B](fa: Fmp[A], z: => B)(
         f: (A, => B) => B
     ): B = {
-      @tailrec def helper(
-          todo: List[Fmp[A]],
-          done: List[A]
-      ): B = todo match {
-        case Nil => done.foldLeft(z)((b, a) => f(a, b))
-        case h :: t =>
-          h match {
-            case Empty => helper(t, done)
-            case fm: FlatMap[b, A] =>
-              fm.dpo match {
-                case Empty => helper(t, done)
-                case gm: FlatMap[c, d] =>
-                  val h0 = gm.dpo.flatMap(
-                    gm.dpp(_: c).flatMap(fm.dpp)
-                  )
-                  helper(h0 :: t, done)
-                case Plus(left, right) =>
-                  val h0 = left.flatMap(fm.dpp)
-                  val h1 = right.flatMap(fm.dpp)
-                  helper(h0 :: h1 :: t, done)
-                case Point(o) =>
-                  helper(fm.dpp(o) :: t, done)
-              }
-            case Plus(left, right) =>
-              helper(left :: right :: t, done)
-            case Point(o) => helper(t, o :: done)
-          }
-      }
+      val todo = new mutable.ArrayStack[Fmp[A]]
+      todo.push(fa)
+      var done: () => B = () => z
 
-      helper(fa :: Nil, Nil)
+      def bind[C](fc: Fmp[C], g: C => Fmp[A]): Unit =
+        fc match {
+          case Empty => ()
+          case gm: FlatMap[c, d] =>
+            todo.push(
+              gm.dpo.flatMap(gm.dpp(_: c).flatMap(g))
+            )
+          case Plus(left, right) =>
+            todo.push(right.flatMap(g))
+            todo.push(left.flatMap(g))
+          case Point(o) =>
+            todo.push(g(o))
+        }
+
+      while (todo.nonEmpty) {
+        todo.pop() match {
+          case Empty             => ()
+          case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
+          case Plus(left, right) =>
+            todo.push(right)
+            todo.push(left)
+          case Point(o) => done = () => f(o, done())
+        }
+      }
+      done()
     }
   }
 }

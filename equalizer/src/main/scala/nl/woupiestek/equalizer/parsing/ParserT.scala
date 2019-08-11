@@ -2,6 +2,7 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
+import scala.collection.mutable
 
 final case class ParserT[F[+ _], -I, +E, +O](
     val rules: F[ParserT.RuleT[F, I, E, O]]
@@ -55,18 +56,26 @@ object ParserT {
       ParserT(PlusEmpty[F].empty)
   }
 
-  private final class Derive[F[+ _]: MonadPlus, -I, +E, +A](
+  private final class Derive[F[+ _]: MonadPlus, I, E, A](
       d: => I => ParserT[F, I, E, A]
   ) extends RuleT[F, I, E, A] {
     def bind[B, I0 <: I, E0 >: E](
         f: A => ParserT[F, I0, E0, B]
     ): ParserT[F, I0, E0, B] =
       new Derive(
-        d(_: I0)
+        derive(_: I0)
           .asInstanceOf[ParserT[F, I0, E0, A]]
           .flatMap(f)
       ).asParser[I0, E0, B]
-    def derive(i: I) = d(i)
+
+    private val cache =
+      new mutable.HashMap[I, ParserT[F, I, E, A]]
+    def derive(i: I): ParserT[F, I, E, A] = {
+      if (!cache.contains(i)) {
+        cache.put(i, d(i))
+      }
+      cache(i)
+    }
   }
 
   private final class Instances[F[+ _]: MonadPlus, I, E] {

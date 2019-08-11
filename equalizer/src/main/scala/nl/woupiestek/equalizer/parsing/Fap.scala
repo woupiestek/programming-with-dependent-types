@@ -2,7 +2,7 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 import scalaz.Scalaz._
-import scala.annotation.tailrec
+import scala.collection.mutable
 
 /* free applicative plus */
 sealed abstract class Fap[+A] {
@@ -63,57 +63,47 @@ object Fap {
     def foldRight[A, B](fa: Fap[A], z: => B)(
         f: (A, => B) => B
     ): B = {
+      val todo = new mutable.ArrayStack[Fap[A]]()
+      todo.push(fa)
+      var done: () => B = () => z
 
-      @tailrec def helper1(
-          todo: List[Fap[A]],
-          done: List[A]
-      ): B = todo match {
-        case Nil => done.foldLeft(z)((b, a) => f(a, b))
-        case h :: t =>
-          h match {
-            case a: Apply2[c, d, A] =>
-              a.first match {
-                case b: Apply2[e, f, c] =>
-                  val h1 = Apply2(
-                    b.second,
-                    a.second,
-                    (v: f, w: d) =>
-                      (u: e) =>
-                        a.combine(b.combine(u, v), w)
-                  )
-                  val h0 = Apply2(
-                    b.first,
-                    h1,
-                    (u: e, v: e => A) => v(u)
-                  )
-                  helper1(h0 :: t, done)
-                case Empty => helper1(t, done)
-                case Plus(left, right) =>
-                  val h0 = Apply2(left, a.second, a.combine)
-                  val h1 =
-                    Apply2(right, a.second, a.combine)
-                  helper1(h0 :: h1 :: t, done)
-                case Point(c0) =>
-                  a.second match {
-                    case Point(d0) =>
-                      helper1(t, a.combine(c0, d0) :: done)
-                    case _ =>
-                      val h0 = Apply2(
-                        a.second,
-                        a.first,
-                        a.combine.flip
-                      )
-                      helper1(h0 :: t, done)
-                  }
-              }
-            case Empty    => helper1(t, done)
-            case Point(a) => helper1(t, a :: done)
-            case Plus(left, right) =>
-              helper1(left :: right :: t, done)
+      def apply2[C, D](
+          fc: Fap[C],
+          fd: Fap[D],
+          op: (C, D) => A
+      ): Unit = fc match {
+        case b: Apply2[e, f, c] =>
+          val h1 = Apply2(
+            b.second,
+            fd,
+            (v: f, w: D) => (u: e) => op(b.combine(u, v), w)
+          )
+          todo.push(b.first <*> h1)
+        case Empty => ()
+        case Plus(left, right) =>
+          todo.push(Apply2(right, fd, op))
+          todo.push(Apply2(left, fd, op))
+        case Point(c0) =>
+          fd match {
+            case Point(d0) =>
+              done = () => f(op(c0, d0), done())
+            case _ =>
+              todo.push(Apply2(fd, fc, op.flip))
           }
       }
 
-      helper1(fa :: Nil, Nil)
+      while (todo.nonEmpty) {
+        todo.pop() match {
+          case a: Apply2[c, d, A] =>
+            apply2(a.first, a.second, a.combine)
+          case Empty    => ()
+          case Point(a) => done = () => f(a, done())
+          case Plus(left, right) =>
+            todo.push(right)
+            todo.push(left)
+        }
+      }
+      done()
     }
   }
 
