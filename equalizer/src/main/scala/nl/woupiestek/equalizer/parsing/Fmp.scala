@@ -19,15 +19,34 @@ object Fmp {
       dpo: Fmp[O],
       dpp: O => Fmp[P]
   ) extends Fmp[P]
+  private final case class Suspend[+O](
+      private val fo: () => Fmp[O]
+  ) extends Fmp[O] {
+    lazy val value: Fmp[O] = fo()
+  }
+
+  private def suspend[A](fa: => Fmp[A]): Fmp[A] =
+    Suspend(() => fa)
 
   implicit val monadPlus: MonadPlus[Fmp] =
     new MonadPlus[Fmp] {
       def bind[A, B](fa: Fmp[A])(f: A => Fmp[B]): Fmp[B] =
-        FlatMap(fa, f)
+        fa match {
+          case Empty => Empty
+          case fm: FlatMap[b, A] =>
+            FlatMap(fm.dpo, fm.dpp(_: b).flatMap(f))
+          case Point(a) => f(a)
+          case _        => FlatMap(fa, f)
+        }
       def empty[A]: Fmp[A] = Empty
       def plus[A](a: Fmp[A], b: => Fmp[A]): Fmp[A] =
-        Plus(a, b)
-      def point[A](a: => A): Fmp[A] = Point(a)
+        a match {
+          case Empty => suspend(b)
+          case Plus(left, right) =>
+            Plus(left, Plus(right, suspend(b)))
+          case _ => Plus(a, suspend(b))
+        }
+      def point[A](a: => A): Fmp[A] = suspend(Point(a))
     }
 
   implicit val foldable: Foldable[Fmp] = new Foldable[Fmp] {
@@ -42,8 +61,8 @@ object Fmp {
         f: (A, => B) => B
     ): B = {
       val todo = new mutable.ArrayStack[Fmp[A]]
-      todo.push(fa)
-      var done: () => B = () => z
+      var result: () => B = () => z
+      val done = new mutable.HashSet[Fmp[A]]
 
       @tailrec def bind[C](
           fc: Fmp[C],
@@ -58,19 +77,30 @@ object Fmp {
             bind(left, g)
           case Point(o) =>
             todo.push(g(o))
+          case s: Suspend[C] => bind(s.value, g)
         }
 
-      while (todo.nonEmpty) {
-        todo.pop() match {
+      @tailrec def run(next: Fmp[A]): Unit = {
+        if (done.contains(next)) throw new Cycle()
+        done.add(next)
+        next match {
           case Empty             => ()
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
           case Plus(left, right) =>
             todo.push(right)
-            todo.push(left)
-          case Point(o) => done = () => f(o, done())
+            run(left)
+          case Point(o)      => result = () => f(o, result())
+          case s: Suspend[A] => run(s)
         }
       }
-      done()
+
+      run(fa)
+      while (todo.nonEmpty) {
+        run(todo.pop())
+      }
+      result()
     }
   }
+
+  class Cycle extends Exception("Cycle detected")
 }

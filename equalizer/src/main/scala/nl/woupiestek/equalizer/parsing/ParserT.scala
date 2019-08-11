@@ -13,13 +13,6 @@ final case class ParserT[F[+ _], -I, +E, +O](
   )(implicit F: MonadPlus[F]): F[Z] =
     rules.flatMap { rule =>
       if (f.isDefinedAt(rule)) f(rule)
-      else if (rule.isInstanceOf[
-                 ParserT.Suspend[F, I, E, O]
-               ])
-        rule
-          .asInstanceOf[ParserT.Suspend[F, I, E, O]]
-          .value
-          ._fold(f)
       else F.empty
     }
 
@@ -60,17 +53,12 @@ final case class ParserT[F[+ _], -I, +E, +O](
 
 object ParserT {
 
-  sealed abstract class RuleT[F[+ _]: MonadPlus, -I, +E, +O] {
-    final def asParser[I0 <: I, E0 >: E, O0 >: O]
-        : ParserT[F, I0, E0, O0] =
-      ParserT(this.point[F])
-  }
-
-  private final class Write[F[+ _]: MonadPlus, A](
+  sealed abstract class RuleT[F[+ _], -I, +E, +O]
+  private final class Write[F[+ _], A](
       val value: A
   ) extends RuleT[F, Any, Nothing, A]
 
-  private final class Error[F[+ _]: MonadPlus, E](
+  private final class Error[F[+ _], E](
       val value: E
   ) extends RuleT[F, Any, E, Nothing]
 
@@ -87,28 +75,25 @@ object ParserT {
     }
   }
 
-  private final class Suspend[F[+ _]: MonadPlus, I, E, A](
-      p: => ParserT[F, I, E, A]
-  ) extends RuleT[F, I, E, A] {
-    lazy val value: ParserT[F, I, E, A] = p
-  }
-
-  private final class Instances[F[+ _]: MonadPlus, I, E] {
+  private final class Instances[F[+ _], I, E](
+      implicit F: MonadPlus[F]
+  ) {
     type P[+O] = ParserT[F, I, E, O]
 
     implicit val monadPlus: MonadPlus[P] =
       new MonadPlus[P] {
         def bind[A, B](fa: P[A])(f: A => P[B]): P[B] =
           ParserT(
-            fa.matches.flatMap(f(_).rules) <+>
-              new Derive((i: I) => bind(fa.derive(i))(f))
-                .point[F]
+            F.plus(
+              F.bind(fa.matches)(f(_).rules),
+              F.point(
+                new Derive((i: I) => bind(fa.derive(i))(f))
+              )
+            )
           )
-        def empty[A]: P[A] = ParserT(PlusEmpty[F].empty)
+        def empty[A]: P[A] = ParserT(F.empty)
         def plus[A](a: P[A], b: => P[A]): P[A] =
-          ParserT(
-            a.rules <+> new Suspend[F, I, E, A](b).point[F]
-          )
+          ParserT(F.plus(a.rules, b.rules))
         def point[A](a: => A): P[A] = write(a)
       }
   }
@@ -121,20 +106,25 @@ object ParserT {
   def error[F[+ _]: MonadPlus, I, E, A](
       e: => E
   ): ParserT[F, I, E, A] =
-    suspend(new Error[F, E](e).asParser[I, E, A])
+    parser(new Error[F, E](e))
   def read[F[+ _]: MonadPlus, I, E]: ParserT[F, I, E, I] =
-    new Derive[F, I, E, I](
-      (_: I).point[({ type P[+O] = ParserT[F, I, E, O] })#P]
-    ).asParser[I, E, I]
+    parser(
+      new Derive[F, I, E, I](
+        (_: I)
+          .point[({ type P[+O] = ParserT[F, I, E, O] })#P]
+      )
+    )
   def readIf[F[+ _]: MonadPlus, I, E](
       f: I => Boolean
   ): ParserT[F, I, E, I] = read[F, I, E].filter(f)
-  def suspend[F[+ _]: MonadPlus, I, E, A](
-      p: => ParserT[F, I, E, A]
-  ): ParserT[F, I, E, A] =
-    new Suspend[F, I, E, A](p).asParser[I, E, A]
   def write[F[+ _]: MonadPlus, I, E, A](
       a: => A
   ): ParserT[F, I, E, A] =
-    suspend(new Write[F, A](a).asParser[I, E, A])
+    parser(new Write[F, A](a))
+
+  private def parser[F[+ _]: MonadPlus, I, E, A](
+      r: => RuleT[F, I, E, A]
+  ): ParserT[F, I, E, A] =
+    ParserT(MonadPlus[F].point(r))
+
 }
