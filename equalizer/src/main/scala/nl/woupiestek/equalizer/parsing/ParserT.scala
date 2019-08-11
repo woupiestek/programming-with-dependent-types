@@ -85,10 +85,12 @@ object ParserT {
         def bind[A, B](fa: P[A])(f: A => P[B]): P[B] =
           ParserT(
             F.plus(
-              F.bind(fa.matches)(f(_).rules),
               F.point(
-                new Derive((i: I) => bind(fa.derive(i))(f))
-              )
+                new Derive(
+                  (i: I) => bind(fa.derive(i))(f)
+                )
+              ),
+              F.bind(fa.matches)(f(_).rules)
             )
           )
         def empty[A]: P[A] = ParserT(F.empty)

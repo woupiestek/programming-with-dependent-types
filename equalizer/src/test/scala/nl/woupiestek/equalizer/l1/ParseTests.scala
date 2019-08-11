@@ -45,7 +45,7 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
-  val grammar: Grammar[Fap, String, String] =
+  lazy val grammar: Grammar[Fap, String, String] =
     new Grammar(TestType, TestDef)
 
   def parseDef(input: String): List[String] = {
@@ -62,7 +62,9 @@ class ParseTests extends FunSpec {
         assert(m.nonEmpty)
         assert(m.head == "x -> x x")
       } catch {
-        case e: Fap.Cycle => e.printStackTrace()
+        case e: Exception =>
+          e.printStackTrace()
+          fail(String.valueOf(e))
       }
     }
   }
