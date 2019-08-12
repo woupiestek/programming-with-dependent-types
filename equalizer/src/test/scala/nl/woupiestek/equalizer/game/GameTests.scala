@@ -18,7 +18,6 @@ class GameTests extends FunSpec {
         .map(sentence(_, Nil).run(random))
         .map(Analyzer3.analyze(_, Map.empty, Set.empty, false))
         .map(stringify)
-        //.foreach(println)
     }
 
   }

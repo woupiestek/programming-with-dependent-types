@@ -1,7 +1,6 @@
 package nl.woupiestek.equalizer.parsing
 
 import scalaz._
-import scalaz.Scalaz._
 import scala.collection.mutable
 import scala.annotation.tailrec
 
@@ -34,9 +33,10 @@ object Fmp {
         fa match {
           case Empty => Empty
           case fm: FlatMap[b, A] =>
-            FlatMap(fm.dpo, fm.dpp(_: b).flatMap(f))
-          case Point(a) => f(a)
-          case _        => FlatMap(fa, f)
+            FlatMap(fm.dpo, (u: b) => bind(fm.dpp(u))(f))
+          case Point(a)      => f(a)
+          case s: Suspend[A] => suspend(bind(s.value)(f))
+          case _             => FlatMap(fa, f)
         }
       def empty[A]: Fmp[A] = Empty
       def plus[A](a: Fmp[A], b: => Fmp[A]): Fmp[A] =
@@ -53,7 +53,7 @@ object Fmp {
     def foldMap[A, B](
         fa: Fmp[A]
     )(f: A => B)(implicit F: Monoid[B]): B = {
-      def g(a: A, b: => B): B = f(a) |+| b
+      def g(a: A, b: => B): B = F.append(f(a), b)
       foldRight(fa, Monoid[B].zero)(g)
     }
 
@@ -64,6 +64,14 @@ object Fmp {
       var result: () => B = () => z
       val done = new mutable.HashSet[Fmp[A]]
 
+      @tailrec def push(fa: Fmp[A]): Unit = fa match {
+        case Plus(left, right) =>
+          if (right != Empty) todo.push(right)
+          push(left)
+        case s: Suspend[A] => push(s.value)
+        case _             => if (fa != Empty) todo.push(fa)
+      }
+
       @tailrec def bind[C](
           fc: Fmp[C],
           g: C => Fmp[A]
@@ -71,26 +79,32 @@ object Fmp {
         fc match {
           case Empty => ()
           case gm: FlatMap[c, d] =>
-            bind(gm.dpo, gm.dpp(_: c).flatMap(g))
+            bind(
+              gm.dpo,
+              (u: c) => monadPlus.bind(gm.dpp(u))(g)
+            )
           case Plus(left, right) =>
-            todo.push(right.flatMap(g))
+            push(monadPlus.bind(right)(g))
             bind(left, g)
-          case Point(o) =>
-            todo.push(g(o))
+          case Point(o)      => push(g(o))
           case s: Suspend[C] => bind(s.value, g)
         }
 
-      @tailrec def run(next: Fmp[A]): Unit = {
-        if (done.contains(next)) throw new Cycle()
-        done.add(next)
+      val console = System.console()
+      var counter = 1 << 16
+
+      def run(next: Fmp[A]): Unit = {
+        if (counter > 0) {
+          counter -= 1
+        } else {
+          console.printf(s"\rfolding: ${todo.length} $next")
+          counter = 1 << 16
+        }
+        if (!done.add(next)) throw new Cycle(next)
         next match {
-          case Empty             => ()
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
-          case Plus(left, right) =>
-            todo.push(right)
-            run(left)
-          case Point(o)      => result = () => f(o, result())
-          case s: Suspend[A] => run(s)
+          case Point(o)          => result = () => f(o, result())
+          case _                 => push(next)
         }
       }
 
@@ -102,5 +116,6 @@ object Fmp {
     }
   }
 
-  class Cycle extends Exception("Cycle detected")
+  case class Cycle(cycle: Fmp[_])
+      extends Exception(s"Cycle detected: $cycle")
 }

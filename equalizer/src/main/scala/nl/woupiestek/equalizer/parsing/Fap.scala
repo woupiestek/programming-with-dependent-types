@@ -1,7 +1,6 @@
 package nl.woupiestek.equalizer.parsing
 
 import scalaz._
-import scalaz.Scalaz._
 import scala.collection.mutable
 import scala.annotation.tailrec
 
@@ -44,7 +43,7 @@ object Fap {
         )
       def bind[A, B](fa: Fap[A])(f: A => Fap[B]): Fap[B] = {
         implicit val m: Monoid[Fap[B]] = monoid[B]
-        fa.foldMap(f)
+        foldable.foldMap(fa)(f)
       }
       def empty[A]: Fap[A] = Empty
       def plus[A](a: Fap[A], b: => Fap[A]): Fap[A] =
@@ -56,7 +55,7 @@ object Fap {
     def foldMap[A, B](
         fa: Fap[A]
     )(f: A => B)(implicit F: Monoid[B]): B = {
-      def g(a: A, b: => B): B = f(a) |+| b
+      def g(a: A, b: => B): B = F.append(f(a), b)
       foldRight(fa, Monoid[B].zero)(g)
     }
 
@@ -87,14 +86,14 @@ object Fap {
           fd match {
             case Point(d0) =>
               result = () => f(op(c0, d0), result())
-            case _ => apply2(fd, fc, op.flip)
+            case _ =>
+              apply2(fd, fc, (d: D, c: C) => op(c, d))
           }
         case s: Suspend[C] => apply2(s.value, fd, op)
       }
 
       @tailrec def run(next: Fap[A]): Unit = {
-        if (done.contains(next)) throw new Cycle()
-        done.add(next)
+        if (!done.add(next)) throw new Cycle()
         next match {
           case a: Apply2[c, d, A] =>
             apply2(a.first, a.second, a.combine)
