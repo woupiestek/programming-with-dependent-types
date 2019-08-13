@@ -90,16 +90,16 @@ object Fmp {
           case s: Suspend[C] => bind(s.value, g)
         }
 
-      val console = System.console()
-      var counter = 1 << 16
+      //val console = System.console()
+      //var counter = 1 << 16
 
       def run(next: Fmp[A]): Unit = {
-        if (counter > 0) {
+        /* if (counter > 0) {
           counter -= 1
         } else {
           console.printf(s"\rfolding: ${todo.length} $next")
           counter = 1 << 16
-        }
+        } */
         if (!done.add(next)) throw new Cycle(next)
         next match {
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)

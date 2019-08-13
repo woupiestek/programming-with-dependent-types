@@ -77,7 +77,7 @@ class Grammar[F[+ _]: MonadPlus, T, D](
   val fix = token('@')
 
   val typeExp: Q[T] = {
-    lazy val arrowTail: Q[T => T] =
+    def arrowTail: Q[T => T] =
       (arrow *> bound.map((t: T) => T.arrow(_, t))) <+>
         ((t: T) => t).point[Q]
 

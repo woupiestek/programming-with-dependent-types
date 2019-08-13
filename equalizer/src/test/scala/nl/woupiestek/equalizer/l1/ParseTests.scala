@@ -48,12 +48,11 @@ class ParseTests extends FunSpec {
   lazy val grammar: Grammar[Fmp, String, String] =
     new Grammar(TestType, TestDef)
 
-  def parseDef(input: String): List[String] = {
+  def parseDef(input: String): List[String] = 
     input.toList
       .foldLeft(grammar.defExp)(_ derive _)
-      .matches
+      .writes
       .toList
-  }
 
   describe("parseDef") {
     it("parses defs") {
