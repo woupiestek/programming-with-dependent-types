@@ -68,6 +68,7 @@ object Fmp {
         case Plus(left, right) =>
           if (right != Empty) todo.push(right)
           push(left)
+        case Point(o)      => result = () => f(o, result())
         case s: Suspend[A] => push(s.value)
         case _             => if (fa != Empty) todo.push(fa)
       }
@@ -103,7 +104,6 @@ object Fmp {
         if (!done.add(next)) throw new Cycle(next)
         next match {
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
-          case Point(o)          => result = () => f(o, result())
           case _                 => push(next)
         }
       }

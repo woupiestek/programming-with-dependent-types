@@ -66,6 +66,15 @@ object Fap {
       var result: () => B = () => z
       val done = new mutable.HashSet[Fap[A]]
 
+      @tailrec def push(fa: Fap[A]): Unit = fa match {
+        case Plus(left, right) =>
+          if (right != Empty) todo.push(right)
+          push(left)
+        case Point(o)      => result = () => f(o, result())
+        case s: Suspend[A] => push(s.value)
+        case _             => if (fa != Empty) todo.push(fa)
+      }
+
       @tailrec def apply2[C, D](
           fc: Fap[C],
           fd: Fap[D],
@@ -92,17 +101,12 @@ object Fap {
         case s: Suspend[C] => apply2(s.value, fd, op)
       }
 
-      @tailrec def run(next: Fap[A]): Unit = {
-        if (!done.add(next)) throw new Cycle()
+      def run(next: Fap[A]): Unit = {
+        if (!done.add(next)) throw new Cycle(next)
         next match {
           case a: Apply2[c, d, A] =>
             apply2(a.first, a.second, a.combine)
-          case Empty    => ()
-          case Point(a) => result = () => f(a, result())
-          case Plus(left, right) =>
-            todo.push(right)
-            run(left)
-          case s: Suspend[A] => run(s.value)
+          case _ => push(next)
         }
       }
 
@@ -114,5 +118,6 @@ object Fap {
     }
   }
 
-  class Cycle extends Exception("Cycle detected")
+  case class Cycle(cycle: Fap[_])
+      extends Exception(s"Cycle detected: $cycle")
 }

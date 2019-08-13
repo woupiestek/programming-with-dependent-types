@@ -48,7 +48,7 @@ class ParseTests extends FunSpec {
   lazy val grammar: Grammar[Fmp, String, String] =
     new Grammar(TestType, TestDef)
 
-  def parseDef(input: String): List[String] = 
+  def parseDef(input: String): List[String] =
     input.toList
       .foldLeft(grammar.defExp)(_ derive _)
       .writes
@@ -56,15 +56,9 @@ class ParseTests extends FunSpec {
 
   describe("parseDef") {
     it("parses defs") {
-      try {
-        val m = parseDef("x -> x x")
-        assert(m.nonEmpty)
-        assert(m.head == "x -> x x")
-      } catch {
-        case e: Exception =>
-          e.printStackTrace()
-          fail(String.valueOf(e))
-      }
+      val m = parseDef("x -> (x x)")
+      assert(m.nonEmpty)
+      assert(m.head == "x -> x x")
     }
   }
 
