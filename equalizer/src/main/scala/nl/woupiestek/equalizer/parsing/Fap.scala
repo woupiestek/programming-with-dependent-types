@@ -17,11 +17,6 @@ object Fap {
       left: Fap[A],
       right: Fap[A]
   ) extends Fap[A]
-  private final case class Apply2[A, B, C](
-      first: Fap[A],
-      second: Fap[B],
-      combine: (A, B) => C
-  ) extends Fap[C]
   private final case class Suspend[+O](
       private val fo: () => Fap[O]
   ) extends Fap[O] {
@@ -33,22 +28,24 @@ object Fap {
 
   implicit val monadPlus: MonadPlus[Fap] =
     new MonadPlus[Fap] {
-      override def ap[A, B](
-          fa: => Fap[A]
-      )(f: => Fap[A => B]): Fap[B] =
-        Apply2(
-          suspend(fa),
-          suspend(f),
-          (u: A, v: A => B) => v(u)
-        )
       def bind[A, B](fa: Fap[A])(f: A => Fap[B]): Fap[B] = {
         implicit val m: Monoid[Fap[B]] = monoid[B]
-        foldable.foldMap(fa)(f)
+        fa match {
+          case Empty         => Empty
+          case Point(a)      => f(a)
+          case s: Suspend[A] => suspend(bind(s.value)(f))
+          case _             => foldable.foldMap(fa)(f)
+        }
       }
       def empty[A]: Fap[A] = Empty
       def plus[A](a: Fap[A], b: => Fap[A]): Fap[A] =
-        Plus(a, suspend(b))
-      def point[A](a: => A): Fap[A] = Point(a)
+        a match {
+          case Empty => suspend(b)
+          case Plus(left, right) =>
+            Plus(left, Plus(right, suspend(b)))
+          case _ => Plus(a, suspend(b))
+        }
+      def point[A](a: => A): Fap[A] = suspend(Point(a))
     }
 
   implicit val foldable: Foldable[Fap] = new Foldable[Fap] {
@@ -75,37 +72,10 @@ object Fap {
         case _             => if (fa != Empty) todo.push(fa)
       }
 
-      @tailrec def apply2[C, D](
-          fc: Fap[C],
-          fd: Fap[D],
-          op: (C, D) => A
-      ): Unit = fc match {
-        case b: Apply2[e, f, c] =>
-          val h1 = Apply2(
-            b.second,
-            fd,
-            (v: f, w: D) => (u: e) => op(b.combine(u, v), w)
-          )
-          apply2(b.first, h1, (u: e, v: e => A) => v(u))
-        case Empty => ()
-        case Plus(left, right) =>
-          todo.push(Apply2(right, fd, op))
-          apply2(left, fd, op)
-        case Point(c0) =>
-          fd match {
-            case Point(d0) =>
-              result = () => f(op(c0, d0), result())
-            case _ =>
-              apply2(fd, fc, (d: D, c: C) => op(c, d))
-          }
-        case s: Suspend[C] => apply2(s.value, fd, op)
-      }
-
       def run(next: Fap[A]): Unit = {
+        Tracer.log(s"\rfolding: ${todo.length} $next")
         if (!done.add(next)) throw new Cycle(next)
         next match {
-          case a: Apply2[c, d, A] =>
-            apply2(a.first, a.second, a.combine)
           case _ => push(next)
         }
       }

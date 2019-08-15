@@ -17,7 +17,7 @@ class Grammar[F[+ _]: MonadPlus, T, D](
   private def error[A](message: String): Q[A] =
     ParserT.error(message)
 
-  lazy val whitespace: Q[Unit] =
+  def whitespace: Q[Unit] =
     (readIf(Character.isWhitespace(_: Char))
       .flatMap(_ => whitespace)) <+> ()
       .point[Q]

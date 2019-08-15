@@ -61,14 +61,14 @@ object Fmp {
         f: (A, => B) => B
     ): B = {
       val todo = new mutable.ArrayStack[Fmp[A]]
-      var result: () => B = () => z
+      var result: List[A] = Nil
       val done = new mutable.HashSet[Fmp[A]]
 
       @tailrec def push(fa: Fmp[A]): Unit = fa match {
         case Plus(left, right) =>
           if (right != Empty) todo.push(right)
           push(left)
-        case Point(o)      => result = () => f(o, result())
+        case Point(o)      => result ::= o
         case s: Suspend[A] => push(s.value)
         case _             => if (fa != Empty) todo.push(fa)
       }
@@ -91,16 +91,8 @@ object Fmp {
           case s: Suspend[C] => bind(s.value, g)
         }
 
-      //val console = System.console()
-      //var counter = 1 << 16
-
       def run(next: Fmp[A]): Unit = {
-        /* if (counter > 0) {
-          counter -= 1
-        } else {
-          console.printf(s"\rfolding: ${todo.length} $next")
-          counter = 1 << 16
-        } */
+        Tracer.log(s"\runfolding: ${todo.length} $next")
         if (!done.add(next)) throw new Cycle(next)
         next match {
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
@@ -112,7 +104,13 @@ object Fmp {
       while (todo.nonEmpty) {
         run(todo.pop())
       }
-      result()
+      def wrapUp(as: List[A]): B = as match {
+        case Nil => z
+        case h :: t =>
+          Tracer.log(s"\rfolding: ${as.length} $h")
+          f(h, wrapUp(t))
+      }
+      wrapUp(result)
     }
   }
 

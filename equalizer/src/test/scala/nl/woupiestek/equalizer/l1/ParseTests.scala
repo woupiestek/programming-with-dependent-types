@@ -4,6 +4,7 @@ import scalaz._
 import Scalaz._
 import org.scalatest._
 import nl.woupiestek.equalizer.parsing._
+import nl.woupiestek.equalizer.simpler.X
 
 class ParseTests extends FunSpec {
 
@@ -48,17 +49,49 @@ class ParseTests extends FunSpec {
   lazy val grammar: Grammar[Fmp, String, String] =
     new Grammar(TestType, TestDef)
 
-  def parseDef(input: String): List[String] =
+  def parse[X](
+      parser: ParserT[Fmp, Char, String, X]
+  )(
+      input: String
+  ): List[X] =
     input.toList
-      .foldLeft(grammar.defExp)(_ derive _)
+      .foldLeft(parser)(_ derive _)
       .writes
       .toList
 
-  describe("parseDef") {
+  describe("parseString") {
+    it("parser whitespace") {
+      val testStrings = List(" ", "\n", "\r", "\t", "  ")
+      val results =
+        testStrings.map(parse(grammar.whitespace))
+
+      assert(
+        results
+          .filter(_.nonEmpty)
+          .length == testStrings.length
+      )
+    }
+
     it("parses defs") {
-      val m = parseDef("x -> (x x)")
-      assert(m.nonEmpty)
-      assert(m.head == "x -> x x")
+      val testStrings =
+        List(
+          "x",
+          "much_longer_identifier",
+          "followed_by_white_space \t\r\n",
+          "x y",
+          "x = y; x",
+          "x -> x",
+          "x @ x",
+          "x -> x x"
+        )
+      val results =
+        testStrings.map(parse(grammar.defExp))
+
+      assert(
+        results
+          .filter(_.nonEmpty)
+          .map(_.head) == testStrings
+      )
     }
   }
 
