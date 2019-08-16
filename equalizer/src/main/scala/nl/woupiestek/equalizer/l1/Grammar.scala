@@ -18,9 +18,8 @@ class Grammar[F[+ _]: MonadPlus, T, D](
     ParserT.error(message)
 
   def whitespace: Q[Unit] =
-    (readIf(Character.isWhitespace(_: Char))
-      .flatMap(_ => whitespace)) <+> ()
-      .point[Q]
+    readIf(Character.isWhitespace(_: Char))
+      .flatMap(_ => whitespace) <+> ().point[Q]
 
   def token(char: Char): Q[Unit] =
     readIf(_ == char) *> whitespace

@@ -25,8 +25,15 @@ object ParserT {
         def bind[A, B](fa: P[A])(f: A => P[B]): P[B] = {
           def h(pa: P[A]): P[B] =
             ParserT(
-              (i: I) => h(pa.derive(i)),
-              pa.errors,
+              (i: I) =>
+                plus(
+                  h(pa.derive(i)),
+                  bind(pa)(f(_).derive(i))
+                ),
+              F.plus(
+                pa.errors,
+                F.bind(pa.writes)(f(_).errors)
+              ),
               F.bind(pa.writes)(f(_).writes)
             )
           h(fa)
@@ -50,18 +57,27 @@ object ParserT {
   def error[F[+ _], I, E, A](
       e: => E
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
-    ParserT(_ => monadPlus.empty, F.point(e), F.empty)
+    monadPlus[F, I, E].empty[A].copy(errors = F.point(e))
   def readIf[F[+ _], I, E](
       f: I => Boolean
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, I] =
-    ParserT(
-      (i: I) =>
-        if (f(i)) monadPlus.point(i) else monadPlus.empty,
-      F.empty,
-      F.empty
-    )
+    monadPlus[F, I, E]
+      .empty[I]
+      .copy(
+        derive =
+          (i: I) => if (f(i)) write(i) else monadPlus.empty
+      )
   def write[F[+ _], I, E, A](
       a: => A
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
-    ParserT(_ => monadPlus.empty, F.empty, F.point(a))
+    monadPlus[F, I, E].empty[A].copy(writes = F.point(a))
+
+  def tailRec[F[+ _]: MonadPlus, I, E, A, B](
+      a: => A,
+      f: A => ParserT[F, I, E, A],
+      g: A => ParserT[F, I, E, B]
+  ): ParserT[F, I, E, B] = {
+    val m = monadPlus[F, I, E]
+    m.plus(m.bind(f(a))(tailRec(_, f, g)), g(a))
+  }
 }

@@ -62,14 +62,10 @@ class ParseTests extends FunSpec {
   describe("parseString") {
     it("parser whitespace") {
       val testStrings = List(" ", "\n", "\r", "\t", "  ")
-      val results =
-        testStrings.map(parse(grammar.whitespace))
-
-      assert(
-        results
-          .filter(_.nonEmpty)
-          .length == testStrings.length
+      val results = testStrings.filterNot(
+        parse(grammar.whitespace)(_).isEmpty
       )
+      assert(results == testStrings)
     }
 
     it("parses defs") {
@@ -85,12 +81,12 @@ class ParseTests extends FunSpec {
           "x -> x x"
         )
       val results =
-        testStrings.map(parse(grammar.defExp))
+        testStrings.filterNot(
+          parse(grammar.defExp)(_).isEmpty
+        )
 
       assert(
-        results
-          .filter(_.nonEmpty)
-          .map(_.head) == testStrings
+        results == testStrings
       )
     }
   }
