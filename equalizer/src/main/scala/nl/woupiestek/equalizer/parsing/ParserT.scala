@@ -8,7 +8,7 @@ final case class ParserT[F[+ _], -I, +E, +A](
     writes: F[A]
 ) {
 
-  def flatMap[I0 <: I, E0 >: E, A0 >: A, B](
+  final def flatMap[I0 <: I, E0 >: E, A0 >: A, B](
       f: A0 => ParserT[F, I0, E0, B]
   )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, B] = {
     def h(pa: ParserT[F, I, E, A]): ParserT[F, I0, E0, B] =
@@ -26,7 +26,7 @@ final case class ParserT[F[+ _], -I, +E, +A](
     h(this)
   }
 
-  def map[B](
+  final def map[B](
       f: A => B
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, B] =
     copy(
@@ -34,7 +34,7 @@ final case class ParserT[F[+ _], -I, +E, +A](
       writes = F.map(writes)(f)
     )
 
-  def filter(
+  final def filter(
       f: A => Boolean
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
     copy(
@@ -42,7 +42,7 @@ final case class ParserT[F[+ _], -I, +E, +A](
       writes = F.filter(writes)(f)
     )
 
-  def plus[I0 <: I, E0 >: E, A0 >: A](
+  final def plus[I0 <: I, E0 >: E, A0 >: A](
       b: => ParserT[F, I0, E0, A0]
   )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, A0] = {
     ParserT(
@@ -52,7 +52,7 @@ final case class ParserT[F[+ _], -I, +E, +A](
     )
   }
 
-  def ++[I0 <: I, E0 >: E, A0 >: A](
+  final def ++[I0 <: I, E0 >: E, A0 >: A](
       b: => ParserT[F, I0, E0, A0]
   )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, A0] =
     plus(b)

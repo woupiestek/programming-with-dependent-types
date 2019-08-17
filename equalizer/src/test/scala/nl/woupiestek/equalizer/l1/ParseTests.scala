@@ -60,10 +60,27 @@ class ParseTests extends FunSpec {
       .toList
 
   describe("parseString") {
-    it("parser whitespace") {
+    it("parses whitespace") {
       val testStrings = List(" ", "\n", "\r", "\t", "  ")
       val results = testStrings.filterNot(
         parse(grammar.whitespace)(_).isEmpty
+      )
+      assert(results == testStrings)
+    }
+
+    it("parses identifiers") {
+      val testStrings = List("a", "Ab", "_c", "d56", "e  ")
+      val results = testStrings.filterNot(
+        parse(grammar.identifier)(_).isEmpty
+      )
+      assert(results == testStrings)
+    }
+
+    it("parses tuples") {
+      val testStrings =
+        List("<a>", "<Ab, _c>", "<d56,e  ,f>")
+      val results = testStrings.filterNot(
+        parse(grammar.tupled(grammar.identifier))(_).isEmpty
       )
       assert(results == testStrings)
     }

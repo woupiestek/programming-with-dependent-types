@@ -55,12 +55,13 @@ class Grammar[F[+ _]: MonadPlus, T, D](
   def separated[A](
       p: => Q[A]
   )(separator: Q[Unit]): Q[List[A]] = {
-    def q: Q[List[A]] =
-      for {
-        h: A <- p
-        _: Unit <- separator
-        t <- q ++ ParserT.write(List.empty[A])
-      } yield h :: t
+    lazy val q: Q[List[A]] = for {
+      h: A <- p
+      t <- separator.flatMap((_: Unit) => q) ++ ParserT
+        .write(
+          List.empty[A]
+        )
+    } yield h :: t
     q
   }
 
@@ -71,16 +72,22 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       _: Unit <- token(')')
     } yield y
 
-  def tupled[A](p: => Q[A]): Q[List[A]] =
+  def tupled[A](p: => Q[A]): Q[List[A]] = {
+    lazy val q: Q[List[A]] = token('>').map(
+      (_: Unit) => List.empty[A]
+    ) ++
+      (for {
+        _: Unit <- token(',')
+        h: A <- p ++ error("improper tuple member")
+        t <- q
+      } yield h :: t)
+
     for {
       _: Unit <- token('<')
-      y: List[A] <- separated(
-        p ++ error("improper tuple member")
-      )(
-        token(',')
-      )
-      _: Unit <- token('>')
-    } yield y
+      h: A <- p ++ error("improper tuple member")
+      t <- q
+    } yield h :: t
+  }
 
   val arrow = token("->")
 

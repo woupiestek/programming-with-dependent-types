@@ -4,7 +4,7 @@ import scalaz._
 import scala.collection.mutable
 import scala.annotation.tailrec
 
-sealed abstract class Fmp[+O]
+sealed abstract class Fmp[+A]
 
 object Fmp {
 
@@ -91,9 +91,11 @@ object Fmp {
           case s: Suspend[C] => bind(s.value, g)
         }
 
+      var limit: Int = (1 << 16)
       def run(next: Fmp[A]): Unit = {
-        Tracer.log(s"\runfolding: ${todo.length} $next")
+        if (todo.length > (1 << 16)) throw new SpaceOut
         if (!done.add(next)) throw new Cycle(next)
+        if (limit > 0) limit -= 1 else throw new TimeOut
         next match {
           case fm: FlatMap[b, A] => bind(fm.dpo, fm.dpp)
           case _                 => push(next)
@@ -114,6 +116,9 @@ object Fmp {
     }
   }
 
-  case class Cycle(cycle: Fmp[_])
+  class Cycle(cycle: Fmp[_])
       extends Exception(s"Cycle detected: $cycle")
+  class SpaceOut
+      extends Exception("Unfolding caused an explosion")
+  class TimeOut extends Exception("Unfolding took too long")
 }
