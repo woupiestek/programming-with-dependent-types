@@ -102,7 +102,6 @@ object Parser {
     var errors: List[E] = Nil
     var derive: List[I => Parser[I, E, A]] = Nil
     var limit: Int = (1 << 16)
-    val done = new mutable.HashSet[Parser[I, E, A]]
 
     @tailrec def bind[B](
         pb: Parser[I, E, B],
@@ -138,18 +137,13 @@ object Parser {
 
     push(a)
     while (todo.nonEmpty) {
-      val next = todo.pop()
       if (todo.length > (1 << 16)) throw new SpaceOut
-      if (!done.add(next)) throw new Cycle(next)
       if (limit > 0) limit -= 1 else throw new TimeOut
-      push(next)
+      push(todo.pop())
     }
 
     (derive, errors, points)
   }
-
-  class Cycle(cycle: Parser[_, _, _])
-      extends Exception(s"Cycle detected: $cycle")
   class SpaceOut
       extends Exception("Unfolding caused an explosion")
   class TimeOut extends Exception("Unfolding took too long")

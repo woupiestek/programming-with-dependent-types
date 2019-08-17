@@ -15,7 +15,7 @@ class Grammar[T, D](
     Parser.error(message)
   private val pause: Q[Unit] = Parser.point(())
 
-  def whitespace: Q[Unit] =
+  lazy val whitespace: Q[Unit] =
     readIf(Character.isWhitespace(_: Char))
       .flatMap((_: Char) => whitespace) ++ pause
 
@@ -91,24 +91,26 @@ class Grammar[T, D](
       } yield T.arrow(s, t)) ++
         Parser.point(s)
 
-    def bound: Q[T] =
-      identifier.flatMap { (a: String) =>
-        (for {
-          _: Unit <- fix
-          b <- bound
-        } yield T.fix(a, b)) ++
+    lazy val bound: Q[T] =
+      Parser.suspend(
+        identifier.flatMap { (a: String) =>
           (for {
-            _: Unit <- token('=')
-            b: T <- bound
-            _: Unit <- token(';')
-            c <- bound
-          } yield T.let(a, b, c)) ++
-          arrowTail(T.variable(a))
-      } ++
-        (parenthetical(bound) ++
-          tupled(bound).map(T.product(_)))
-          .flatMap(arrowTail) ++
-        error("malformed type")
+            _: Unit <- fix
+            b <- bound
+          } yield T.fix(a, b)) ++
+            (for {
+              _: Unit <- token('=')
+              b: T <- bound
+              _: Unit <- token(';')
+              c <- bound
+            } yield T.let(a, b, c)) ++
+            arrowTail(T.variable(a))
+        } ++
+          (parenthetical(bound) ++
+            tupled(bound).map(T.product(_)))
+            .flatMap(arrowTail) ++
+          error("malformed type")
+      )
 
     bound
   }
@@ -142,7 +144,7 @@ class Grammar[T, D](
     def elims(d: D): Q[D] =
       elim(d).flatMap(elims) ++ Parser.point(d)
 
-    def intros: Q[D] =
+    lazy val intros: Q[D] = Parser.suspend(
       (identifier.flatMap { (a: String) =>
         (for {
           _: Unit <- token('=')
@@ -156,7 +158,7 @@ class Grammar[T, D](
           fix.flatMap((_: Unit) => intros.map(D.fix(a, _)))
       }) ++
         unit.flatMap(elims)
-
+    )
     intros
   }
 }

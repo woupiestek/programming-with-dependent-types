@@ -46,11 +46,11 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
-  lazy val grammar: Grammar[Fmp, String, String] =
+  lazy val grammar: Grammar[String, String] =
     new Grammar(TestType, TestDef)
 
   def parse[X](
-      parser: ParserT[Fmp, Char, String, X]
+      parser: Parser[Char, String, X]
   )(
       input: String
   ): List[X] =
