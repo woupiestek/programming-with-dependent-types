@@ -2,11 +2,61 @@ package nl.woupiestek.equalizer.parsing
 
 import scalaz._
 
-final case class ParserT[F[+ _], -I, +E, +O](
-    derive: I => ParserT[F, I, E, O],
+final case class ParserT[F[+ _], -I, +E, +A](
+    derive: I => ParserT[F, I, E, A],
     errors: F[E],
-    writes: F[O]
-)
+    writes: F[A]
+) {
+
+  def flatMap[I0 <: I, E0 >: E, A0 >: A, B](
+      f: A0 => ParserT[F, I0, E0, B]
+  )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, B] = {
+    def h(pa: ParserT[F, I, E, A]): ParserT[F, I0, E0, B] =
+      ParserT(
+        (i: I0) =>
+          h(pa.derive(i)).plus(
+            pa.flatMap(f(_: A).derive(i))
+          ),
+        F.plus(
+          pa.errors,
+          F.bind(pa.writes)(f(_).errors)
+        ),
+        F.bind(pa.writes)(f(_).writes)
+      )
+    h(this)
+  }
+
+  def map[B](
+      f: A => B
+  )(implicit F: MonadPlus[F]): ParserT[F, I, E, B] =
+    copy(
+      derive = derive(_).map(f),
+      writes = F.map(writes)(f)
+    )
+
+  def filter(
+      f: A => Boolean
+  )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
+    copy(
+      derive = derive(_).filter(f),
+      writes = F.filter(writes)(f)
+    )
+
+  def plus[I0 <: I, E0 >: E, A0 >: A](
+      b: => ParserT[F, I0, E0, A0]
+  )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, A0] = {
+    ParserT(
+      (i: I0) => derive(i).plus(b.derive(i)),
+      F.plus(errors, b.errors),
+      F.plus(writes, b.writes)
+    )
+  }
+
+  def ++[I0 <: I, E0 >: E, A0 >: A](
+      b: => ParserT[F, I0, E0, A0]
+  )(implicit F: MonadPlus[F]): ParserT[F, I0, E0, A0] =
+    plus(b)
+}
 
 object ParserT {
 
@@ -22,29 +72,10 @@ object ParserT {
 
     implicit val monadPlus: MonadPlus[P] =
       new MonadPlus[P] {
-        def bind[A, B](fa: P[A])(f: A => P[B]): P[B] = {
-          def h(pa: P[A]): P[B] =
-            ParserT(
-              (i: I) =>
-                plus(
-                  h(pa.derive(i)),
-                  bind(pa)(f(_).derive(i))
-                ),
-              F.plus(
-                pa.errors,
-                F.bind(pa.writes)(f(_).errors)
-              ),
-              F.bind(pa.writes)(f(_).writes)
-            )
-          h(fa)
-        }
+        def bind[A, B](fa: P[A])(f: A => P[B]): P[B] =
+          fa.flatMap(f)
         def empty[A]: P[A] = Empty
-        def plus[A](a: P[A], b: => P[A]): P[A] =
-          ParserT(
-            (i: I) => plus(a.derive(i), b.derive(i)),
-            F.plus(a.errors, b.errors),
-            F.plus(a.writes, b.writes)
-          )
+        def plus[A](a: P[A], b: => P[A]): P[A] = a.plus(b)
         def point[A](a: => A): P[A] = write(a)
       }
   }
@@ -57,7 +88,9 @@ object ParserT {
   def error[F[+ _], I, E, A](
       e: => E
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
-    monadPlus[F, I, E].empty[A].copy(errors = F.point(e))
+    monadPlus[F, I, E]
+      .empty[A]
+      .copy(errors = F.point(e))
   def readIf[F[+ _], I, E](
       f: I => Boolean
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, I] =
@@ -70,14 +103,7 @@ object ParserT {
   def write[F[+ _], I, E, A](
       a: => A
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =
-    monadPlus[F, I, E].empty[A].copy(writes = F.point(a))
-
-  def tailRec[F[+ _]: MonadPlus, I, E, A, B](
-      a: => A,
-      f: A => ParserT[F, I, E, A],
-      g: A => ParserT[F, I, E, B]
-  ): ParserT[F, I, E, B] = {
-    val m = monadPlus[F, I, E]
-    m.plus(m.bind(f(a))(tailRec(_, f, g)), g(a))
-  }
+    monadPlus[F, I, E]
+      .empty[A]
+      .copy(writes = F.point(a))
 }
