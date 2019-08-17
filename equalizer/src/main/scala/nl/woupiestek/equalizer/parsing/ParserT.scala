@@ -91,15 +91,18 @@ object ParserT {
     monadPlus[F, I, E]
       .empty[A]
       .copy(errors = F.point(e))
+
+  def read[F[+ _], I, E](
+      implicit F: MonadPlus[F]
+  ): ParserT[F, I, E, I] =
+    monadPlus[F, I, E]
+      .empty[I]
+      .copy(derive = write[F, I, E, I](_: I))
+
   def readIf[F[+ _], I, E](
       f: I => Boolean
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, I] =
-    monadPlus[F, I, E]
-      .empty[I]
-      .copy(
-        derive =
-          (i: I) => if (f(i)) write(i) else monadPlus.empty
-      )
+    read[F, I, E].filter(f)
   def write[F[+ _], I, E, A](
       a: => A
   )(implicit F: MonadPlus[F]): ParserT[F, I, E, A] =

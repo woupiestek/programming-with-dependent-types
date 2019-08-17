@@ -1,20 +1,19 @@
 package nl.woupiestek.equalizer.l1
 
-import scalaz._
-import nl.woupiestek.equalizer.parsing.ParserT
+import nl.woupiestek.equalizer.parsing.Parser
 
-class Grammar[F[+ _]: MonadPlus, T, D](
+class Grammar[T, D](
     T: AST.Type[T],
     D: AST.Def[D]
 ) {
 
-  private type Q[+A] = ParserT[F, Char, String, A]
+  private type Q[+A] = Parser[Char, String, A]
 
   private def readIf(f: Char => Boolean): Q[Char] =
-    ParserT.readIf(f)
+    Parser.read.filter(f)
   private def error[A](message: String): Q[A] =
-    ParserT.error(message)
-  private val pause: Q[Unit] = ParserT.write(())
+    Parser.error(message)
+  private val pause: Q[Unit] = Parser.point(())
 
   def whitespace: Q[Unit] =
     readIf(Character.isWhitespace(_: Char))
@@ -41,28 +40,15 @@ class Grammar[F[+ _]: MonadPlus, T, D](
         h: Char <- readIf(
           Character.isJavaIdentifierPart(_: Char)
         )
-        t <- iPart
-      } yield h :: t) ++ whitespace.map(_ => Nil)
+        t: List[Char] <- iPart
+      } yield h :: t) ++ whitespace.map((_: Unit) => Nil)
 
     for {
       h: Char <- readIf(
         Character.isJavaIdentifierStart(_: Char)
       )
-      t <- iPart
+      t: List[Char] <- iPart
     } yield (h :: t).mkString
-  }
-
-  def separated[A](
-      p: => Q[A]
-  )(separator: Q[Unit]): Q[List[A]] = {
-    lazy val q: Q[List[A]] = for {
-      h: A <- p
-      t <- separator.flatMap((_: Unit) => q) ++ ParserT
-        .write(
-          List.empty[A]
-        )
-    } yield h :: t
-    q
   }
 
   def parenthetical[A](p: => Q[A]): Q[A] =
@@ -72,20 +58,24 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       _: Unit <- token(')')
     } yield y
 
-  def tupled[A](p: => Q[A]): Q[List[A]] = {
-    lazy val q: Q[List[A]] = token('>').map(
-      (_: Unit) => List.empty[A]
-    ) ++
-      (for {
-        _: Unit <- token(',')
-        h: A <- p ++ error("improper tuple member")
-        t <- q
-      } yield h :: t)
+  def tupled[A](p: Q[A]): Q[List[A]] = {
+    def q: Char => Q[List[A]] = {
+      case '>' => whitespace.map((_: Unit) => Nil)
+      case ',' =>
+        for {
+          _: Unit <- whitespace
+          h: A <- p
+          c: Char <- Parser.read
+          t: List[A] <- q(c)
+        } yield h :: t
+      case _ => Parser.empty
+    }
 
     for {
       _: Unit <- token('<')
-      h: A <- p ++ error("improper tuple member")
-      t <- q
+      h: A <- p
+      c: Char <- Parser.read
+      t: List[A] <- q(c)
     } yield h :: t
   }
 
@@ -99,7 +89,7 @@ class Grammar[F[+ _]: MonadPlus, T, D](
         _: Unit <- arrow
         t <- bound
       } yield T.arrow(s, t)) ++
-        ParserT.write(s)
+        Parser.point(s)
 
     def bound: Q[T] =
       identifier.flatMap { (a: String) =>
@@ -128,7 +118,7 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       .map((c: Char) => c - '0')
     lazy val digits: Q[Int] = for {
       h: Int <- digit
-      t: Int <- digits ++ ParserT.write(0)
+      t: Int <- digits ++ Parser.point(0)
     } yield 10 * h + t
     digits
   }
@@ -145,12 +135,12 @@ class Grammar[F[+ _]: MonadPlus, T, D](
       readIf(_ == '_').flatMap(
         (_: Char) => integer.map(D.project(d, _))
       ) ++
-        token('\'').map(_ => D.unfold(d)) ++
+        token('\'').map((_: Unit) => D.unfold(d)) ++
         unit.map(D.application(d, _)) ++
-        ParserT.write(d)
+        Parser.point(d)
 
     def elims(d: D): Q[D] =
-      elim(d).flatMap(elims) ++ ParserT.write(d)
+      elim(d).flatMap(elims) ++ Parser.point(d)
 
     def intros: Q[D] =
       (identifier.flatMap { (a: String) =>
