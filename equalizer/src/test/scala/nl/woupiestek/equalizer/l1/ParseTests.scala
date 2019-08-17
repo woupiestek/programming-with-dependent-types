@@ -57,7 +57,6 @@ class ParseTests extends FunSpec {
     input.toList
       .foldLeft(parser)(_ derive _)
       .writes
-      .toList
 
   describe("parseString") {
     it("parses whitespace") {
@@ -76,6 +75,15 @@ class ParseTests extends FunSpec {
       assert(results == testStrings)
     }
 
+    it("parses parentheticals") {
+      val testStrings =
+        List("(a)", "(Ab )", "( _c)", "( d56 )", "(e)  ")
+      val results = testStrings.filterNot(
+        parse(grammar.parenthetical(grammar.identifier))(_).isEmpty
+      )
+      assert(results == testStrings)
+    }
+
     it("parses tuples") {
       val testStrings =
         List("<a>", "<Ab, _c>", "<d56,e  ,f>")
@@ -83,6 +91,16 @@ class ParseTests extends FunSpec {
         parse(grammar.tupled(grammar.identifier))(_).isEmpty
       )
       assert(results == testStrings)
+    }
+
+    it("parses integers") {
+      val testStrings =
+        List("1234567890", "3", "69")
+      val results = testStrings.filterNot(
+        parse(grammar.integer)(_).isEmpty
+      )
+      assert(results == testStrings)
+
     }
 
     it("parses defs") {

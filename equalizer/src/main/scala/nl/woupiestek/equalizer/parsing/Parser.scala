@@ -118,7 +118,8 @@ object Parser {
           val fa = f(a)
           if (fa != Empty) todo.push(f(a))
         case s: Suspend[I, E, B] => bind(s.value, f)
-        case _                   => if (pb != Empty) todo.push(pb.flatMap(f))
+        case _ =>
+          if (pb != Empty) todo.push(pb.flatMap(f))
       }
 
     @tailrec def push(pa: Parser[I, E, A]): Unit =
@@ -132,7 +133,8 @@ object Parser {
           push(l)
         case Point(a)            => points ::= a
         case s: Suspend[I, E, A] => push(s.value)
-        case _                   => if (pa != Empty) todo.push(pa)
+        case _ =>
+          if (pa != Empty) todo.push(pa)
       }
 
     push(a)
