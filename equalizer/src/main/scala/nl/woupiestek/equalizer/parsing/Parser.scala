@@ -85,7 +85,7 @@ object Parser {
       sa: => Parser[I, E, A]
   ): Parser[I, E, A] = Suspend(() => sa)
 
-  def unfold[I, E, A](
+  private def unfold[I, E, A](
       a: Parser[I, E, A]
   ): (List[I => Parser[I, E, A]], List[E], List[A]) = {
     val todo = new mutable.ArrayStack[Parser[I, E, A]]
@@ -107,7 +107,7 @@ object Parser {
           bind(l, f)
         case Point(a) =>
           val fa = f(a)
-          if (fa != Empty) todo.push(f(a))
+          if (fa != Empty) todo.push(fa)
         case s: Suspend[I, E, B] => bind(s.value, f)
         case _ =>
           if (pb != Empty) todo.push(pb.flatMap(f))

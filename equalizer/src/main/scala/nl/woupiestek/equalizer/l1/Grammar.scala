@@ -2,8 +2,7 @@ package nl.woupiestek.equalizer.l1
 
 import nl.woupiestek.equalizer.parsing.Parser
 
-class Grammar[T, D](
-    T: AST.Type[T],
+class Grammar[D](
     D: AST.Def[D]
 ) {
 
@@ -11,8 +10,7 @@ class Grammar[T, D](
 
   private def readIf(f: Char => Boolean): Q[Char] =
     Parser.read.filter(f)
-  private def error[A](message: String): Q[A] =
-    Parser.error(message)
+
   private val pause: Q[Unit] = Parser.point(())
 
   lazy val whitespace: Q[Unit] =
@@ -49,70 +47,6 @@ class Grammar[T, D](
       )
       t: List[Char] <- iPart
     } yield (h :: t).mkString
-  }
-
-  def parenthetical[A](p: => Q[A]): Q[A] =
-    for {
-      _: Unit <- token('(') //
-      y: A <- p
-      _: Unit <- token(')')
-    } yield y
-
-  def tupled[A](p: => Q[A]): Q[List[A]] = {
-    def q: Char => Q[List[A]] = {
-      case '>' => whitespace.map((_: Unit) => Nil)
-      case ',' =>
-        for {
-          _: Unit <- whitespace
-          h: A <- p
-          c: Char <- Parser.read
-          t: List[A] <- q(c)
-        } yield h :: t
-      case _ => Parser.empty
-    }
-
-    for {
-      _: Unit <- token('<')
-      h: A <- p
-      c: Char <- Parser.read
-      t: List[A] <- q(c)
-    } yield h :: t
-  }
-
-  val arrow = token("->")
-
-  val fix = token('@')
-
-  val typeExp: Q[T] = {
-    def arrowTail(s: T): Q[T] =
-      (for {
-        _: Unit <- arrow
-        t <- bound
-      } yield T.arrow(s, t)) ++
-        Parser.point(s)
-
-    lazy val bound: Q[T] =
-      Parser.suspend(
-        identifier.flatMap { (a: String) =>
-          (for {
-            _: Unit <- fix
-            b <- bound
-          } yield T.fix(a, b)) ++
-            (for {
-              _: Unit <- token('=')
-              b: T <- bound
-              _: Unit <- token(';')
-              c <- bound
-            } yield T.let(a, b, c)) ++
-            arrowTail(T.variable(a))
-        } ++
-          (parenthetical(bound) ++
-            tupled(bound).map(T.product(_)))
-            .flatMap(arrowTail) ++
-          error("malformed type")
-      )
-
-    bound
   }
 
   val integer: Q[Int] = {
