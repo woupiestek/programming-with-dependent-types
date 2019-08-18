@@ -39,13 +39,14 @@ class Grammar[D](
           Character.isJavaIdentifierPart(_: Char)
         )
         t: List[Char] <- iPart
-      } yield h :: t) ++ whitespace.map((_: Unit) => Nil)
+      } yield h :: t) ++ Parser.point(Nil)
 
     for {
       h: Char <- readIf(
         Character.isJavaIdentifierStart(_: Char)
       )
       t: List[Char] <- iPart
+      _: Unit <- whitespace
     } yield (h :: t).mkString
   }
 
