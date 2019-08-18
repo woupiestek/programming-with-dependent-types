@@ -8,7 +8,7 @@ sealed abstract class Parser[-I, +E, +A] {
   final def flatMap[I0 <: I, E0 >: E, A0 >: A, B](
       f: A0 => Parser[I0, E0, B]
   ): Parser[I0, E0, B] = this match {
-    case Derive(d) => Derive((i: I0) => d(i).flatMap(f))
+    case Derive(d) => Derive(d(_: I0).flatMap(f))
     case Empty     => Empty
     case Error(e)  => Error(e)
     case fm: FlatMap[I, E, b, A] =>

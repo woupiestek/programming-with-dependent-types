@@ -58,7 +58,7 @@ class Grammar[T, D](
       _: Unit <- token(')')
     } yield y
 
-  def tupled[A](p: Q[A]): Q[List[A]] = {
+  def tupled[A](p: => Q[A]): Q[List[A]] = {
     def q: Char => Q[List[A]] = {
       case '>' => whitespace.map((_: Unit) => Nil)
       case ',' =>
@@ -127,54 +127,58 @@ class Grammar[T, D](
 
   val defExp: Q[D] = {
 
-    def unit: Q[D] =
-      parenthetical(intros) ++
-        tupled(intros).map(D.tuple(_)) ++
-        identifier.map(D.variable(_)) ++
-        error("not a delimited def")
-
-    def dOps(d: D): Char => Q[D] = {
-      case '_'  => integer.map(D.project(d, _))
-      case '\'' => Parser.point(D.unfold(d))
-      case _    => Parser.empty
-    }
-
-    def elims(d: D): Q[D] =
-      (Parser.read.flatMap(dOps(d)) ++
-        unit.map(D.application(d, _)))
-        .flatMap(elims) ++ Parser.point(d)
-
-    def idOps(a: String): Char => Q[D] = {
-      case '=' =>
-        for {
-          _: Unit <- whitespace
-          b: D <- intros
-          _: Unit <- token(';')
-          c: D <- intros
-        } yield D.let(a, b, c)
-      case '-' =>
-        for {
-          _: Char <- readIf(_ == '>')
-          _: Unit <- whitespace
-          b: D <- intros
-        } yield D.abstraction(a, b)
-      case '@' =>
-        for {
-          _: Unit <- whitespace
-          b: D <- intros
-        } yield D.fix(a, b)
-      case _ => Parser.empty
-    }
-
-    def intros: Q[D] =
-      Parser.suspend(
+    def iOp(a: String): Q[D] = {
+      (for {
+        _: Unit <- token('=')
+        b: D <- expression
+        _: Unit <- token(';')
+        c: D <- expression
+      } yield D.let(a, b, c)) ++
         (for {
-          a: String <- identifier
-          chr: Char <- Parser.read[Char, String]
-          d: D <- idOps(a)(chr)
-        } yield d) ++
-          unit.flatMap(elims)
+          _: Unit <- token("->")
+          b: D <- expression
+        } yield D.abstraction(a, b)) ++
+        (for {
+          _: Unit <- token('@')
+          b: D <- expression
+        } yield D.fix(a, b))
+    }
+
+    def dOp(d: D): Q[D] = {
+      Parser.point(d) ++
+        (token('\'').map((_: Unit) => D.unfold(d)) ++
+          (for {
+            i: Int <- integer
+            _: Unit <- whitespace
+          } yield D.project(d, i)) ++
+          expression.map(D.application(d, _)))
+          .flatMap(dOp(_))
+    }
+
+    def tOp: Q[List[D]] = {
+      expression.flatMap(
+        (h: D) =>
+          token('>').map((_: Unit) => List(h)) ++
+            token(',').flatMap(
+              (_: Unit) => tOp.map(h :: (_: List[D]))
+            )
       )
-    intros
+    }
+
+    lazy val expression: Q[D] = {
+      identifier.flatMap(
+        (s: String) => dOp(D.variable(s)) ++ iOp(s)
+      ) ++ (for {
+        _: Unit <- token('(') //
+        d: D <- expression
+        _: Unit <- token(')')
+      } yield d) ++ (for {
+        _: Unit <- token('<')
+        ds: List[D] <- (tOp ++
+          token('>').map((_: Unit) => List.empty[D]))
+      } yield D.tuple(ds))
+    }
+
+    expression
   }
 }

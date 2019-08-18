@@ -4,7 +4,7 @@ import scalaz._
 import Scalaz._
 import org.scalatest._
 import nl.woupiestek.equalizer.parsing._
-import nl.woupiestek.equalizer.simpler.X
+import scala.util.Try
 
 class ParseTests extends FunSpec {
 
@@ -68,7 +68,16 @@ class ParseTests extends FunSpec {
     }
 
     it("parses identifiers") {
-      val testStrings = List("a", "Ab", "_c", "d56", "e  ")
+      val testStrings = List(
+        "a",
+        "Ab",
+        "_c",
+        "d56",
+        "e  ",
+        "x",
+        "much_longer_identifier",
+        "followed_by_white_space \t\r\n"
+      )
       val results = testStrings.filterNot(
         parse(grammar.identifier)(_).isEmpty
       )
@@ -106,8 +115,8 @@ class ParseTests extends FunSpec {
       val testStrings =
         List(
           "x",
-          "much_longer_identifier",
-          "followed_by_white_space \t\r\n",
+          //"much_longer_identifier",
+          //"followed_by_white_space \t\r\n",
           "x y",
           "x = y; x",
           "x -> x",
@@ -116,7 +125,10 @@ class ParseTests extends FunSpec {
         )
       val results =
         testStrings.filterNot(
-          parse(grammar.defExp)(_).isEmpty
+          str =>
+            Try(parse(grammar.defExp)(str)).toOption
+              .flatMap(_.headOption)
+              .isEmpty
         )
 
       assert(
