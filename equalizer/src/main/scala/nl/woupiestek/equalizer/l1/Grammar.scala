@@ -133,32 +133,48 @@ class Grammar[T, D](
         identifier.map(D.variable(_)) ++
         error("not a delimited def")
 
-    def elim(d: D): Q[D] =
-      readIf(_ == '_').flatMap(
-        (_: Char) => integer.map(D.project(d, _))
-      ) ++
-        token('\'').map((_: Unit) => D.unfold(d)) ++
-        unit.map(D.application(d, _)) ++
-        Parser.point(d)
+    def dOps(d: D): Char => Q[D] = {
+      case '_'  => integer.map(D.project(d, _))
+      case '\'' => Parser.point(D.unfold(d))
+      case _    => Parser.empty
+    }
 
     def elims(d: D): Q[D] =
-      elim(d).flatMap(elims) ++ Parser.point(d)
+      (Parser.read.flatMap(dOps(d)) ++
+        unit.map(D.application(d, _)))
+        .flatMap(elims) ++ Parser.point(d)
 
-    lazy val intros: Q[D] = Parser.suspend(
-      (identifier.flatMap { (a: String) =>
-        (for {
-          _: Unit <- token('=')
+    def idOps(a: String): Char => Q[D] = {
+      case '=' =>
+        for {
+          _: Unit <- whitespace
           b: D <- intros
           _: Unit <- token(';')
           c: D <- intros
-        } yield D.let(a, b, c)) ++
-          arrow.flatMap(
-            (_: Unit) => intros.map(D.abstraction(a, _))
-          ) ++
-          fix.flatMap((_: Unit) => intros.map(D.fix(a, _)))
-      }) ++
-        unit.flatMap(elims)
-    )
+        } yield D.let(a, b, c)
+      case '-' =>
+        for {
+          _: Char <- readIf(_ == '>')
+          _: Unit <- whitespace
+          b: D <- intros
+        } yield D.abstraction(a, b)
+      case '@' =>
+        for {
+          _: Unit <- whitespace
+          b: D <- intros
+        } yield D.fix(a, b)
+      case _ => Parser.empty
+    }
+
+    def intros: Q[D] =
+      Parser.suspend(
+        (for {
+          a: String <- identifier
+          chr: Char <- Parser.read[Char, String]
+          d: D <- idOps(a)(chr)
+        } yield d) ++
+          unit.flatMap(elims)
+      )
     intros
   }
 }

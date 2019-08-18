@@ -29,33 +29,24 @@ sealed abstract class Parser[-I, +E, +A] {
 
   final def plus[I0 <: I, E0 >: E, A0 >: A](
       pb: Parser[I0, E0, A0]
-  ): Parser[I0, E0, A0] = {
-    this match {
-      case Empty      => pb
-      case Plus(l, r) => Plus(l, r.plus(pb))
-      case s: Suspend[I, E, A] =>
-        Suspend(() => s.value.plus(pb))
-      case _ => Plus(this, pb)
-    }
+  ): Parser[I0, E0, A0] = this match {
+    case Empty      => pb
+    case Plus(l, r) => Plus(l, r.plus(pb))
+    case s: Suspend[I, E, A] =>
+      Suspend(() => s.value.plus(pb))
+    case _ => if (pb == Empty) this else Plus(this, pb)
   }
 
   final def ++[I0 <: I, E0 >: E, A0 >: A](
-      pb: => Parser[I0, E0, A0]
+      pb: Parser[I0, E0, A0]
   ): Parser[I0, E0, A0] = plus(pb)
 
   private lazy val (ds, es, ps) = unfold(this)
 
-  def derive(i: I): Parser[I, E, A] = {
-    def helper(
-        d: List[I => Parser[I, E, A]],
-        out: => Parser[I, E, A]
-    ): Parser[I, E, A] =
-      d match {
-        case Nil    => out
-        case h :: t => helper(t, h(i).plus(out))
-      }
-    helper(ds, Empty)
-  }
+  def derive(i: I): Parser[I, E, A] =
+    ds.foldLeft[Parser[I, E, A]](Empty)(
+      (x, y) => y(i).plus(x)
+    )
 
   def errors: List[E] = es.reverse
   def writes: List[A] = ps.reverse

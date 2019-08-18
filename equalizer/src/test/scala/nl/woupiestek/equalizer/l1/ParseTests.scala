@@ -95,12 +95,11 @@ class ParseTests extends FunSpec {
 
     it("parses integers") {
       val testStrings =
-        List("1234567890", "3", "69")
+        List("1234567890", "3", "69", "0000000000")
       val results = testStrings.filterNot(
         parse(grammar.integer)(_).isEmpty
       )
       assert(results == testStrings)
-
     }
 
     it("parses defs") {
