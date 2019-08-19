@@ -30,7 +30,7 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
-  lazy val grammar: Grammar[String] =
+  val grammar: Grammar[String] =
     new Grammar(TestDef)
 
   def parse[X](
@@ -106,20 +106,20 @@ class ParseTests extends FunSpec {
   lazy val grammar2: Grammar2[String] =
     new Grammar2(TestDef)
 
-  def parse2[X](
-      parser: Parser2[Char, String, X]
-  )(
+  def parse2[X](parser: Parser2[Char, String, X])(
       input: String
-  ): List[X] =
-    input.toList
-      .foldLeft(parser)(_ derive _)
-      .writes
+  ): Boolean =
+    Try(
+      input.toList
+        .foldLeft(parser)(_ derive _)
+        .writes
+    ).toOption.exists(_.nonEmpty)
 
   describe("parse2") {
     it("parses whitespace") {
       val testStrings = List(" ", "\n", "\r", "\t", "  ")
-      val results = testStrings.filterNot(
-        parse2(grammar2.whitespace)(_).isEmpty
+      val results = testStrings.filter(
+        parse2(grammar2.whitespace)
       )
       assert(results == testStrings)
     }
@@ -135,8 +135,8 @@ class ParseTests extends FunSpec {
         "much_longer_identifier",
         "followed_by_white_space \t\r\n"
       )
-      val results = testStrings.filterNot(
-        parse2(grammar2.identifier)(_).isEmpty
+      val results = testStrings.filter(
+        parse2(grammar2.identifier)
       )
       assert(results == testStrings)
     }
@@ -144,8 +144,8 @@ class ParseTests extends FunSpec {
     it("parses integers") {
       val testStrings =
         List("1234567890", "3", "69", "0000000000")
-      val results = testStrings.filterNot(
-        parse2(grammar2.integer)(_).isEmpty
+      val results = testStrings.filter(
+        parse2(grammar2.integer)
       )
       assert(results == testStrings)
     }
@@ -163,11 +163,8 @@ class ParseTests extends FunSpec {
           "x -> x x"
         )
       val results =
-        testStrings.filterNot(
-          str =>
-            Try(parse2(grammar2.defExp)(str)).toOption
-              .flatMap(_.headOption)
-              .isEmpty
+        testStrings.filter(
+          parse2(grammar2.defExp)
         )
 
       assert(
