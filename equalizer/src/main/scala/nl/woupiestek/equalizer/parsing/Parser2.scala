@@ -15,11 +15,10 @@ sealed abstract class Parser2[-I, +E, +A] {
     this match {
       case a: Apply2[I, E, b, c, A] =>
         apply2(a.pa, a.pb, (u: b, v: c) => f(a.f(u, v)))
-      case Empty               => Empty
-      case Error(e)            => Error(e)
-      case Point(a)            => Point(f(a))
-      case s: Suspend[I, E, A] => suspend(s.map(f))
-      case _                   => ap(point(f))
+      case Empty    => Empty
+      case Error(e) => Error(e)
+      case Point(a) => Point(f(a))
+      case _        => ap(point(f))
     }
 
   final def plus[I0 <: I, E0 >: E, A0 >: A](
@@ -27,9 +26,7 @@ sealed abstract class Parser2[-I, +E, +A] {
   ): Parser2[I0, E0, A0] = this match {
     case Empty      => pb
     case Plus(l, r) => Plus(l, r.plus(pb))
-    case s: Suspend[I, E, A] =>
-      Suspend(() => s.value.plus(pb))
-    case _ => if (pb == Empty) this else Plus(this, pb)
+    case _          => if (pb == Empty) this else Plus(this, pb)
   }
 
   final def ++[I0 <: I, E0 >: E, A0 >: A](
@@ -67,11 +64,6 @@ object Parser2 {
   private final case class Read[-I, +E, +A](
       d: I => Parser2[I, E, A]
   ) extends Parser2[I, E, A]
-  private final case class Suspend[-I, +E, +A](
-      private val fa: () => Parser2[I, E, A]
-  ) extends Parser2[I, E, A] {
-    lazy val value: Parser2[I, E, A] = fa()
-  }
 
   private def apply2[I, E, A, B, C](
       pa: Parser2[I, E, A],
@@ -81,7 +73,7 @@ object Parser2 {
     case a: Apply2[I, E, d, e, A] =>
       Apply2(
         a.pa,
-        apply2(
+        Apply2(
           a.pb,
           pb,
           (u: e, v: B) => (w: d) => f(a.f(w, u), v)
@@ -92,11 +84,9 @@ object Parser2 {
     case Point(a) =>
       pb match {
         case Point(b) => Point(f(a, b))
-        case _        => apply2(pb, pa, (u: B, v: A) => f(v, u))
+        case _        => Apply2(pb, pa, (u: B, v: A) => f(v, u))
       }
-    case s: Suspend[I, E, A] =>
-      suspend(apply2(s.value, pb, f))
-    case _ => apply2(pa, pb, f)
+    case _ => Apply2(pa, pb, f)
   }
   def empty[I, E, A]: Parser2[I, E, A] = Empty
   def error[I, E, A](e: E): Parser2[I, E, A] = Error(e)
@@ -104,11 +94,6 @@ object Parser2 {
   def read[I, E, A](
       f: I => Parser2[I, E, A]
   ): Parser2[I, E, A] = Read(f)
-  def readIf[I, E](f: I => Boolean): Parser2[I, E, I] =
-    read((i: I) => if (f(i)) point(i) else empty)
-  def suspend[I, E, A](
-      sa: => Parser2[I, E, A]
-  ): Parser2[I, E, A] = Suspend(() => sa)
 
   implicit def applicativePlus[I, E]: ApplicativePlus[
     ({ type P[A] = Parser2[I, E, A] })#P
@@ -116,11 +101,16 @@ object Parser2 {
     type P[A] = Parser2[I, E, A]
     new ApplicativePlus[P] {
       def ap[A, B](fa: => P[A])(f: => P[A => B]): P[B] =
-        fa.ap(f)
+        Apply2(
+          fa,
+          f,
+          (u: A, v: A => B) => v(u)
+        )
       def empty[A]: P[A] = Empty
       def plus[A](a: P[A], b: => P[A]): P[A] =
         a.plus(b)
-      def point[A](a: => A): P[A] = Point(a)
+      def point[A](a: => A): P[A] =
+        Point(a)
     }
   }
 
@@ -142,7 +132,7 @@ object Parser2 {
         case a: Apply2[I, E, d, e, B] =>
           a2(
             a.pa,
-            apply2(
+            Apply2(
               a.pb,
               pc,
               (u: e, v: C) => (w: d) => f(a.f(w, u), v)
@@ -160,7 +150,6 @@ object Parser2 {
           }
         case ri: Read[I, E, B] =>
           derive ::= Read((i: I) => apply2(ri.d(i), pc, f))
-        case s: Suspend[I, E, B] => a2(s.value, pc, f)
         case _ =>
           if (pb != Empty) todo.push(apply2(pb, pc, f))
       }
@@ -172,9 +161,8 @@ object Parser2 {
         case Plus(l, r) =>
           if (r != Empty) todo.push(r)
           push(l)
-        case Point(a)            => points ::= a
-        case ri: Read[I, E, A]   => derive ::= ri
-        case s: Suspend[I, E, A] => push(s.value)
+        case Point(a)          => points ::= a
+        case ri: Read[I, E, A] => derive ::= ri
         case _ =>
           if (pa != Empty) todo.push(pa)
       }
