@@ -18,14 +18,6 @@ object Fmp {
       dpo: Fmp[O],
       dpp: O => Fmp[P]
   ) extends Fmp[P]
-  private final case class Suspend[+O](
-      private val fo: () => Fmp[O]
-  ) extends Fmp[O] {
-    lazy val value: Fmp[O] = fo()
-  }
-
-  private def suspend[A](fa: => Fmp[A]): Fmp[A] =
-    Suspend(() => fa)
 
   implicit val monadPlus: MonadPlus[Fmp] =
     new MonadPlus[Fmp] {
@@ -34,19 +26,18 @@ object Fmp {
           case Empty => Empty
           case fm: FlatMap[b, A] =>
             FlatMap(fm.dpo, (u: b) => bind(fm.dpp(u))(f))
-          case Point(a)      => f(a)
-          case s: Suspend[A] => suspend(bind(s.value)(f))
-          case _             => FlatMap(fa, f)
+          case Point(a) => f(a)
+          case _        => FlatMap(fa, f)
         }
       def empty[A]: Fmp[A] = Empty
       def plus[A](a: Fmp[A], b: => Fmp[A]): Fmp[A] =
         a match {
-          case Empty => suspend(b)
+          case Empty => b
           case Plus(left, right) =>
-            Plus(left, Plus(right, suspend(b)))
-          case _ => Plus(a, suspend(b))
+            Plus(left, Plus(right, b))
+          case _ => Plus(a, b)
         }
-      def point[A](a: => A): Fmp[A] = suspend(Point(a))
+      def point[A](a: => A): Fmp[A] = Point(a)
     }
 
   implicit val foldable: Foldable[Fmp] = new Foldable[Fmp] {
@@ -68,9 +59,8 @@ object Fmp {
         case Plus(left, right) =>
           if (right != Empty) todo.push(right)
           push(left)
-        case Point(o)      => result ::= o
-        case s: Suspend[A] => push(s.value)
-        case _             => if (fa != Empty) todo.push(fa)
+        case Point(o) => result ::= o
+        case _        => if (fa != Empty) todo.push(fa)
       }
 
       @tailrec def bind[C](
@@ -87,8 +77,7 @@ object Fmp {
           case Plus(left, right) =>
             push(monadPlus.bind(right)(g))
             bind(left, g)
-          case Point(o)      => push(g(o))
-          case s: Suspend[C] => bind(s.value, g)
+          case Point(o) => push(g(o))
         }
 
       var limit: Int = (1 << 16)

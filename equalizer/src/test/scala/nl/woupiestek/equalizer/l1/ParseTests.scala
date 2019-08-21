@@ -81,8 +81,8 @@ class ParseTests extends FunSpec {
       val testStrings =
         List(
           "x",
-          //"much_longer_identifier",
-          //"followed_by_white_space \t\r\n",
+          // "much_longer_identifier",
+          // "followed_by_white_space \t\r\n",
           "x y",
           "x = y; x",
           "x -> x",
@@ -136,16 +136,16 @@ class ParseTests extends FunSpec {
         "followed_by_white_space \t\r\n"
       )
       val results = testStrings.filter(
-        parse2(grammar2.identifier)
+        parse2(grammar2.onIdentifier(Parser2.point))
       )
       assert(results == testStrings)
     }
 
     it("parses integers") {
       val testStrings =
-        List("1234567890", "3", "69", "0000000000")
+        List("^1234567890", "^3 ", "^69", "^0000000000")
       val results = testStrings.filter(
-        parse2(grammar2.integer)
+        parse2(grammar2.onIndex(Parser2.point))
       )
       assert(results == testStrings)
     }

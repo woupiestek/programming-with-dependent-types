@@ -17,35 +17,26 @@ object Fap {
       left: Fap[A],
       right: Fap[A]
   ) extends Fap[A]
-  private final case class Suspend[+O](
-      private val fo: () => Fap[O]
-  ) extends Fap[O] {
-    lazy val value: Fap[O] = fo()
-  }
-
-  private def suspend[A](fa: => Fap[A]): Fap[A] =
-    Suspend(() => fa)
 
   implicit val monadPlus: MonadPlus[Fap] =
     new MonadPlus[Fap] {
       def bind[A, B](fa: Fap[A])(f: A => Fap[B]): Fap[B] = {
         implicit val m: Monoid[Fap[B]] = monoid[B]
         fa match {
-          case Empty         => Empty
-          case Point(a)      => f(a)
-          case s: Suspend[A] => suspend(bind(s.value)(f))
-          case _             => foldable.foldMap(fa)(f)
+          case Empty    => Empty
+          case Point(a) => f(a)
+          case _        => foldable.foldMap(fa)(f)
         }
       }
       def empty[A]: Fap[A] = Empty
       def plus[A](a: Fap[A], b: => Fap[A]): Fap[A] =
         a match {
-          case Empty => suspend(b)
+          case Empty => b
           case Plus(left, right) =>
-            Plus(left, Plus(right, suspend(b)))
-          case _ => Plus(a, suspend(b))
+            Plus(left, Plus(right, b))
+          case _ => Plus(a, b)
         }
-      def point[A](a: => A): Fap[A] = suspend(Point(a))
+      def point[A](a: => A): Fap[A] = Point(a)
     }
 
   implicit val foldable: Foldable[Fap] = new Foldable[Fap] {
@@ -67,9 +58,8 @@ object Fap {
         case Plus(left, right) =>
           if (right != Empty) todo.push(right)
           push(left)
-        case Point(o)      => result = () => f(o, result())
-        case s: Suspend[A] => push(s.value)
-        case _             => if (fa != Empty) todo.push(fa)
+        case Point(o) => result = () => f(o, result())
+        case _        => if (fa != Empty) todo.push(fa)
       }
 
       def run(next: Fap[A]): Unit = {

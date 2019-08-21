@@ -1,7 +1,6 @@
 package nl.woupiestek.equalizer.parsing
 import nl.woupiestek.equalizer.parsing.Parser._
 import scala.collection.mutable
-import scala.annotation.tailrec
 
 sealed abstract class Parser[-I, +E, +A] {
 
@@ -14,9 +13,7 @@ sealed abstract class Parser[-I, +E, +A] {
     case fm: FlatMap[I, E, b, A] =>
       FlatMap(fm.pa, fm.f(_: b).flatMap(f))
     case Point(a) => f(a)
-    case s: Suspend[I, E, A] =>
-      Suspend(() => s.value.flatMap(f))
-    case _ => FlatMap(this, f)
+    case _        => FlatMap(this, f)
   }
 
   final def map[A0 >: A, B](f: A0 => B): Parser[I, E, B] =
@@ -32,9 +29,7 @@ sealed abstract class Parser[-I, +E, +A] {
   ): Parser[I0, E0, A0] = this match {
     case Empty      => pb
     case Plus(l, r) => Plus(l, r.plus(pb))
-    case s: Suspend[I, E, A] =>
-      Suspend(() => s.value.plus(pb))
-    case _ => if (pb == Empty) this else Plus(this, pb)
+    case _          => if (pb == Empty) this else Plus(this, pb)
   }
 
   final def ++[I0 <: I, E0 >: E, A0 >: A](
@@ -71,19 +66,11 @@ object Parser {
   ) extends Parser[I, E, A]
   private final case class Point[+A](a: A)
       extends Parser[Any, Nothing, A]
-  private final case class Suspend[-I, +E, +A](
-      private val fa: () => Parser[I, E, A]
-  ) extends Parser[I, E, A] {
-    lazy val value: Parser[I, E, A] = fa()
-  }
 
   def empty[I, E, A]: Parser[I, E, A] = Empty
   def error[I, E, A](e: E): Parser[I, E, A] = Error(e)
   def point[I, E, A](a: A): Parser[I, E, A] = Point(a)
   def read[I, E]: Parser[I, E, I] = Derive(Point(_: I))
-  def suspend[I, E, A](
-      sa: => Parser[I, E, A]
-  ): Parser[I, E, A] = Suspend(() => sa)
 
   private def unfold[I, E, A](
       a: Parser[I, E, A]
@@ -94,38 +81,36 @@ object Parser {
     var derive: List[I => Parser[I, E, A]] = Nil
     var limit: Int = (1 << 16)
 
-    @tailrec def bind[B](
+    def bind[B](
         pb: Parser[I, E, B],
         f: B => Parser[I, E, A]
     ): Unit =
       pb match {
         case Error(e) => errors ::= e
         case fm: FlatMap[I, E, c, B] =>
-          bind(fm.pa, fm.f(_: c).flatMap(f))
+          if (fm.pa != Empty)
+            todo.push(fm.pa.flatMap(fm.f(_: c).flatMap(f)))
         case Plus(l, r) =>
           if (r != Empty) todo.push(r.flatMap(f))
-          bind(l, f)
+          if (l != Empty) todo.push(l.flatMap(f))
         case Point(a) =>
           val fa = f(a)
           if (fa != Empty) todo.push(fa)
-        case s: Suspend[I, E, B] => bind(s.value, f)
         case _ =>
           if (pb != Empty) todo.push(pb.flatMap(f))
       }
 
-    @tailrec def push(pa: Parser[I, E, A]): Unit =
+    def push(pa: Parser[I, E, A]): Unit =
       pa match {
         case Derive(d) => derive ::= d
+        case Empty     => ()
         case Error(e)  => errors ::= e
         case fm: FlatMap[I, E, b, A] =>
-          bind(fm.pa, fm.f)
+          if (fm.pa != Empty) bind(fm.pa, fm.f)
         case Plus(l, r) =>
           if (r != Empty) todo.push(r)
-          push(l)
-        case Point(a)            => points ::= a
-        case s: Suspend[I, E, A] => push(s.value)
-        case _ =>
-          if (pa != Empty) todo.push(pa)
+          if (l != Empty) todo.push(l)
+        case Point(a) => points ::= a
       }
 
     push(a)

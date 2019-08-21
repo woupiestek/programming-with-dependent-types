@@ -37,72 +37,85 @@ class Grammar2[D](
     helper(token.toList)
   }
 
-  val identifier: Q[String] = {
-    lazy val iPart: Q[List[Char]] =
+  def onIdentifier[A](f: String => Q[A]): Q[A] = {
+    def iPart(chars: List[Char]): Q[A] =
       select(Character.isJavaIdentifierPart(_: Char))(
-        (h: Char) => iPart.map(h :: (_: List[Char]))
-      ) ++ Parser2.point(Nil)
+        (h: Char) => iPart(h :: chars)
+      ) ++ (whitespace *> f(chars.reverse.mkString))
 
     select(Character.isJavaIdentifierStart(_: Char))(
-      (h: Char) => iPart.map(h :: (_: List[Char]))
-    ).map((_: List[Char]).mkString) <* whitespace
+      (h: Char) => iPart(h :: Nil)
+    )
   }
 
-  val integer: Q[Int] = {
-    lazy val digits: Q[List[Int]] =
+  def onIndex[A](f: Int => Q[A]): Q[A] = {
+    def digits(index: Int): Q[A] =
       select(Character.isDigit((_: Char)))(
         (c: Char) =>
-          digits.map((t: List[Int]) => (c - '0') :: t) ++
-            Parser2.point(List.empty[Int])
+          digits(10 * index + c - '0') ++ (whitespace *> f(
+            index
+          ))
       )
 
-    digits.map(
-      (_: List[Int]).foldLeft(0)((a, d) => 10 * a + d)
-    )
+    onToken("^")(digits(0))
   }
 
   val defExp: Q[D] = {
 
-    lazy val iOp: Q[String => D] = {
-      (onToken("=")(expression) |@|
-        onToken(";")(expression))(
-        (b: D, c: D) => (a: String) => D.let(a, b, c)
+    def iOp[A](a: String, f: D => Q[A]): Q[A] = {
+      onToken("=")(
+        onExpression(
+          (b: D) =>
+            onToken(";")(
+              onExpression(
+                (c: D) => f(D.let(a, b, c))
+              )
+            )
+        )
       ) ++
-        onToken("->")(expression).map(
-          (b: D) => (a: String) => D.abstraction(a, b)
+        onToken("->")(
+          onExpression(
+            (b: D) => f(D.abstraction(a, b))
+          )
         ) ++
-        onToken("@")(expression).map(
-          (b: D) => (a: String) => D.fix(a, b)
+        onToken("@")(
+          onExpression((b: D) => f(D.fix(a, b)))
         )
     }
 
-    lazy val dOp: Q[D => D] = {
-      val op: Q[D => D] =
-        onToken("'")(Parser2.point(D.unfold(_))) ++
-          onToken("_")(
-            integer.map((i: Int) => D.project(_: D, i)) <* whitespace
-          ) ++
-          expression.map((e: D) => D.application(_: D, e))
+    def dOp[A](d: D, f: D => Q[A]): Q[A] = {
+      onToken("'")(dOp(D.unfold(d), f)) ++
+        onIndex((i: Int) => dOp(D.project(d, i), f)) ++
+        onExpression((e: D) => dOp(D.application(d, e), f)) ++
+        f(d)
+    }
 
-      Parser2.point((d: D) => d) ++ (op |@| dOp)(
-        (f: D => D, g: D => D) => (d: D) => g(f(d))
+    def tOp[A](stack: List[D], f: List[D] => Q[A]): Q[A] =
+      onExpression(
+        (h: D) =>
+          onToken(">")(f((h :: stack).reverse)) ++
+            onToken(",")(tOp(h :: stack, f))
       )
-    }
 
-    lazy val tOp: Q[List[D]] =
-      (expression |@| ((onToken(">")(Parser2.point(Nil)) ++
-        onToken(",")(tOp))))(_ :: _)
-
-    lazy val expression: Q[D] = {
-      identifier.ap(
-        dOp.map((_: D => D).compose(D.variable(_))) ++ iOp
+    def onExpression[A](f: D => Q[A]): Q[A] = {
+      onIdentifier(
+        (name: String) =>
+          dOp(D.variable(name), f)
+            ++ iOp(name, f)
       ) ++
-        onToken("(")(expression <* onToken(")")(pause)) ++
+        onToken("(")(
+          onExpression(
+            (d: D) => onToken(")")(f(d))
+          )
+        ) ++
         onToken("<")(
-          tOp ++ onToken(">")(Parser2.point(Nil))
-        ).map(D.tuple(_))
+          tOp(
+            List.empty[D],
+            (ds: List[D]) => f(D.tuple(ds))
+          ) ++ onToken(">")(f(D.tuple(Nil)))
+        )
     }
 
-    expression
+    onExpression(Parser2.point(_: D))
   }
 }

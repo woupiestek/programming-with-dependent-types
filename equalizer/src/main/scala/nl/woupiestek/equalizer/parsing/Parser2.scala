@@ -1,7 +1,6 @@
 package nl.woupiestek.equalizer.parsing
 import nl.woupiestek.equalizer.parsing.Parser2._
 import scala.collection.mutable
-import scala.annotation.tailrec
 import scalaz.ApplicativePlus
 
 sealed abstract class Parser2[-I, +E, +A] {
@@ -37,7 +36,7 @@ sealed abstract class Parser2[-I, +E, +A] {
 
   def derive(i: I): Parser2[I, E, A] =
     ds.foldLeft[Parser2[I, E, A]](Empty)(
-      (x, y) => y.d(i).plus(x)
+      (x, y) => y(i).plus(x)
     )
 
   def errors: List[E] = es.reverse
@@ -116,55 +115,62 @@ object Parser2 {
 
   private def unfold[I, E, A](
       a: Parser2[I, E, A]
-  ): (List[Read[I, E, A]], List[E], List[A]) = {
+  ): (List[(I => Parser2[I, E, A])], List[E], List[A]) = {
     val todo = new mutable.ArrayStack[Parser2[I, E, A]]
     var points: List[A] = Nil
     var errors: List[E] = Nil
-    var derive: List[Read[I, E, A]] = Nil
+    var derive: List[(I => Parser2[I, E, A])] = Nil
     var limit: Int = (1 << 16)
 
-    @tailrec def a2[B, C](
+    def a2[B, C](
         pb: Parser2[I, E, B],
         pc: Parser2[I, E, C],
         f: (B, C) => A
     ): Unit =
       pb match {
         case a: Apply2[I, E, d, e, B] =>
-          a2(
-            a.pa,
-            Apply2(
-              a.pb,
-              pc,
-              (u: e, v: C) => (w: d) => f(a.f(w, u), v)
-            ),
-            (u: d, v: d => A) => v(u)
-          )
+          if (a.pa != Empty && a.pb != Empty)
+            todo.push(
+              apply2(
+                a.pa,
+                apply2(
+                  a.pb,
+                  pc,
+                  (u: e, v: C) => (w: d) => f(a.f(w, u), v)
+                ),
+                (u: d, v: d => A) => v(u)
+              )
+            )
+        case Empty    => ()
         case Error(e) => errors ::= e
         case Plus(l, r) =>
           if (r != Empty) todo.push(apply2(r, pc, f))
-          a2(l, pc, f)
+          if (l != Empty) todo.push(apply2(l, pc, f))
         case Point(b) =>
           pc match {
             case Point(c) => points ::= f(b, c)
-            case _        => a2(pc, pb, (u: C, v: B) => f(v, u))
+            case _ =>
+              if (pc != Empty)
+                todo.push(
+                  apply2(pc, pb, (u: C, v: B) => f(v, u))
+                )
           }
         case ri: Read[I, E, B] =>
-          derive ::= Read((i: I) => apply2(ri.d(i), pc, f))
-        case _ =>
-          if (pb != Empty) todo.push(apply2(pb, pc, f))
+          derive ::= ((i: I) => apply2(ri.d(i), pc, f))
       }
 
-    @tailrec def push(pa: Parser2[I, E, A]): Unit =
+    def push(pa: Parser2[I, E, A]): Unit =
       pa match {
-        case a: Apply2[I, E, b, c, A] => a2(a.pa, a.pb, a.f)
-        case Error(e)                 => errors ::= e
+        case a: Apply2[I, E, b, c, A] =>
+          if (a.pb != Empty && a.pb != Empty)
+            a2(a.pa, a.pb, a.f)
+        case Empty    => ()
+        case Error(e) => errors ::= e
         case Plus(l, r) =>
           if (r != Empty) todo.push(r)
-          push(l)
+          if (l != Empty) todo.push(l)
         case Point(a)          => points ::= a
-        case ri: Read[I, E, A] => derive ::= ri
-        case _ =>
-          if (pa != Empty) todo.push(pa)
+        case ri: Read[I, E, A] => derive ::= ri.d
       }
 
     push(a)
