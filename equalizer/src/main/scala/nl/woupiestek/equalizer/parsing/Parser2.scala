@@ -25,7 +25,9 @@ sealed abstract class Parser2[-I, +E, +A] {
   ): Parser2[I0, E0, A0] = this match {
     case Empty      => pb
     case Plus(l, r) => Plus(l, r.plus(pb))
-    case _          => if (pb == Empty) this else Plus(this, pb)
+    case _          => 
+      if (pb == Empty) this 
+      else Plus(this, pb)
   }
 
   final def ++[I0 <: I, E0 >: E, A0 >: A](
@@ -120,7 +122,7 @@ object Parser2 {
     var points: List[A] = Nil
     var errors: List[E] = Nil
     var derive: List[(I => Parser2[I, E, A])] = Nil
-    var limit: Int = (1 << 16)
+    var limit: Int = (1 << 20)
 
     def a2[B, C](
         pb: Parser2[I, E, B],
@@ -176,7 +178,11 @@ object Parser2 {
     push(a)
     while (todo.nonEmpty) {
       if (todo.length > (1 << 16)) throw new SpaceOut
-      if (limit > 0) limit -= 1 else throw new TimeOut
+      if (limit > 0) limit -= 1 else {
+        println("Draining todo's")
+        todo.drain(println)
+        throw new TimeOut
+      }
       push(todo.pop())
     }
 

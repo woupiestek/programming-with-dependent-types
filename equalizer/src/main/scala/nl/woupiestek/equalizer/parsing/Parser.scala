@@ -79,7 +79,7 @@ object Parser {
     var points: List[A] = Nil
     var errors: List[E] = Nil
     var derive: List[I => Parser[I, E, A]] = Nil
-    var limit: Int = (1 << 16)
+    var limit: Int = (1 << 20)
 
     def bind[B](
         pb: Parser[I, E, B],
