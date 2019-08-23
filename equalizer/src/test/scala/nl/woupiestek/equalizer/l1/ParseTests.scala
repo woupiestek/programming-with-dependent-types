@@ -171,4 +171,76 @@ class ParseTests extends FunSpec {
       )
     }
   }
+
+  lazy val grammar3: Grammar3[String] =
+    new Grammar3(TestDef)
+
+  def parse3[X](
+      parser: Parser3[Char, String, X]
+  )(
+      input: String
+  ): Option[Throwable] =
+    Try(
+      input.toList
+        .foldLeft(parser)(_ derive _)
+        .writes
+    ).failed.toOption
+
+  describe("parse3") {
+    it("parses whitespace") {
+      val testStrings = List(" ", "\n", "\r", "\t", "  ")
+      val results = testStrings.flatMap(
+        parse3(grammar3.whitespace)
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses identifiers") {
+      val testStrings = List(
+        "a",
+        "Ab",
+        "_c",
+        "d56",
+        "e  ",
+        "x",
+        "much_longer_identifier",
+        "followed_by_white_space \t\r\n"
+      )
+      val results = testStrings.flatMap(
+        parse3(grammar3.identifier)
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses integers") {
+      val testStrings =
+        List("1234567890", "3", "69", "0000000000")
+      val results = testStrings.flatMap(
+        parse3(grammar3.integer)
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses defs") {
+      val testStrings =
+        List(
+          "x",
+          "much_longer_identifier",
+          "followed_by_white_space \t\r\n",
+          "x y",
+          "x = y; x",
+          "x -> x",
+          "x @ x",
+          "x -> x x"
+        )
+      val results =
+        testStrings.flatMap(
+          parse3(grammar3.defExp)
+        )
+
+      assert(
+        results.isEmpty
+      )
+    }
+  }
 }
