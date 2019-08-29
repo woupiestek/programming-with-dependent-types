@@ -1,4 +1,10 @@
 
+# 25/8/19
+
+Not being effective.
+
+A stream could be: `Foldable[IO[Foldable[_]]]`
+
 # 3/8/19
 
 Recursive type equations suggest that expressions of a recursive type have

@@ -122,7 +122,7 @@ object Parser2 {
     var points: List[A] = Nil
     var errors: List[E] = Nil
     var derive: List[(I => Parser2[I, E, A])] = Nil
-    var limit: Int = (1 << 20)
+    var limit: Long = (1 << 20)
 
     def a2[B, C](
         pb: Parser2[I, E, B],
