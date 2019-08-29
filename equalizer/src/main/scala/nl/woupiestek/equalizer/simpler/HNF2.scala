@@ -22,54 +22,74 @@ object HNF2 {
 
   final case class Task(run: (Stack, Int) => Trampoline[HNF2])
 
-  final case class Term(run: (Heap, Stack, Int) => Trampoline[HNF2])
+  final case class Term(
+      run: (Heap, Stack, Int) => Trampoline[HNF2]
+  )
 
-  val instance: TermLike[String, Term] = new TermLike[String, Term] {
-    override def variable(i: String): Term =
-      Term(
-        (h, s, a) =>
-          h.get(i) match {
-            case None           => complete(Left(i), s, a)
-            case Some(Left(c))  => suspend(c.run(s, a))
-            case Some(Right(c)) => complete(Right(c), s, a)
-          }
-      )
+  val instance: TermLike[String, Term] =
+    new TermLike[String, Term] {
+      override def variable(i: String): Term =
+        Term(
+          (h, s, a) =>
+            h.get(i) match {
+              case None           => complete(Left(i), s, a)
+              case Some(Left(c))  => suspend(c.run(s, a))
+              case Some(Right(c)) => complete(Right(c), s, a)
+            }
+        )
 
-    override def lambda(i: String, b: Term): Term =
-      Term(
-        (h, s, a) =>
-          s match {
-            case Nil    => suspend(b.run(h + (i -> Right(a)), s, a + 1))
-            case c :: d => suspend(b.run(h + (i -> Left(c)), d, a))
-          }
-      )
+      override def lambda(i: String, b: Term): Term =
+        Term(
+          (h, s, a) =>
+            s match {
+              case Nil =>
+                suspend(b.run(h + (i -> Right(a)), s, a + 1))
+              case c :: d =>
+                suspend(b.run(h + (i -> Left(c)), d, a))
+            }
+        )
 
-    override def operate(x: Term, y: Term): Term =
-      Term((h, s, a) => suspend(x.run(h, Task(y.run(h, _, _)) :: s, a)))
+      override def operate(x: Term, y: Term): Term =
+        Term(
+          (h, s, a) =>
+            suspend(x.run(h, Task(y.run(h, _, _)) :: s, a))
+        )
 
-    override def let(i: String, v: Term, c: Term): Term =
-      Term(
-        (h, s, a) => suspend(c.run(h + (i -> Left(Task(v.run(h, _, _)))), s, a))
-      )
-
-    override def check(l: Term, r: Term, c: Term): Term =
-      Term(
-        (h, s, a) =>
-          suspend(
-            (l.run(h, Nil, a) |@| r.run(h, Nil, a) |@| c.run(h, s, a))(
-              (a, b, hnf) =>
-                hnf.copy(
-                  eqs = CNF2(a.snf, b.snf, a.eqs ++ b.eqs) ::
-                    a.eqs.map(e => e.copy(args = e.args ++ b.eqs)) ++
-                      b.eqs.map(f => f.copy(args = f.args ++ a.eqs)) ++
-                    hnf.eqs
-                )
+      override def let(i: String, v: Term, c: Term): Term =
+        Term(
+          (h, s, a) =>
+            suspend(
+              c.run(h + (i -> Left(Task(v.run(h, _, _)))), s, a)
             )
-          )
-      )
-  }
+        )
 
-  private def complete(i: Either[String, Int], s: Stack, a: Int): Trampoline[HNF2] =
+      override def check(l: Term, r: Term, c: Term): Term =
+        Term(
+          (h, s, a) =>
+            suspend(
+              (l.run(h, Nil, a) |@| r.run(h, Nil, a) |@| c
+                .run(h, s, a))(
+                (a, b, hnf) =>
+                  hnf.copy(
+                    eqs = CNF2(a.snf, b.snf, a.eqs ++ b.eqs) ::
+                      a.eqs.map(
+                        e => e.copy(args = e.args ++ b.eqs)
+                      ) ++
+                        b.eqs.map(
+                          f => f.copy(args = f.args ++ a.eqs)
+                        ) ++
+                      hnf.eqs
+                  )
+              )
+            )
+        )
+    }
+
+  private def complete(
+      i: Either[String, Int],
+      s: Stack,
+      a: Int
+  ): Trampoline[HNF2] =
     s.traverse(_.run(Nil, a))
       .map((s: List[HNF2]) => HNF2(SNF2(a, i, s), Nil))
 }

@@ -79,10 +79,9 @@ object ParserT {
         def point[A](a: => A): P[A] = write(a)
       }
   }
-  implicit def monadPlus[F[+ _]: MonadPlus, I, E]
-      : MonadPlus[
-        ({ type P[+O] = ParserT[F, I, E, O] })#P
-      ] =
+  implicit def monadPlus[F[+ _]: MonadPlus, I, E]: MonadPlus[
+    ({ type P[+O] = ParserT[F, I, E, O] })#P
+  ] =
     new Instances[F, I, E].monadPlus
 
   def error[F[+ _], I, E, A](

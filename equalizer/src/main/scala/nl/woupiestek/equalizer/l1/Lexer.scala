@@ -1,7 +1,6 @@
 package nl.woupiestek.equalizer.l1
 
 import scalaz._
-import Scalaz._
 
 object Lexer {
 
@@ -21,7 +20,6 @@ object Lexer {
 
   final case class State()
 
-  def lex[F[_]:Foldable](chars: F[Char]) = ???
-
+  def lex[F[_]: Foldable](chars: F[Char]) = ???
 
 }

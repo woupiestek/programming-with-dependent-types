@@ -10,7 +10,8 @@ trait ForEachFree[M[_], T] {
 
   def flatMap[U](f: T => ForEachFree[M, U]): ForEachFree[M, U]
 
-  def map[U](f: T => U): ForEachFree[M, U] = flatMap(t => Return(f(t)))
+  def map[U](f: T => U): ForEachFree[M, U] =
+    flatMap(t => Return(f(t)))
 }
 
 object ForEachFree {
@@ -19,15 +20,27 @@ object ForEachFree {
     def apply[U](m: M[U], f: U => Unit): Unit
   }
 
-  case class Return[M[_], T](value: T) extends ForEachFree[M, T] {
-    override def forEach(onReturn: (T) => Unit, onBind: Folder[M]): Unit = onReturn(value)
+  case class Return[M[_], T](value: T)
+      extends ForEachFree[M, T] {
+    override def forEach(
+        onReturn: (T) => Unit,
+        onBind: Folder[M]
+    ): Unit = onReturn(value)
 
-    override def flatMap[U](f: (T) => ForEachFree[M, U]): ForEachFree[M, U] = f(value)
+    override def flatMap[U](
+        f: (T) => ForEachFree[M, U]
+    ): ForEachFree[M, U] = f(value)
   }
 
-  case class Bind[M[_], U, T](request: M[U], callback: U => ForEachFree[M, T]) extends ForEachFree[M, T] {
+  case class Bind[M[_], U, T](
+      request: M[U],
+      callback: U => ForEachFree[M, T]
+  ) extends ForEachFree[M, T] {
 
-    override def forEach(onReturn: (T) => Unit, onBind: Folder[M]): Unit = {
+    override def forEach(
+        onReturn: (T) => Unit,
+        onBind: Folder[M]
+    ): Unit = {
       val q = new Queue[ForEachFree[M, T]]
       onBind(request, (u: U) => q.enqueue(callback(u)))
       while (!q.isEmpty) {
@@ -35,7 +48,9 @@ object ForEachFree {
       }
     }
 
-    override def flatMap[V](f: (T) => ForEachFree[M, V]): ForEachFree[M, V] =
+    override def flatMap[V](
+        f: (T) => ForEachFree[M, V]
+    ): ForEachFree[M, V] =
       Bind[M, U, V](request, t => callback(t).flatMap(f))
   }
 

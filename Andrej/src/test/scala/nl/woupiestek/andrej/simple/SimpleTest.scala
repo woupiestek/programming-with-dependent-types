@@ -37,8 +37,7 @@ class SimpleTest extends FunSpec {
       assert(solution.map(_.assess) === Some(Some(Set.empty)))
       val solution2 = systemSKK.solve
       info(solution2.toString)
-      val solution3 =
-        assert(solution.map(_.assess) === Some(Some(Set.empty)))
+      assert(solution.map(_.assess) === Some(Some(Set.empty)))
     }
 
   }

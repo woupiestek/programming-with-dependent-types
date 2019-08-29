@@ -32,8 +32,7 @@ class Arithmetic[P[_]: Applicative](
                           right: Double,
                           next: Double => Double
                       ) =>
-                        (left: Double) =>
-                          next(op(left, right))
+                        (left: Double) => next(op(left, right))
                     )
                 else effects.reject[Double => Double]
             )

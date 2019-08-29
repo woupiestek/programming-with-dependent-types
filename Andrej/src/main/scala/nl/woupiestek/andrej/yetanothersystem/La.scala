@@ -8,7 +8,10 @@ sealed trait La {
 
 case class App(args: List[La], index: Int) extends La {
   override def cut(i: Int, x: La): La = {
-    val head = if (index > i) App(Nil, index - 1) else if (index == i) x else App(Nil, index)
+    val head =
+      if (index > i) App(Nil, index - 1)
+      else if (index == i) x
+      else App(Nil, index)
     args.foldRight(head) { case (y, z) => z.app(y.cut(i, x)) }
   }
 
@@ -29,7 +32,9 @@ sealed trait TA {
 
 case class TApp(args: List[TA], index: Int) extends TA {
   override def push(x: List[TA]): TA = {
-    val y = if (index < x.length) x(index) else TApp(Nil, index - x.length)
+    val y =
+      if (index < x.length) x(index)
+      else TApp(Nil, index - x.length)
     args.foldRight(y) { case (a, b) => b.app(a.push(x)) }
   }
 
@@ -37,7 +42,8 @@ case class TApp(args: List[TA], index: Int) extends TA {
 }
 
 case class TAbs(context: List[TA], body: TA) extends TA {
-  override def push(x: List[TA]): TA = TAbs(x ++ context.map(_.push(x)), body)
+  override def push(x: List[TA]): TA =
+    TAbs(x ++ context.map(_.push(x)), body)
 
   override def app(x: TA): TA = body.push(x :: context)
 }

@@ -13,4 +13,3 @@ trait TermLike2[I, T, U] {
   def check(left: T, right: T, context: T): U
 
 }
-

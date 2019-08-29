@@ -2,42 +2,59 @@ package nl.woupiestek.equalizer.game
 
 sealed abstract class Term
 final case class TermVar(name: String) extends Term
-final case class Let(varName: String, value: Term, context: Term) extends Term
-final case class Application(operator: Term, operand: Term) extends Term
-final case class Abstraction(varName: String, body: Term) extends Term
+final case class Let(
+    varName: String,
+    value: Term,
+    context: Term
+) extends Term
+final case class Application(operator: Term, operand: Term)
+    extends Term
+final case class Abstraction(varName: String, body: Term)
+    extends Term
 
 object Term {
   def free(term: Term): Set[String] = {
     @annotation.tailrec
-    def helper(in: List[(Term, Set[String])], out: Set[String]): Set[String] =
+    def helper(
+        in: List[(Term, Set[String])],
+        out: Set[String]
+    ): Set[String] =
       in match {
         case Nil => out
         case (h0, h1) :: t =>
           h0 match {
-            case TermVar(name) => helper(t, if (h1(name)) out else out + name)
+            case TermVar(name) =>
+              helper(t, if (h1(name)) out else out + name)
             case Abstraction(varName, body) =>
               helper((body, h1 + varName) :: t, out)
             case Application(operator, operand) =>
               helper((operator, h1) :: (operand, h1) :: t, out)
             case Let(varName, value, context) =>
-              helper((value, h1) :: (context, h1 + varName) :: t, out)
+              helper(
+                (value, h1) :: (context, h1 + varName) :: t,
+                out
+              )
           }
       }
     helper((term, Set.empty[String]) :: Nil, Set.empty[String])
   }
 
   def prettyPrint(term: Term): String = term match {
-    case TermVar(name)              => name
-    case Abstraction(varName, body) => s"\\$varName.${prettyPrint(body)}"
-    case Application(x, y)          => s"(${prettyPrint(x)} ${prettyPrint(y)})"
+    case TermVar(name) => name
+    case Abstraction(varName, body) =>
+      s"\\$varName.${prettyPrint(body)}"
+    case Application(x, y) =>
+      s"(${prettyPrint(x)} ${prettyPrint(y)})"
     case Let(varName, value, context) =>
       s"(${prettyPrint(context)}|$varName:${prettyPrint(value)})"
   }
 }
 
 sealed abstract class Sentence
-final case class Equation(left: Term, right: Term) extends Sentence
-final case class Implication(ante: Sentence, con: Sentence) extends Sentence
+final case class Equation(left: Term, right: Term)
+    extends Sentence
+final case class Implication(ante: Sentence, con: Sentence)
+    extends Sentence
 final case class Generalization(varName: String, body: Sentence)
     extends Sentence
 
@@ -53,14 +70,21 @@ object Sentence {
         case (h0, h1) :: t =>
           h0 match {
             case Equation(left, right) =>
-              helper(t, (Term.free(left) ++ Term.free(right) -- h1) ++ out)
+              helper(
+                t,
+                (Term.free(left) ++ Term
+                  .free(right) -- h1) ++ out
+              )
             case Implication(ante, con) =>
               helper((ante, h1) :: (con, h1) :: t, out)
             case Generalization(varName, body) =>
               helper((body, h1 + varName) :: t, out)
           }
       }
-    helper((sentence, Set.empty[String]) :: Nil, Set.empty[String])
+    helper(
+      (sentence, Set.empty[String]) :: Nil,
+      Set.empty[String]
+    )
   }
 }
 

@@ -30,7 +30,12 @@ object Analyzer3 {
     sentence match {
       case Equation(l, r) =>
         val pat = pattern
-        expand(pat, evaluate(l, heap), evaluate(r, heap), Set.empty) match {
+        expand(
+          pat,
+          evaluate(l, heap),
+          evaluate(r, heap),
+          Set.empty
+        ) match {
           case Some(x) =>
             if (positive) x.map {
               case (a, b) => Set[Atom](Differs(pat, a, b))
@@ -81,7 +86,9 @@ object Analyzer3 {
             left.operands.length == right.operands.length) {
           left.operands
             .zip(right.operands)
-            .foldLeft(Option.apply(Set.empty[(Pattern, Pattern)])) {
+            .foldLeft(
+              Option.apply(Set.empty[(Pattern, Pattern)])
+            ) {
               case (z, (l, r)) =>
                 for {
                   f <- expand(pattern, l, r, eliminate)
@@ -111,7 +118,8 @@ object Analyzer3 {
                 evaluate(body, heap + (varName -> p), p :: Nil),
                 p :: values
               )
-            case other => unfold(evaluate(other, heap, Nil), values)
+            case other =>
+              unfold(evaluate(other, heap, Nil), values)
           }
       }
 
@@ -124,7 +132,8 @@ object Analyzer3 {
           eliminate ++ b.map(_.operator)
         )
       case Closure(term, heap) =>
-        val (d, e) = unfold(evaluate(term, heap, b.reverse), Nil)
+        val (d, e) =
+          unfold(evaluate(term, heap, b.reverse), Nil)
         compare(
           Pattern(a.operator, a.operands ++ e.reverse),
           d,

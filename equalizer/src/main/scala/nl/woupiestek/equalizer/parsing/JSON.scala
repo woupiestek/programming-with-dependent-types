@@ -52,9 +52,8 @@ class JSON[A[_]: Applicative, B](
 
     input.read(
       _value andThen (
-          (head: A[B]) =>
-            Apply[A].apply2(head, tail)(_ :: _)
-        ) orElse {
+          (head: A[B]) => Apply[A].apply2(head, tail)(_ :: _)
+      ) orElse {
         case RightBracket => List.empty[B].point[A]
         case other =>
           wrong(
@@ -147,8 +146,7 @@ object JSON {
       extends Token("string")
   final case class Number(value: List[Char])
       extends Token("number")
-  final case class Bool(value: Boolean)
-      extends Token("boolean")
+  final case class Bool(value: Boolean) extends Token("boolean")
   final case object Null extends Token("null")
   final case object LeftBracket extends Token("[")
   final case object RightBracket extends Token("]")

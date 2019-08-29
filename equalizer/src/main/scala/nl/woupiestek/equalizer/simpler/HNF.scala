@@ -33,30 +33,59 @@ object HNF {
   ): Trampoline[HNF] = pivot match {
     case Iden(a) =>
       heap.get(a) match {
-        case None           => complete(arity, eqs, Left(a), stack)
-        case Some(Left(c))  => suspend(c.run(arity, eqs, stack))
-        case Some(Right(c)) => complete(arity, eqs, Right(c), stack)
+        case None          => complete(arity, eqs, Left(a), stack)
+        case Some(Left(c)) => suspend(c.run(arity, eqs, stack))
+        case Some(Right(c)) =>
+          complete(arity, eqs, Right(c), stack)
       }
     case Abs(a, b) =>
       stack match {
         case Nil =>
-          normalize(arity + 1, eqs, b, heap + (a -> Right(arity)), stack)
-        case c :: d => normalize(arity, eqs, b, heap + (a -> Left(c)), d)
+          normalize(
+            arity + 1,
+            eqs,
+            b,
+            heap + (a -> Right(arity)),
+            stack
+          )
+        case c :: d =>
+          normalize(arity, eqs, b, heap + (a -> Left(c)), d)
       }
-    case App(a, b) => normalize(arity, eqs, a, heap, task(b, heap) :: stack)
+    case App(a, b) =>
+      normalize(arity, eqs, a, heap, task(b, heap) :: stack)
     case Let(a, b, c) =>
-      normalize(arity, eqs, c, heap + (a -> Left(task(b, heap))), stack)
+      normalize(
+        arity,
+        eqs,
+        c,
+        heap + (a -> Left(task(b, heap))),
+        stack
+      )
     case Check(a, b, c) =>
-      normalize(arity, (task(a, heap), task(b, heap)) :: eqs, c, heap, stack)
+      normalize(
+        arity,
+        (task(a, heap), task(b, heap)) :: eqs,
+        c,
+        heap,
+        stack
+      )
   }
 
-  def task(pivot: BreakDown, heap: Map[String, Either[Task, Int]]) =
+  def task(
+      pivot: BreakDown,
+      heap: Map[String, Either[Task, Int]]
+  ) =
     Task(normalize(_, _, pivot, heap, _))
 
   final case class Task(
-      run: (Int, List[(Task, Task)], List[Task]) => Trampoline[HNF]
+      run: (
+          Int,
+          List[(Task, Task)],
+          List[Task]
+      ) => Trampoline[HNF]
   ) {
-    def value(arity: Int): Trampoline[HNF] = run(arity, Nil, Nil)
+    def value(arity: Int): Trampoline[HNF] =
+      run(arity, Nil, Nil)
   }
 
   type K = Map[String, Either[Task, Int]] => Task
@@ -78,7 +107,8 @@ object HNF {
         Task(
           (a, e, s) =>
             s match {
-              case Nil    => b(h + (i -> Right(a))).run(a + 1, e, s)
+              case Nil =>
+                b(h + (i -> Right(a))).run(a + 1, e, s)
               case c :: d => b(h + (i -> Left(c))).run(a, e, d)
             }
         )
@@ -86,7 +116,8 @@ object HNF {
     override def operate(x: K, y: K): K =
       h => Task((a, e, s) => x(h).run(a, e, y(h) :: s))
 
-    override def let(i: String, v: K, c: K): K = h => c(h + (i -> Left(v(h))))
+    override def let(i: String, v: K, c: K): K =
+      h => c(h + (i -> Left(v(h))))
 
     override def check(l: K, r: K, c: K): K =
       h => Task((a, e, s) => c(h).run(a, (l(h), r(h)) :: e, s))
@@ -104,10 +135,13 @@ object HNF {
           (b.value(arity) |@| c.value(arity))(
             (a, b) =>
               CNF(a.snf, b.snf, a.eqs ++ b.eqs) ::
-                a.eqs.map(e => e.copy(args = e.args ++ b.eqs)) ++
+                a.eqs
+                  .map(e => e.copy(args = e.args ++ b.eqs)) ++
                 b.eqs.map(f => f.copy(args = f.args ++ a.eqs))
           )
       }
       .map(_.flatten) |@|
-      stack.traverse(_.value(arity)))(HNF(arity, _, operator, _))
+      stack.traverse(_.value(arity)))(
+      HNF(arity, _, operator, _)
+    )
 }

@@ -61,8 +61,7 @@ object X {
         }
         f.copy(
           position = f.position + 2,
-          freeVariables =
-            f.freeVariables.filterNot(_._2 == id),
+          freeVariables = f.freeVariables.filterNot(_._2 == id),
           sameValue = f.sameValue ++ v,
           sameType = f.sameType ++ v,
           arrows = f.arrows + (
@@ -121,8 +120,7 @@ object X {
         } + ((g.position, f.position + 1))
         g.copy(
           position = g.position + 1,
-          freeVariables =
-            g.freeVariables.filterNot(_._2 == id),
+          freeVariables = g.freeVariables.filterNot(_._2 == id),
           sameValue = g.sameValue ++ v,
           sameType = g.sameType ++ v + (
             (

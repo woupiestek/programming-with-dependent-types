@@ -3,9 +3,11 @@ package nl.woupiestek.andrej.intersections
 import nl.woupiestek.andrej.intersections.Stateful.point
 
 case class Stateful[S, T](go: S => (T, S)) {
-  def flatMap[U](f: T => Stateful[S, U]): Stateful[S, U] = Stateful(go andThen { case (y, z) => f(y).go(z) })
+  def flatMap[U](f: T => Stateful[S, U]): Stateful[S, U] =
+    Stateful(go andThen { case (y, z) => f(y).go(z) })
 
-  def map[U](g: T => U): Stateful[S, U] = flatMap(g andThen point)
+  def map[U](g: T => U): Stateful[S, U] =
+    flatMap(g andThen point)
 }
 
 object Stateful {

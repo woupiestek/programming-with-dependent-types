@@ -50,10 +50,9 @@ class Grammar2[D](
 
   def onIndex[A](f: Int => Q[A]): Q[A] = {
     def digits(index: Int): Q[A] =
-      select(Character.isDigit((_: Char))){
-        (c: Char) =>
-          val j = 10 * index + c - '0' 
-          digits(j) ++ (whitespace *> f(j))
+      select(Character.isDigit((_: Char))) { (c: Char) =>
+        val j = 10 * index + c - '0'
+        digits(j) ++ (whitespace *> f(j))
       }
 
     digits(0)

@@ -25,8 +25,8 @@ sealed abstract class Parser2[-I, +E, +A] {
   ): Parser2[I0, E0, A0] = this match {
     case Empty      => pb
     case Plus(l, r) => Plus(l, r.plus(pb))
-    case _          => 
-      if (pb == Empty) this 
+    case _ =>
+      if (pb == Empty) this
       else Plus(this, pb)
   }
 
@@ -178,7 +178,8 @@ object Parser2 {
     push(a)
     while (todo.nonEmpty) {
       if (todo.length > (1 << 16)) throw new SpaceOut
-      if (limit > 0) limit -= 1 else {
+      if (limit > 0) limit -= 1
+      else {
         println("Draining todo's")
         todo.drain(println)
         throw new TimeOut

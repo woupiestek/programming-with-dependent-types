@@ -4,9 +4,14 @@ import scala.annotation.tailrec
 
 sealed abstract class Lambda
 object Lambda {
-  final case class Pattern(operator: String, operands: List[Lambda])
-      extends Lambda
-  final case class Closure(term: Term, heap: Map[String, Lambda]) extends Lambda
+  final case class Pattern(
+      operator: String,
+      operands: List[Lambda]
+  ) extends Lambda
+  final case class Closure(
+      term: Term,
+      heap: Map[String, Lambda]
+  ) extends Lambda
 
   @tailrec def evaluate(
       term: Term,
@@ -21,7 +26,11 @@ object Lambda {
         case h :: t => evaluate(body, heap + (varName -> h), t)
       }
     case Let(varName, value, body) =>
-      evaluate(body, heap + (varName -> Closure(value, heap)), stack)
+      evaluate(
+        body,
+        heap + (varName -> Closure(value, heap)),
+        stack
+      )
     case TermVar(varName) =>
       heap.get(varName) match {
         case Some(Closure(t, h)) => evaluate(t, h, stack)
@@ -32,7 +41,8 @@ object Lambda {
 
   def prettyPrint(lambda: Lambda): String = lambda match {
     case Lambda.Pattern(operator, operands) =>
-      (operator :: operands.map(prettyPrint)).mkString("(", " ", ")")
+      (operator :: operands.map(prettyPrint))
+        .mkString("(", " ", ")")
     case Lambda.Closure(term, heap) =>
       val h = heap
         .map { case (k, v) => s"$k:${prettyPrint(v)}" }
@@ -42,7 +52,10 @@ object Lambda {
 
   def free(lambda: Lambda): Set[String] = {
     @annotation.tailrec
-    def helper(lambdas: List[Lambda], out: Set[String]): Set[String] =
+    def helper(
+        lambdas: List[Lambda],
+        out: Set[String]
+    ): Set[String] =
       lambdas match {
         case Nil => out
         case h :: t =>

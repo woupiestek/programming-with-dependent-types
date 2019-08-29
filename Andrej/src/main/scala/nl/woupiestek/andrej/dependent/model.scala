@@ -12,25 +12,34 @@ case class Get(index: Int) extends Expression {
   override val ind: Option[Int] = Some(index)
 }
 
-case class Push(value: Expression, continuation: Expression) extends Expression {
-  override val subs: List[Expression] = List(value, continuation)
+case class Push(value: Expression, continuation: Expression)
+    extends Expression {
+  override val subs: List[Expression] =
+    List(value, continuation)
 
   override val ind: Option[Int] = None
 }
 
-case class Function(dom: Expression, continuation: Expression) extends Expression {
+case class Function(dom: Expression, continuation: Expression)
+    extends Expression {
   override val subs: List[Expression] = List(dom, continuation)
 
   override val ind: Option[Int] = None
 }
 
-case class Apply(index: Int, argument: Expression, continuation: Expression) extends Expression {
-  override val subs: List[Expression] = List(argument, continuation)
+case class Apply(
+    index: Int,
+    argument: Expression,
+    continuation: Expression
+) extends Expression {
+  override val subs: List[Expression] =
+    List(argument, continuation)
 
   override val ind: Option[Int] = Some(index)
 }
 
-case class Product(dom: Expression, continuation: Expression) extends Expression {
+case class Product(dom: Expression, continuation: Expression)
+    extends Expression {
   override val ind: Option[Int] = None
 
   override val subs: List[Expression] = List(dom, continuation)

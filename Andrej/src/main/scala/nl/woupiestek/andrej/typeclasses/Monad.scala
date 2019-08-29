@@ -8,7 +8,9 @@ trait Functor[F[_]] {
 
 object Functor {
 
-  implicit class Ops[F[_], A](fa: F[A])(implicit F: Functor[F]) {
+  implicit class Ops[F[_], A](fa: F[A])(
+      implicit F: Functor[F]
+  ) {
     def map[B](f: A => B): F[B] = F.map(fa)(f)
   }
 
@@ -28,9 +30,11 @@ trait Applicative[F[_]] extends Apply[F] {
 }
 
 trait Monad[F[_]] extends Bind[F] with Applicative[F] {
-  override def map[A, B](fa: F[A])(f: A => B): F[B] = bind(fa)(f andThen unit)
+  override def map[A, B](fa: F[A])(f: A => B): F[B] =
+    bind(fa)(f andThen unit)
 
-  override def ap[A, B](fa: => F[A])(f: => F[(A) => B]): F[B] = bind(f)(map(fa))
+  override def ap[A, B](fa: => F[A])(f: => F[(A) => B]): F[B] =
+    bind(f)(map(fa))
 }
 
 object Monad {
