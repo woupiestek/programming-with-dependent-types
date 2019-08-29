@@ -1,7 +1,5 @@
 package nl.woupiestek.dtlang
 
-import scala.language.postfixOps
-
 object EagerEvaluator {
 
   sealed trait Expr {
@@ -18,15 +16,21 @@ object EagerEvaluator {
   }
 
   case class Appl(operator: Expr, operand: Expr) extends Expr {
-    override def eval(value: Expr, index: Int): Expr = Appl(operator.eval(value, index), operand.eval(value, index))
+    override def eval(value: Expr, index: Int): Expr =
+      Appl(
+        operator.eval(value, index),
+        operand.eval(value, index)
+      )
   }
 
   case class Abst(sort: Expr, body: Expr) extends Expr {
-    override def eval(value: Expr, index: Int): Expr = Abst(sort.eval(value, index), body.eval(value, index))
+    override def eval(value: Expr, index: Int): Expr =
+      Abst(sort.eval(value, index), body.eval(value, index))
   }
 
   case class Prod(sort: Expr, body: Expr) extends Expr {
-    override def eval(value: Expr, index: Int): Expr = Prod(sort.eval(value, index), body.eval(value, index))
+    override def eval(value: Expr, index: Int): Expr =
+      Prod(sort.eval(value, index), body.eval(value, index))
   }
 
   case class Univ(level: Int) extends Expr {
@@ -40,45 +44,50 @@ object EagerEvaluator {
         {
           case Vari(i) if i < sorts.length =>
             Some(Vari(i))
-          case Appl(x, y) => for {
-            Abst(a, b) <- reduce(x)
-            c <- typeOf(y) if c == a
-            d <- reduce(y)
-          } yield b.eval(d)
-          case Abst(x, y) => for {
-            a <- reduce(x)
-            b <- reduce(y)
-          } yield Abst(a, b)
-          case Prod(x, y) => for {
-            a <- reduce(x)
-            b <- reduce(y)
-          } yield Abst(a, b)
+          case Appl(x, y) =>
+            for {
+              Abst(a, b) <- reduce(x)
+              c <- typeOf(y) if c == a
+              d <- reduce(y)
+            } yield b.eval(d)
+          case Abst(x, y) =>
+            for {
+              a <- reduce(x)
+              b <- reduce(y)
+            } yield Abst(a, b)
+          case Prod(x, y) =>
+            for {
+              a <- reduce(x)
+              b <- reduce(y)
+            } yield Abst(a, b)
           case Univ(i) => Some(Univ(i))
-          case _ => None
+          case _       => None
         }
     }
 
-    def typeOf: Expr => Option[Expr] = Memoized {
-      typeOf =>
-        {
-          case Vari(i) => sorts lift i
-          case Appl(x, y) => for {
+    def typeOf: Expr => Option[Expr] = Memoized { typeOf =>
+      {
+        case Vari(i) => sorts lift i
+        case Appl(x, y) =>
+          for {
             Prod(a, b) <- typeOf(x)
             c <- typeOf(y) if c == a
             d <- normalFormOf(y)
             e <- normalFormOf(b.eval(d))
           } yield e
-          case Abst(x, y) => for {
+        case Abst(x, y) =>
+          for {
             c <- normalFormOf(x)
             b <- new Context(c :: sorts).typeOf(y)
           } yield Prod(c, b)
-          case Prod(x, y) => for {
+        case Prod(x, y) =>
+          for {
             Univ(i) <- typeOf(x)
             tx <- normalFormOf(x)
             Univ(j) <- typeOf(y)
           } yield Prod(tx, Univ(Math.max(i, j)))
-          case Univ(i) => Some(Univ(i + 1))
-        }
+        case Univ(i) => Some(Univ(i + 1))
+      }
     }
   }
 
