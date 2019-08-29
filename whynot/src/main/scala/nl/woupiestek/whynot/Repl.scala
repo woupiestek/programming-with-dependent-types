@@ -8,7 +8,7 @@ import scala.language.postfixOps
 object Repl extends App {
 
   def fromSeq[A](seq: Seq[A]): WhyNot[A] = seq toList match {
-    case Nil => Return
+    case Nil          => Return
     case head :: tail => head +: fromSeq(tail)
   }
 
@@ -23,12 +23,17 @@ object Repl extends App {
   for (k <- ij take 20) print(k)
   println()
 
-  val ap0 = fromSeq(1 to 5) map[Int => Int] (i => (j: Int) => i - j)
+  val ap0 = fromSeq(1 to 5) map [Int => Int](
+      i => (j: Int) => i - j
+  )
   val ap1 = fromSeq(1 to 10) ap ap0
   for (k <- ap1) print(k)
   println()
 
-  println((for (i <- fromSeq(1 to 5).scanLeft(1)(_ * _)) yield i).toList.mkString(" "))
+  println(
+    (for (i <- fromSeq(1 to 5).scanLeft(1)(_ * _))
+      yield i).toList.mkString(" ")
+  )
 
   def in: WhyNot[String] = Suspend[String] { c =>
     c(StdIn.readLine)
