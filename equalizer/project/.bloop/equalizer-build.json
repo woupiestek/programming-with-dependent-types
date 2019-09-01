@@ -28,6 +28,7 @@
             "C:\\Users\\woupi\\.ivy2\\cache\\org.spire-math\\jawn-parser_2.12\\jars\\jawn-parser_2.12-0.11.1.jar",
             "C:\\Users\\woupi\\.ivy2\\cache\\io.circe\\circe-derivation_2.12\\jars\\circe-derivation_2.12-0.9.0-M3.jar",
             "C:\\Users\\woupi\\.ivy2\\cache\\scala_2.12\\sbt_1.0\\org.scalameta\\sbt-metals\\jars\\sbt-metals-0.7.0.jar",
+            "C:\\Users\\woupi\\.ivy2\\cache\\scala_2.12\\sbt_1.0\\com.timushev.sbt\\sbt-updates\\jars\\sbt-updates-0.4.2.jar",
             "C:\\Users\\woupi\\.ivy2\\cache\\scala_2.12\\sbt_1.0\\org.scalameta\\sbt-scalafmt\\jars\\sbt-scalafmt-2.0.0.jar",
             "C:\\Users\\woupi\\.ivy2\\cache\\org.scalameta\\scalafmt-dynamic_2.12\\jars\\scalafmt-dynamic_2.12-2.0.0-RC5.jar",
             "C:\\Users\\woupi\\.ivy2\\cache\\org.scalameta\\scalafmt-interfaces\\jars\\scalafmt-interfaces-2.0.0-RC5.jar",
@@ -122,7 +123,53 @@
             "name" : "scala-compiler",
             "version" : "2.12.6",
             "options" : [
-                "-deprecation"
+                "-deprecation",
+                "-encoding",
+                "utf-8",
+                "-explaintypes",
+                "-feature",
+                "-language:existentials",
+                "-language:experimental.macros",
+                "-language:higherKinds",
+                "-language:implicitConversions",
+                "-unchecked",
+                "-Xcheckinit",
+                "-Xfatal-warnings",
+                "-Xfuture",
+                "-Xlint:adapted-args",
+                "-Xlint:by-name-right-associative",
+                "-Xlint:constant",
+                "-Xlint:delayedinit-select",
+                "-Xlint:doc-detached",
+                "-Xlint:inaccessible",
+                "-Xlint:infer-any",
+                "-Xlint:missing-interpolator",
+                "-Xlint:nullary-override",
+                "-Xlint:nullary-unit",
+                "-Xlint:option-implicit",
+                "-Xlint:package-object-classes",
+                "-Xlint:poly-implicit-overload",
+                "-Xlint:private-shadow",
+                "-Xlint:stars-align",
+                "-Xlint:type-parameter-shadow",
+                "-Xlint:unsound-match",
+                "-Yno-adapted-args",
+                "-Ypartial-unification",
+                "-Ywarn-dead-code",
+                "-Ywarn-extra-implicit",
+                "-Ywarn-inaccessible",
+                "-Ywarn-infer-any",
+                "-Ywarn-nullary-override",
+                "-Ywarn-nullary-unit",
+                "-Ywarn-numeric-widen",
+                "-Ywarn-unused:implicits",
+                "-Ywarn-unused:imports",
+                "-Ywarn-unused:locals",
+                "-Ywarn-unused:params",
+                "-Ywarn-unused:patvars",
+                "-Ywarn-unused:privates",
+                "-Ywarn-value-discard",
+                "-Xplugin:C:\\Users\\woupi\\.ivy2\\cache\\com.olegpy\\better-monadic-for_2.12\\jars\\better-monadic-for_2.12-0.3.1.jar"
             ],
             "jars" : [
                 "C:\\Users\\woupi\\.sbt\\boot\\scala-2.12.6\\lib\\jline.jar",
@@ -150,8 +197,8 @@
                 "import _root_.scala.xml.{TopScope=>$scope}",
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.org.scalafmt.sbt.ScalafmtPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.org.scalafmt.sbt.ScalafmtPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.com.timushev.sbt.updates.UpdatesPlugin.autoImport._, _root_.org.scalafmt.sbt.ScalafmtPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.scala.meta.metals.MetalsPlugin, _root_.com.timushev.sbt.updates.UpdatesPlugin, _root_.org.scalafmt.sbt.ScalafmtPlugin"
             ]
         },
         "test" : {
@@ -365,6 +412,17 @@
                         {
                             "name" : "sbt-metals",
                             "path" : "C:\\Users\\woupi\\.ivy2\\cache\\scala_2.12\\sbt_1.0\\org.scalameta\\sbt-metals\\jars\\sbt-metals-0.7.0.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization" : "com.timushev.sbt",
+                    "name" : "sbt-updates",
+                    "version" : "0.4.2",
+                    "artifacts" : [
+                        {
+                            "name" : "sbt-updates",
+                            "path" : "C:\\Users\\woupi\\.ivy2\\cache\\scala_2.12\\sbt_1.0\\com.timushev.sbt\\sbt-updates\\jars\\sbt-updates-0.4.2.jar"
                         }
                     ]
                 },

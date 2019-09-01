@@ -39,7 +39,7 @@ sealed abstract class Parser[-I, +E, +A] {
   private lazy val (ds, es, ps) = unfold(this)
 
   def derive(i: I): Parser[I, E, A] =
-    ds.foldLeft[Parser[I, E, A]](Empty)(
+    ds.distinct.foldLeft[Parser[I, E, A]](Empty)(
       (x, y) => y(i).plus(x)
     )
 
