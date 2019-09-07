@@ -1,86 +1,61 @@
 package nl.woupiestek.equalizer.l1
 
-import scalaz._
-import Scalaz._
-import nl.woupiestek.equalizer.parsing.Parser3
-import nl.woupiestek.equalizer.parsing.Parser3._
+//import scalaz._
+//import Scalaz._
+import nl.woupiestek.equalizer.parsing.Input
 
 class Grammar3[D](
-    D: AST.Def[D]
+    //D: AST.Def[D]
 ) {
 
-  private type Q[+A] = Parser3[Char, String, A]
+  type Q[A] = Input[Char] => (A, Input[Char])
 
-  private val pause: Q[Unit] = Parser3.point(())
-  private def readIf(f: Char => Boolean): Q[Unit] =
-    Parser3.readIf(f, pause)
+  def whitespace(input: Input[Char]): Boolean =
+    Character.isWhitespace(input.head)
+    
+  def identifier(
+      input: Input[Char]
+  ): Option[String] = {
 
-  val whitespace: Q[Unit] =
-    Parser3.loop(
-      (ws: Q[Unit]) =>
-        (readIf(Character.isWhitespace(_: Char)) *>
-          ws) ++ pause
-    )
+    def iPart(input: Input[Char]): Option[List[Char]] =
+      if (Character.isJavaIdentifierPart(input.head))
+        Some(input.head :: iPart(input.tail).getOrElse(Nil))
+      else
+        None
 
-  def token(char: Char): Q[Unit] =
-    readIf(_ == char) *> whitespace
-
-  def matchChars(chars: List[Char]): Q[Unit] = chars match {
-    case Nil    => pause
-    case h :: t => readIf(_ == h) *> matchChars(t)
+    if (Character.isJavaIdentifierStart(input.head))
+      iPart(input.tail)
+        .map(chars => (input.head :: chars).mkString)
+    else
+      None
   }
 
-  def matchString(string: String) =
-    matchChars(string.toList)
+  def integer(input: Input[Char]): Option[Int] = {
+    def digits(input: Input[Char]): Option[List[Int]] =
+      if ('0' <= input.head && input.head <= '9')
+        Some(
+          (input.head - '0') :: digits(input.tail)
+            .getOrElse(Nil)
+        )
+      else
+        None
 
-  def token(string: String): Q[Unit] =
-    matchString(string) *> whitespace
-
-  private def foldMap[A](
-      seq: Seq[Char]
-  )(f: Char => Q[A]): Q[A] =
-    seq.foldLeft[Q[A]](Parser3.empty)(
-      (p, c) => p ++ f(c)
-    )
-
-  val identifier: Q[String] = {
-    val start = ('a' to 'z') ++ ('A' to 'Z')
-    val part = start ++ ('0' to '9')
-    val tail = Parser3.loop(
-      (iPart: Q[List[Char]]) =>
-        foldMap(part)(
-          h =>
-            for {
-              _: Unit <- readIf((_: Char) == h)
-              t: List[Char] <- iPart
-            } yield h :: t
-        ) ++ (Parser3.point(List.empty[Char]))
-    )
-
-    foldMap(start)(
-      h =>
-        for {
-          _: Unit <- readIf((_: Char) == h)
-          t: List[Char] <- tail
-          _: Unit <- whitespace
-        } yield (h :: t).mkString
+    digits(input).map(
+      ds => (ds.foldLeft(0) { case (j, k) => 10 * j + k })
     )
   }
+/*
+  def expression(input: Input[Char]): Input[Option[D]] = {
 
-  val integer: Q[Int] = {
-    val digit: Q[Int] =
-      foldMap('0' to '9')(
-        (d: Char) =>
-          readIf((_: Char) == d)
-            .map((_: Unit) => d - '0')
-      )
-    Parser3.loop(
-      (digits: Q[Int]) =>
-        for {
-          h: Int <- digit
-          t: Int <- digits ++ Parser3.point(0)
-        } yield 10 * h + t
+    def unit: Option[D] = identifier(input).map(D.variable).orElse(
+      if(input.head == '(') whitespace(input.tail)
     )
+
+    def elims: D = ???
+
+    def intros: D = ???
+
+    intros
   }
 
   val defExp: Q[D] = {
@@ -138,5 +113,5 @@ class Grammar3[D](
           token('>').map((_: Unit) => List.empty[D]))
       } yield D.tuple(ds))
     }
-  }
+  }*/
 }

@@ -6,7 +6,7 @@ class Grammar4[D](
     D: AST.Def[D]
 ) {
 
-  private type Q[A] = Parser4[Char, String, A]
+  private type Q[A] = Parser4[Char, A]
 
   private def readIf(f: Char => Boolean): Q[Char] =
     Parser4.read.filter(f)

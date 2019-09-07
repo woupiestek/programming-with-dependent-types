@@ -1,4 +1,8 @@
 
+# 2/9/19
+
+Packrat is revitalizing, although I haven't quite got it right.
+
 # 25/8/19
 
 Not being effective.

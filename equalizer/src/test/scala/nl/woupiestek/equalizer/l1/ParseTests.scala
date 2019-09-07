@@ -176,12 +176,12 @@ class ParseTests extends FunSpec {
     new Grammar4(TestDef)
 
   def parse4[X](
-      parser: => Parser4[Char, String, X]
+      parser: => Parser4[Char, X]
   )(
       input: String
   ): Boolean =
     try {
-      parser.run(Parser4.fromString(input)).isRight
+      parser.run(Input.fromString(input)).value.nonEmpty
     } catch {
       case e: Throwable =>
         e.printStackTrace()
