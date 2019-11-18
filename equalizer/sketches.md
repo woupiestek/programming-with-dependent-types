@@ -1,4 +1,35 @@
 
+# 6/10/19
+
+Big map solution: use position to identify each bit of source
+code and reify the heap to get an efficient parser/typechecker.
+Different design from the books, but it makes sense.
+
+Now the map part is just an interface, to encapsulate other
+data structures.
+
+Okay how does this work?
+The packrat parser already has this structure: for each position
+a lazy mapping from non-terminals to matched ASTs.
+the position help telling variables with the same name apart,
+which in turn helpt with type checking and constraint checking.
+
+## Basic datastructure
+
+```scala
+sealed trait Key {
+  val line: Int
+  val column: Int
+  type ValueType 
+}
+
+//datastructure has type
+Key => Key#ValueType
+```
+
+Perhaps split this into one structure for each type, to make
+things easier.
+
 # 2/9/19
 
 Packrat is revitalizing, although I haven't quite got it right.
