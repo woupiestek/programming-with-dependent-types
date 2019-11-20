@@ -139,9 +139,10 @@ object Parser {
           p: Parser[I, E, B],
           i: Int
       ): Option[(Int, Either[E, B])] =
-        store.get((i, p)) match {
-          case None =>
-            val result = p match {
+        store
+          .getOrElseUpdate(
+            (i, p),
+            p match {
               case Derive(d) =>
                 alternative(d(f(i)), i + 1)
               case Empty =>
@@ -157,12 +158,11 @@ object Parser {
                 alternative(l, i) orElse alternative(r, i)
               case Point(a) => Some((i, Right(a)))
             }
-            store.put((i, p), result)
-            result
-          case Some(result) => result.asInstanceOf[Option[(Int, Either[E, B])]]
-        }
+          )
+          .asInstanceOf[Option[(Int, Either[E, B])]]
 
       alternative(parser, _)
+
     }
   }
 }
