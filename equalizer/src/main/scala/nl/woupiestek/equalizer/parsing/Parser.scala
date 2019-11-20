@@ -125,4 +125,44 @@ object Parser {
   class SpaceOut
       extends Exception("Unfolding caused an explosion")
   class TimeOut extends Exception("Unfolding took too long")
+
+  def parser3[I, E, A](
+      parser: Parser[I, E, A]
+  ): Parser3[I, Either[E, A]] = {
+    Parser3 { f =>
+      val store =
+        new mutable.HashMap[(Int, Parser[I, E, Any]), Option[
+          (Int, Either[E, Any])
+        ]]
+
+      def alternative[B](
+          p: Parser[I, E, B],
+          i: Int
+      ): Option[(Int, Either[E, B])] =
+        store.get((i, p)) match {
+          case None =>
+            val result = p match {
+              case Derive(d) =>
+                alternative(d(f(i)), i + 1)
+              case Empty =>
+                None
+              case Error(e) => Some((i, Left(e)))
+              case fm: FlatMap[I, E, c, B] =>
+                alternative[c](fm.pa, i).flatMap {
+                  case (j, Left(e)) => Some((j, Left(e)))
+                  case (j, Right(a: c)) =>
+                    alternative[B](fm.f(a), j)
+                }
+              case Plus(l, r) =>
+                alternative(l, i) orElse alternative(r, i)
+              case Point(a) => Some((i, Right(a)))
+            }
+            store.put((i, p), result)
+            result
+          case Some(result) => result.asInstanceOf[Option[(Int, Either[E, B])]]
+        }
+
+      alternative(parser, _)
+    }
+  }
 }

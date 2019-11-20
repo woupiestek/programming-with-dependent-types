@@ -172,6 +172,86 @@ class ParseTests extends FunSpec {
     }
   }
 
+  // 3
+
+  def parse3[X](
+      parser: => Parser3[Char, X]
+  )(
+      input: String
+  ): Boolean =
+    parser
+      .run(
+        (i: Int) =>
+          if (i >= 0 && i < input.length) input.charAt(i)
+          else (-1).toChar
+      )(0)
+      .nonEmpty
+
+  describe("parse3") {
+    it("parses whitespace") {
+      val testStrings = List(" ", "\n", "\r", "\t", "  ")
+      val results = testStrings.filterNot(
+        parse3(
+          Parser3.unit(
+            (f: Int => Char) =>
+              (i: Int) => Some(Grammar3.whitespace(i)(f))
+          )
+        )
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses identifiers") {
+      val testStrings = List(
+        "a",
+        "Ab",
+        "_c",
+        "d56",
+        "e  ",
+        "x",
+        "much_longer_identifier",
+        "followed_by_white_space \t\r\n"
+      )
+      val results = testStrings.filterNot(
+        parse3(Grammar3.identifier)
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses integers") {
+      val testStrings =
+        List("1244567890", "4", "69", "0000000000")
+      val results = testStrings.filterNot(
+        parse3(Grammar3.integer)
+      )
+      assert(results.isEmpty)
+    }
+
+    it("parses defs") {
+      val testStrings =
+        List(
+          "x",
+          "much_longer_identifier",
+          "followed_by_white_space \t\r\n",
+          "x y",
+          "x = y; x",
+          "x -> x",
+          "x @ x",
+          "x -> x x"
+        )
+      val results =
+        testStrings.filterNot(
+          parse3(Grammar3.expression(TestDef))
+        )
+
+      assert(
+        results.isEmpty
+      )
+    }
+  }
+
+  // 4
+
   lazy val grammar4: Grammar4[String] =
     new Grammar4(TestDef)
 

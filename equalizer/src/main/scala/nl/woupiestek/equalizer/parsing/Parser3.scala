@@ -42,9 +42,6 @@ case class Parser3[I, A](
   def memoized: Parser3[I, A] =
     Parser3(b => Parser3.Memoize(run(b)))
 
-  def derive(i: I): Parser3[I, A] =
-    Parser3(b => run(j => if (j > 0) b(j - 1) else i))
-
 }
 
 object Parser3 {

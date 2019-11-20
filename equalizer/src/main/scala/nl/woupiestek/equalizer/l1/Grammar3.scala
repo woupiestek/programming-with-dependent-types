@@ -8,7 +8,7 @@ object Grammar3 {
       f: Char => Boolean
   )(index: Int)(g: Int => Char): Int = {
     var i = index
-    while (f(g(index))) i += 1
+    while (f(g(i))) i += 1
     i
   }
 
