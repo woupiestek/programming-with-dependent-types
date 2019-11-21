@@ -27,17 +27,12 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
-  // 1
-
   val grammar: Grammar[String] =
     new Grammar(TestDef)
 
   def parse[X](
       parser: Parser[Char, String, X]
-  )(
-      input: String
-  ): Boolean =
-    Parser.parser3(parser).run(function(input))(0).nonEmpty
+  ): String => Boolean = parse3(Parser.parser3(parser))
 
   describe("parse") {
     it("parses whitespace") {
@@ -80,11 +75,11 @@ class ParseTests extends FunSpec {
           "x",
           "much_longer_identifier",
           "followed_by_white_space \t\r\n",
-          "x y",
-          "x = y; x",
-          "x -> x",
-          "x @ x",
-          "x -> x x"
+          "x y", // x
+          "x = y; x", // x
+          "x -> x", // x
+          "x @ x", // x
+          "x -> x x" // x
         )
       val results =
         testStrings.filterNot(
@@ -97,15 +92,13 @@ class ParseTests extends FunSpec {
     }
   }
 
-  // 2
-
   lazy val grammar2: Grammar2[String] =
     new Grammar2(TestDef)
 
-  def parse2[X](parser: Parser2[Char, String, X])(
-      input: String
-  ): Boolean =
-    Parser2.parser3(parser).run(function(input))(0).nonEmpty
+  def parse2[X](
+      parser: Parser2[Char, String, X]
+  ): String => Boolean =
+    parse3(Parser2.parser3(parser))
 
   describe("parse2") {
     it("parses whitespace") {
@@ -148,11 +141,11 @@ class ParseTests extends FunSpec {
           "x",
           "much_longer_identifier",
           "followed_by_white_space \t\r\n",
-          "x y",
-          "x = y; x",
-          "x -> x",
-          "x @ x",
-          "x -> x x"
+          "x y", // x
+          "x = y; x", // x
+          "x -> x", // x
+          "x @ x", // x
+          "x -> x x" // x
         )
       val results =
         testStrings.filterNot(
@@ -165,8 +158,6 @@ class ParseTests extends FunSpec {
     }
   }
 
-  // 3
-
   def parse3[X](
       parser: => Parser3[Char, X]
   )(
@@ -174,6 +165,7 @@ class ParseTests extends FunSpec {
   ): Boolean =
     parser
       .run(function(input))(0)
+      .map(x => info(String.valueOf(x)))
       .nonEmpty
 
   describe("parse3") {
@@ -222,11 +214,11 @@ class ParseTests extends FunSpec {
           "x",
           "much_longer_identifier",
           "followed_by_white_space \t\r\n",
-          "x y",
-          "x = y; x",
-          "x -> x",
-          "x @ x",
-          "x -> x x"
+          "x y", // x
+          "x = y; x", // x
+          "x -> x", // x
+          "x @ x", // x
+          "x -> x x" // x
         )
       val results =
         testStrings.filterNot(

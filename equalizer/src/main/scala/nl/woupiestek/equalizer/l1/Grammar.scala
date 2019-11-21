@@ -51,17 +51,16 @@ class Grammar[D](
   }
 
   val integer: Q[Int] = {
-    val digit: Q[Int] = readIf(Character.isDigit(_: Char))
-      .map((c: Char) => c - '0')
-    lazy val digits: Q[Int] = for {
-      h: Int <- digit
-      t: Int <- digits ++ Parser.point(0)
-    } yield 10 * h + t
-    digits
+    def digits(x: Int): Q[Int] =
+      readIf(Character.isDigit(_: Char)).flatMap { (c: Char) =>
+        val y = 10 * x + c - '0'
+        digits(y) ++ Parser.point(y)
+      }
+
+    digits(0)
   }
 
   val defExp: Q[D] = {
-
     def iOp(a: String): Q[D] = {
       (for {
         _: Unit <- token('=')
@@ -79,18 +78,16 @@ class Grammar[D](
         } yield D.fix(a, b))
     }
 
-    def dOp(d: D): Q[D] = {
-      Parser.point(d) ++
-        (token('\'').map((_: Unit) => D.unfold(d)) ++
-          (for {
-            i: Int <- integer
-            _: Unit <- whitespace
-          } yield D.project(d, i)) ++
-          expression.map(D.application(d, _)))
-          .flatMap(dOp(_))
-    }
+    def dOp(d: D): Q[D] =
+      (token('\'').map((_: Unit) => D.unfold(d)) ++
+        (for {
+          i: Int <- integer
+          _: Unit <- whitespace
+        } yield D.project(d, i)) ++
+        expression.map(D.application(d, _)) ++ Parser.point(d))
+        .flatMap(dOp(_))
 
-    def tOp: Q[List[D]] = {
+    def tOp: Q[List[D]] =
       expression.flatMap(
         (h: D) =>
           token('>').map((_: Unit) => List(h)) ++
@@ -98,7 +95,6 @@ class Grammar[D](
               (_: Unit) => tOp.map(h :: (_: List[D]))
             )
       )
-    }
 
     lazy val expression: Q[D] = {
       identifier.flatMap(
