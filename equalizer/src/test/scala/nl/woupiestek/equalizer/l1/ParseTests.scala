@@ -1,10 +1,7 @@
 package nl.woupiestek.equalizer.l1
 
-import scalaz._
-import Scalaz._
 import org.scalatest._
 import nl.woupiestek.equalizer.parsing._
-import scala.util.Try
 
 class ParseTests extends FunSpec {
 
@@ -30,6 +27,8 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
+  // 1
+
   val grammar: Grammar[String] =
     new Grammar(TestDef)
 
@@ -39,8 +38,6 @@ class ParseTests extends FunSpec {
       input: String
   ): Boolean =
     Parser.parser3(parser).run(function(input))(0).nonEmpty
-
-  // 1
 
   describe("parse") {
     it("parses whitespace") {
@@ -108,11 +105,7 @@ class ParseTests extends FunSpec {
   def parse2[X](parser: Parser2[Char, String, X])(
       input: String
   ): Boolean =
-    Try(
-      input.toList
-        .foldLeft(parser)(_ derive _)
-        .writes
-    ).isSuccess
+    Parser2.parser3(parser).run(function(input))(0).nonEmpty
 
   describe("parse2") {
     it("parses whitespace") {

@@ -34,15 +34,6 @@ sealed abstract class Parser2[-I, +E, +A] {
       pb: Parser2[I0, E0, A0]
   ): Parser2[I0, E0, A0] = plus(pb)
 
-  private lazy val (ds, es, ps) = unfold(this)
-
-  def derive(i: I): Parser2[I, E, A] =
-    ds.distinct.foldLeft[Parser2[I, E, A]](Empty)(
-      (x, y) => y(i).plus(x)
-    )
-
-  def errors: List[E] = es.reverse
-  def writes: List[A] = ps.reverse
 }
 
 object Parser2 {
@@ -115,81 +106,45 @@ object Parser2 {
     }
   }
 
-  private def unfold[I, E, A](
-      a: Parser2[I, E, A]
-  ): (List[(I => Parser2[I, E, A])], List[E], List[A]) = {
-    val todo = new mutable.ArrayStack[Parser2[I, E, A]]
-    var points: List[A] = Nil
-    var errors: List[E] = Nil
-    var derive: List[(I => Parser2[I, E, A])] = Nil
-    var limit: Long = (1 << 20)
+  def parser3[I, E, A](
+      parser: Parser2[I, E, A]
+  ): Parser3[I, Either[E, A]] = {
+    Parser3 { f =>
+      val store =
+        new mutable.HashMap[(Int, Parser2[I, E, Any]), Option[
+          (Int, Either[E, Any])
+        ]]
 
-    def a2[B, C](
-        pb: Parser2[I, E, B],
-        pc: Parser2[I, E, C],
-        f: (B, C) => A
-    ): Unit =
-      pb match {
-        case a: Apply2[I, E, d, e, B] =>
-          if (a.pa != Empty && a.pb != Empty)
-            todo.push(
-              apply2(
-                a.pa,
-                apply2(
-                  a.pb,
-                  pc,
-                  (u: e, v: C) => (w: d) => f(a.f(w, u), v)
-                ),
-                (u: d, v: d => A) => v(u)
-              )
-            )
-        case Empty    => ()
-        case Error(e) => errors ::= e
-        case Plus(l, r) =>
-          if (r != Empty) todo.push(apply2(r, pc, f))
-          if (l != Empty) todo.push(apply2(l, pc, f))
-        case Point(b) =>
-          pc match {
-            case Point(c) => points ::= f(b, c)
-            case _ =>
-              if (pc != Empty)
-                todo.push(
-                  apply2(pc, pb, (u: C, v: B) => f(v, u))
-                )
-          }
-        case ri: Read[I, E, B] =>
-          derive ::= ((i: I) => apply2(ri.d(i), pc, f))
-      }
+      def alternative[B](
+          p: Parser2[I, E, B],
+          i: Int
+      ): Option[(Int, Either[E, B])] =
+        store
+          .getOrElseUpdate(
+            (i, p),
+            p match {
+              case Apply2(pa, pb, g) =>
+                alternative(pa, i).flatMap {
+                  case (j, Left(e)) => Some((j, Left(e)))
+                  case (j, Right(a)) =>
+                    alternative(pb, j).map {
+                      case (k, Left(e))  => (k, Left(e))
+                      case (k, Right(b)) => (k, Right(g(a, b)))
+                    }
+                }
+              case Empty    => None
+              case Error(e) => Some((i, Left(e)))
+              case Plus(l, r) =>
+                alternative(l, i) orElse alternative(r, i)
+              case Point(a) => Some((i, Right(a)))
+              case Read(d)  => alternative(d(f(i)), i + 1)
+            }
+          )
+          .asInstanceOf[Option[(Int, Either[E, B])]]
 
-    def push(pa: Parser2[I, E, A]): Unit =
-      pa match {
-        case a: Apply2[I, E, b, c, A] =>
-          if (a.pb != Empty && a.pb != Empty)
-            a2(a.pa, a.pb, a.f)
-        case Empty    => ()
-        case Error(e) => errors ::= e
-        case Plus(l, r) =>
-          if (r != Empty) todo.push(r)
-          if (l != Empty) todo.push(l)
-        case Point(a)          => points ::= a
-        case ri: Read[I, E, A] => derive ::= ri.d
-      }
+      alternative(parser, _)
 
-    push(a)
-    while (todo.nonEmpty) {
-      if (todo.length > (1 << 16)) throw new SpaceOut
-      if (limit > 0) limit -= 1
-      else {
-        println("Draining todo's")
-        todo.drain(println)
-        throw new TimeOut
-      }
-      push(todo.pop())
     }
-
-    (derive, errors, points)
   }
-  class SpaceOut
-      extends Exception("Unfolding caused an explosion")
-  class TimeOut extends Exception("Unfolding took too long")
+
 }
