@@ -48,13 +48,12 @@ object Grammar4 {
   }
 
   val integer: Q[Int] = {
-    val digit: Q[Int] = readIf(Character.isDigit(_: Char))
-      .map((c: Char) => c - '0')
-    lazy val digits: Q[Int] = for {
-      h: Int <- digit
-      t: Int <- digits ++ Parser4.point(0)
-    } yield 10 * h + t
-    digits
+    def digits(h: Int): Q[Int] =
+      for {
+        t: Char <- readIf(Character.isDigit(_: Char))
+        r: Int <- digits(10 * h + t - '0') ++ Parser4.point(10 * h + t - '0')
+      } yield r
+    digits(0)
   }
 
   def defExp[D](D: AST.Def[D]): Q[D] = {
