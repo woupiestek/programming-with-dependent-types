@@ -5,9 +5,7 @@ import Scalaz._
 import nl.woupiestek.equalizer.parsing.Parser2
 import nl.woupiestek.equalizer.parsing.Parser2._
 
-class Grammar2[D](
-    D: AST.Def[D]
-) {
+object Grammar2 {
 
   private type Q[+A] = Parser2[Char, String, A]
 
@@ -58,7 +56,7 @@ class Grammar2[D](
     digits(0)
   }
 
-  val defExp: Q[D] = {
+  def defExp[D](D: AST.Def[D]): Q[D] = {
 
     def iOp[A](a: String, f: D => Q[A]): Q[A] = {
       onToken("=")(

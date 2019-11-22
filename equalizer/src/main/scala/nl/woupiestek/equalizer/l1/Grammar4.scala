@@ -2,9 +2,7 @@ package nl.woupiestek.equalizer.l1
 
 import nl.woupiestek.equalizer.parsing.Parser4
 
-class Grammar4[D](
-    D: AST.Def[D]
-) {
+object Grammar4 {
 
   private type Q[A] = Parser4[Char, A]
 
@@ -59,60 +57,59 @@ class Grammar4[D](
     digits
   }
 
-  val defExp: Q[D] = {
+  def defExp[D](D: AST.Def[D]): Q[D] = {
+    lazy val cut: Q[D] = (for {
+      a: String <- identifier
+      _: Unit <- token('=')
+      b: D <- intro
+      _: Unit <- token(';')
+      c: D <- cut
+    } yield D.let(a, b, c)) ++
+      intro
 
-    def iOp(a: String): Q[D] = {
+    lazy val intro: Q[D] = (for {
+      a: String <- identifier
+      _: Unit <- token('@')
+      b: D <- intro
+    } yield D.fix(a, b)) ++
       (for {
-        _: Unit <- token('=')
-        b: D <- expression
-        _: Unit <- token(';')
-        c: D <- expression
-      } yield D.let(a, b, c)) ++
-        (for {
-          _: Unit <- token("->")
-          b: D <- expression
-        } yield D.abstraction(a, b)) ++
-        (for {
-          _: Unit <- token('@')
-          b: D <- expression
-        } yield D.fix(a, b))
-    }
+        a: String <- identifier
+        _: Unit <- token("->")
+        b: D <- intro
+      } yield D.abstraction(a, b)) ++
+      elim
 
-    def dOp(d: D): Q[D] = {
-      Parser4.point(d) ++
-        (token('\'').map((_: Unit) => D.unfold(d)) ++
-          (for {
-            i: Int <- integer
-            _: Unit <- whitespace
-          } yield D.project(d, i)) ++
-          expression.map(D.application(d, _)))
-          .flatMap(dOp(_))
-    }
+    lazy val elim: Q[D] = unit.flatMap(
+      (a: D) =>
+        token('\'').map((_: Unit) => D.unfold(a)) ++
+          integer.map(D.project(a, _)) ++
+          unit.map(D.application(a, _)) ++
+          Parser4.point(a)
+    )
 
-    def tOp: Q[List[D]] = {
-      expression.flatMap(
-        (h: D) =>
-          token('>').map((_: Unit) => List(h)) ++
-            token(',').flatMap(
-              (_: Unit) => tOp.map(h :: (_: List[D]))
-            )
-      )
-    }
+    lazy val unit: Q[D] = (for {
+      _: Unit <- token('(')
+      a: D <- cut
+      _: Unit <- token(')')
+    } yield a) ++
+      token('<').flatMap(
+        (_: Unit) =>
+          token('>').map((_: Unit) => D.tuple(Nil)) ++
+            (for {
+              h: D <- cut
+              t: List[D] <- tail
+            } yield D.tuple(h :: t))
+      ) ++
+      identifier.map(D.variable)
 
-    lazy val expression: Q[D] = {
-      identifier.flatMap(
-        (s: String) => dOp(D.variable(s)) ++ iOp(s)
-      ) ++ (for {
-        _: Unit <- token('(') //
-        d: D <- expression
-        _: Unit <- token(')')
-      } yield d) ++ (for {
-        _: Unit <- token('<')
-        ds: List[D] <- (tOp ++
-          token('>').map((_: Unit) => List.empty[D]))
-      } yield D.tuple(ds))
-    }
+    lazy val tail: Q[List[D]] =
+      token('>').map((_: Unit) => List.empty[D]) ++ (for {
+        _: Unit <- token(',')
+        h: D <- cut
+        t: List[D] <- tail
+      } yield h :: t)
 
-    expression
+    cut
+
   }
 }

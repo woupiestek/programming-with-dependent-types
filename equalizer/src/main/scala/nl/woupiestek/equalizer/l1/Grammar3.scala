@@ -57,69 +57,67 @@ object Grammar3 {
     (f: Int => Char) => (index: Int) =>
       var i = index
       var j = 0
-      while (Character.isJavaIdentifierPart(f(i))) {
-        i += 1
+      while (Character.isDigit(f(i))) {
         j = 10 * j + f(i) - '0'
+        i += 1
       }
       if (index == i) None
       else Some((whitespace(i)(f), j))
   }
 
   def expression[D](D: AST.Def[D]): Parser3[Char, D] = {
+    lazy val cut: Parser3[Char, D] = (for {
+      a: String <- identifier
+      _: Unit <- token('=')
+      b: D <- intro
+      _: Unit <- token(';')
+      c: D <- cut
+    } yield D.let(a, b, c)) ++
+      intro
 
-    def iOp(a: String): Parser3[Char, D] = {
+    lazy val intro: Parser3[Char, D] = (for {
+      a: String <- identifier
+      _: Unit <- token('@')
+      b: D <- intro
+    } yield D.fix(a, b)) ++
       (for {
-        _ <- token('=')
-        b <- exp
-        _ <- token(',')
-        c <- exp
-      } yield D.let(a, b, c)) ++
-        (for {
-          _ <- token("->")
-          b <- exp
-        } yield D.abstraction(a, b)) ++
-        (for {
-          _ <- token('@')
-          b <- exp
-        } yield D.fix(a, b))
-    }
+        a: String <- identifier
+        _: Unit <- token("->")
+        b: D <- intro
+      } yield D.abstraction(a, b)) ++
+      elim
 
-    def dOp(d: D): Parser3[Char, D] =
-      Parser3.point[Char, D](d) ++ (
-        token('\'')
-          .flatMap(_ => exp.map(D.unfold)) ++
-          token('.')
-            .flatMap(_ => integer.map(D.project(d, _))) ++
-          exp.map(D.application(d, _))
-      ).flatMap(dOp)
+    lazy val elim: Parser3[Char, D] = unit.flatMap(
+      (a: D) =>
+        token('\'').map((_: Unit) => D.unfold(a)) ++
+          integer.map(D.project(a, _)) ++
+          unit.map(D.application(a, _)) ++
+          Parser3.point(a)
+    )
 
-    def tOp: Parser3[Char, List[D]] =
-      exp.flatMap(
-        (h: D) =>
-          token('>')
-            .map((_: Unit) => List(h)) ++
-            token(',')
-              .flatMap(
-                (_: Unit) => tOp.map(h :: (_: List[D]))
-              )
-      )
+    lazy val unit: Parser3[Char, D] = (for {
+      _: Unit <- token('(')
+      a: D <- cut
+      _: Unit <- token(')')
+    } yield a) ++
+      token('<').flatMap(
+        (_: Unit) =>
+          token('>').map((_: Unit) => D.tuple(Nil)) ++
+            (for {
+              h: D <- cut
+              t: List[D] <- tail
+            } yield D.tuple(h :: t))
+      ) ++
+      identifier.map(D.variable)
 
-    lazy val exp: Parser3[Char, D] = {
-      identifier.flatMap(
-        (s: String) => dOp(D.variable(s)) ++ iOp(s)
-      ) ++ (for {
-        _: Unit <- token('(')
-        d: D <- exp
-        _: Unit <- token(')')
-      } yield d) ++ (for {
-        _: Unit <- token('<')
-        ds: List[D] <- (tOp ++
-          token('>')
-            .map((_: Unit) => List.empty[D]))
-      } yield D.tuple(ds))
-    }.memoized
+    lazy val tail: Parser3[Char, List[D]] =
+      token('>').map((_: Unit) => List.empty[D]) ++ (for {
+        _: Unit <- token(',')
+        h: D <- cut
+        t: List[D] <- tail
+      } yield h :: t)
 
-    exp
+    cut.memoized
   }
 
 }
