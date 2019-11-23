@@ -235,8 +235,7 @@ class ParseTests extends FunSpec {
     try {
       parser
         .run(Input.fromString(input))
-        .value
-        .map(x => info(String.valueOf(x)))
+        .map { case (_, x) => info(String.valueOf(x)) }
         .nonEmpty
     } catch {
       case e: Throwable =>
