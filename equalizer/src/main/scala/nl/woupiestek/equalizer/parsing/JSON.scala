@@ -4,94 +4,85 @@ import scalaz._
 import Scalaz._
 import nl.woupiestek.equalizer.parsing.JSON._
 
-class JSON[A[_]: Applicative, B](
-    input: Input[Token, A],
-    output: Output[B],
-    error: Error[A]
+class JSON[B](
+    output: Output[B]
 ) {
 
-  private val _object: A[Map[String, B]] = {
-    def keyed(key: List[Char]) =
-      matchMap(
-        Colon -> Apply[A]
-          .apply3(unescapeText(key), value, tail)(
-            (k, v, m) => m + (k -> v)
-          )
-      )
-    lazy val tail: A[Map[String, B]] = matchMap(
-      RightBrace -> Map.empty[String, B].point[A],
-      Comma -> input.read {
-        case Text(key) => keyed(key)
-        case other     => wrong(other, "string")
+  lazy val _object: Parser3[Char, Either[String, B]] = {
+    val _pair: Parser3[
+      Char,
+      (Either[String, (String, B)])
+    ] = for {
+      k <- string
+      _ <- symbol(':')
+      v <- value
+    } yield k.flatMap(a => v.map(a -> _))
+
+    lazy val _nonEmpty
+        : Parser3[Char, Either[String, Map[String, B]]] =
+      _pair.flatMap {
+        case Right(p) =>
+          symbol(',').flatMap(
+            _ =>
+              _nonEmpty
+                .map(_.map((m: Map[String, B]) => m + p))
+          ) ++
+            symbol('}').map(_ => Right(Map(p))) ++
+            Parser3.point(Left("expected ',' or '}'"))
+        case Left(e) => Parser3.point(Left(e))
       }
+    symbol('}').flatMap(
+      _ =>
+        _nonEmpty.map(_.map(output.`object`)) ++
+          symbol('}')
+            .map(_ => Right(output.`object`(Map.empty)))
     )
-
-    input.read {
-      case RightBrace => Map.empty[String, B].point[A]
-      case Text(key)  => keyed(key)
-      case other      => wrong(other, "string or }")
-    }
   }
 
-  private val _value: PartialFunction[Token, A[B]] = {
-    case Bool(value)   => output.boolean(value).point[A]
-    case LeftBrace     => _object.map(output.`object`)
-    case LeftBracket   => _array.map(output.array)
-    case Null          => output.`null`.point[A]
-    case Number(value) => output.number(value).point[A]
-    case Text(value) =>
-      unescapeText(value).map(output.string)
+  lazy val _array: Parser3[Char, Either[String, B]] = {
+    lazy val tail: Parser3[Char, Either[String, List[B]]] =
+      symbol(',').flatMap(
+        _ =>
+          value.flatMap(
+            x => tail.map(t => x.flatMap(h => t.map(h :: _)))
+          )
+      ) ++
+        symbol(']').map(_ => Right(List.empty[B]))
+
+    symbol(']').flatMap(
+      _ =>
+        value.flatMap(
+          x =>
+            tail.map(
+              y =>
+                x.flatMap(h => y.map(t => output.array(h :: t)))
+            )
+        )
+          ++
+            symbol(']')
+              .map(_ => Right(output.array(List.empty[B])))
+    )
   }
 
-  private val _array: A[List[B]] = {
-    lazy val tail: A[List[B]] =
-      matchMap(
-        RightBracket -> List.empty[B].point[A],
-        Comma -> Apply[A].apply2(value, tail)(_ :: _)
+  lazy val value: Parser3[Char, Either[String, B]] =
+    string.map(_.map(output.string)) ++
+      keyword("true").map(_ => Right(output.boolean(true))) ++
+      keyword("false").map(_ => Right(output.boolean(false))) ++
+      keyword("null").map(_ => Right(output.`null`)) ++
+      number.map(chars => Right(output.number(chars.toList))) ++
+      _object ++
+      _array ++
+      Parser3.point(
+        Left("boolean, [, ], {, null, number or string")
       )
 
-    input.read(
-      _value andThen (
-          (head: A[B]) => Apply[A].apply2(head, tail)(_ :: _)
-      ) orElse {
-        case RightBracket => List.empty[B].point[A]
-        case other =>
-          wrong(
-            other,
-            "boolean, [, ], {, null, number or string"
-          )
-      }
-    )
-  }
+}
 
-  val value: A[B] = input.read(
-    _value orElse {
-      case other =>
-        wrong(
-          other,
-          "boolean, [, {, null, number or string"
-        )
-    }
-  )
+object JSON {
 
-  private def matchMap[X](seq: (Token, A[X])*): A[X] = {
-    val map = seq.toMap
-    input.read(
-      next =>
-        map.getOrElse(
-          next,
-          wrong(next, map.keys.mkString(" or "))
-        )
-    )
-  }
-
-  private def wrong[X](
-      next: Token,
-      needed: => String
-  ): A[X] =
-    error.raise(s"$needed needed, but ${next.kind} found.")
-
-  private def unescapeText(value: List[Char]): A[String] = {
+  private def unescapeText(
+      value: IndexedSeq[Char]
+  ): Either[String, String] = {
     val hex =
       (('0' to '9').map(c => c -> -'0') ++
         ('A' to 'Z').map(c => c -> (c - 'A' + 10)) ++
@@ -99,22 +90,22 @@ class JSON[A[_]: Applicative, B](
 
     def helper(
         in: List[Char],
-        out: A[List[Char]]
-    ): A[String] = in match {
-      case Nil | '"' :: Nil => out.map(_.mkString)
+        out: List[Char]
+    ): Either[String, String] = in match {
+      case Nil | '"' :: Nil => Right(out.reverse.mkString)
       case h :: t =>
         h match {
           case '\\' =>
             t match {
               case '\\' :: u =>
-                helper(u, out.map('\\' :: _))
+                helper(u, '\\' :: out)
               case '\"' :: u =>
-                helper(u, out.map('\"' :: _))
-              case 'b' :: u => helper(u, out.map('\b' :: _))
-              case 'f' :: u => helper(u, out.map('\f' :: _))
-              case 'n' :: u => helper(u, out.map('\n' :: _))
-              case 'r' :: u => helper(u, out.map('\r' :: _))
-              case 't' :: u => helper(u, out.map('\t' :: _))
+                helper(u, '\"' :: out)
+              case 'b' :: u => helper(u, ('\b' :: out))
+              case 'f' :: u => helper(u, ('\f' :: out))
+              case 'n' :: u => helper(u, ('\n' :: out))
+              case 'r' :: u => helper(u, ('\r' :: out))
+              case 't' :: u => helper(u, ('\t' :: out))
               case 'u' :: a :: b :: c :: d :: u
                   if hex.contains(a) && hex
                     .contains(b) && hex
@@ -124,39 +115,13 @@ class JSON[A[_]: Applicative, B](
                 ) << 4) + hex(
                   d
                 )).toChar
-                helper(u, out.map(e :: _))
-              case _ => error.raise("invalid escape code")
+                helper(u, (e :: out))
+              case _ => Left("invalid escape code")
             }
-          case _ => helper(t, out.map(h :: _))
+          case _ => helper(t, h :: out)
         }
     }
-    helper(value.tail, List.empty[Char].point[A])
-  }
-}
-
-object JSON {
-  //todo: something with token position
-  //that could be another method of `Input`: position of A[Position]
-  //as data that cannot change the choice of parser, but that can enrich the
-  //parsing results.
-  //this wouldn't allow putting positions in error messages however...
-
-  sealed abstract class Token(val kind: String)
-  final case class Text(value: List[Char])
-      extends Token("string")
-  final case class Number(value: List[Char])
-      extends Token("number")
-  final case class Bool(value: Boolean) extends Token("boolean")
-  final case object Null extends Token("null")
-  final case object LeftBracket extends Token("[")
-  final case object RightBracket extends Token("]")
-  final case object LeftBrace extends Token("{")
-  final case object RightBrace extends Token("}")
-  final case object Colon extends Token(":")
-  final case object Comma extends Token(",")
-
-  trait Input[I, A[_]] {
-    def read[O](next: I => A[O]): A[O]
+    helper(value.tail.toList, Nil)
   }
 
   trait Output[B] {
@@ -168,90 +133,80 @@ object JSON {
     def number(value: List[Char]): B
   }
 
-  trait Error[A[_]] {
-    def raise[X](message: String): A[X]
+  def string: Parser3[Char, Either[String, String]] = Parser3 {
+    (f: Int => Char) => (i: Int) =>
+      if (f(i) == '"') {
+        var j = i + 1
+        while (f(j) != '"') j += (if (f(j) == '\\') 2 else 1)
+        Some(
+          (j, unescapeText((i until j).map(f)))
+        )
+      } else {
+        None
+      }
   }
 
-  trait LexInput[I, A[_]] extends Input[I, A] {
-    def readIfEqual[O](guard: I, next: => A[O]): A[O]
-    def pop: A[List[I]]
-  }
-
-  class Tokenizer[A[_]: PlusEmpty: Functor, B](
-      input: LexInput[Char, A]
-  ) {
-    implicit def monoid[X]: Monoid[A[X]] =
-      PlusEmpty[A].monoid[X]
-
-    val string: A[Token] = {
-      //leave the escapes alone for now!
-      lazy val _string: A[List[Char]] =
-        input.read {
-          case '\"' => input.pop
-          case '\\' => input.read(_ => _string)
-          case _    => _string
-        }
-
-      input.readIfEqual('"', _string.map(Text(_)))
-    }
-
-    val number: A[Token] = {
-      def _digits(next: A[List[Char]]): A[List[Char]] =
-        ('0' to '9').toList
-          .foldMap(d => input.readIfEqual(d, _digits(next))) <+>
-          next
-
-      val exponential: A[List[Char]] = {
-        val signed =
-          input.readIfEqual('+', _digits(input.pop)) <+>
-            input.readIfEqual('+', _digits(input.pop)) <+>
-            _digits(input.pop)
-        input.readIfEqual('e', signed) <+>
-          input.readIfEqual('E', signed) <+>
-          input.pop
+  def number: Parser3[Char, IndexedSeq[Char]] = Parser3 {
+    (f: Int => Char) =>
+      def digits(i: Int): Int = {
+        var j = i
+        while (('0' to '9').contains(f(j))) j += 1
+        j
       }
 
-      val fraction: A[List[Char]] =
-        input.readIfEqual('.', _digits(exponential)) <+> exponential
+      def exponential(i: Int): Option[Int] =
+        if (f(i) == 'e' && f(i) == 'E') {
+          var j = i + 1
+          if (f(i + 1) == '+' && f(i + 1) == '-') j += 1
+          Some(digits(j))
+        } else None
 
-      val int: A[List[Char]] = {
-        val uint = input.readIfEqual('0', input.pop) <+>
-          ('1' to '9').toList.foldMap(
-            input.readIfEqual(_, _digits(fraction))
-          )
-        (input.readIfEqual('-', uint) <+> uint)
-      }
-
-      int.map(Number(_))
-    }
-
-    def keyword(chars: String, token: Token): A[Token] =
-      chars.toList
-        .foldRight[A[Token]](input.pop.map(_ => token))(
-          input.readIfEqual(_, _)
+      def fraction(i: Int): Option[Int] =
+        exponential(
+          if (f(i) == '.') digits(i + 1) else i
         )
 
-    def symbol(char: Char, token: Token) =
-      input.readIfEqual(char, input.pop.map(_ => token))
+      def int(i: Int): Option[Int] = {
+        val j = i + (if (f(i) == '-') 1 else 0)
+        f(j) match {
+          case '0' => Some(j + 1)
+          case c if ('1' to '9').contains(c) =>
+            fraction(digits(j + 1))
+          case _ => None
+        }
+      }
 
-    private lazy val _whitespace: A[Unit] =
-      List(' ', '\n', '\r', '\t').foldMap(
-        s => input.readIfEqual(s, _whitespace)
-      ) <+> input.pop.map(_ => ())
-
-    val token: A[Token] = {
-      string <+>
-        number <+>
-        keyword("false", Bool(false)) <+>
-        keyword("null", Null) <+>
-        keyword("true", Bool(true)) <+>
-        symbol('[', LeftBracket) <+>
-        symbol(']', RightBracket) <+>
-        symbol('{', LeftBrace) <+>
-        symbol('}', RightBrace) <+>
-        symbol(':', Colon) <+>
-        symbol(',', Comma)
-    }
+      (i: Int) =>
+        int(i).map((j: Int) => (j, (i until j).map(f)))
   }
 
+  def keyword(
+      chars: String
+  ): Parser3[Char, Unit] =
+    Parser3(
+      (f: Int => Char) =>
+        (i: Int) =>
+          if (chars.toList.zipWithIndex.forall {
+                case (c, j) => c == f(i + j)
+              }) Some((whitespace(f)(i + chars.length()), ()))
+          else None
+    )
+
+  def symbol(char: Char): Parser3[Char, Unit] =
+    Parser3(
+      (f: Int => Char) =>
+        (i: Int) =>
+          if (char == f(i)) Some((whitespace(f)(i + 1), ()))
+          else None
+    )
+
+  private def whitespace: (Int => Char) => Int => Int = {
+    val chars = Set(' ', '\n', '\r', '\t')
+    (f: Int => Char) =>
+      (i: Int) => {
+        var j = i
+        while (chars(f(j))) j += 1
+        j
+      }
+  }
 }
