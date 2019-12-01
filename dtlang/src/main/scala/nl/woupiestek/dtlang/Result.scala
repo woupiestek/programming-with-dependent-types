@@ -9,22 +9,26 @@ case class Result[R, E, A](
   def flatMap[B](
       f: A => Result[R, E, B]
   ): Result[R, E, B] =
-    Result(
-      (r, i) =>
-        run(r, i) flatMap {
-          case (Right(a), j) => f(a).run(r, j)
-          case (Left(e), j)  => Some((Left(e), j))
-        }
-    )
+    follow {
+      case Right(a) => f(a)
+      case Left(e)  => fail(e)
+    }
 
   def recover[B](
       f: E => Result[R, E, A]
   ): Result[R, E, A] =
+    follow {
+      case Right(a) => point(a)
+      case Left(e)  => f(e)
+    }
+
+  def follow[B](
+      f: Either[E, A] => Result[R, E, B]
+  ): Result[R, E, B] =
     Result(
       (r, i) =>
         run(r, i) flatMap {
-          case (Right(a), j) => Some((Right(a), j))
-          case (Left(e), j)  => f(e).run(r, j)
+          case (e, j) => f(e).run(r, j)
         }
     )
 
@@ -66,6 +70,7 @@ case class Result[R, E, A](
         case (e, k) => (e, k + i)
       }
   )
+
 }
 
 object Result {

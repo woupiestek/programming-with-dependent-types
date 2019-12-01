@@ -1,7 +1,5 @@
 package nl.woupiestek.dtlang
 
-import Result._
-
 object Grammar {
 
   def whitespace: Result[(Int => Char), Nothing, Unit] =
@@ -37,38 +35,50 @@ object Grammar {
       Some((Right((i to j).map(r).mkString), k))
     })
 
-  def expression: Result[(Int => Char), Nothing, Unit] = {
-    lazy val cut: Result[(Int => Char), Nothing, Unit] =
+  trait Expression[E] {
+    def let(x: String, y: E, z: E): E
+    def abst(x: String, y: E): E
+    def appl(x: E, y: List[E]): E
+    def vari(x: String): E
+  }
+
+  def expression[E](
+      E: Expression[E]
+  ): Result[(Int => Char), Nothing, E] = {
+    lazy val cut: Result[(Int => Char), Nothing, E] =
       (for {
         _ <- token("[")
-        _ <- identifier
+        a <- identifier
         _ <- token("=")
-        _ <- cut
+        b <- cut
         _ <- token("]")
-        _ <- cut
-      } yield ()) ++ intro
+        c <- cut
+      } yield E.let(a, b, c)) ++ intro
 
-    lazy val intro: Result[(Int => Char), Nothing, Unit] =
+    lazy val intro: Result[(Int => Char), Nothing, E] =
       (for {
-        _ <- identifier
+        a <- identifier
         _ <- token("->")
-        _ <- cut
-      } yield ()) ++ elim
+        b <- cut
+      } yield E.abst(a, b)) ++ elim.map {
+        case (c, d) => E.appl(c, d)
+      }
 
-    lazy val elim: Result[(Int => Char), Nothing, Unit] =
+    lazy val elim
+        : Result[(Int => Char), Nothing, (E, List[E])] =
       for {
-        _ <- unit
-        _ <- elim ++ unit
-      } yield ()
+        a <- unit
+        b <- elim.map { case (c, d) => c :: d } ++
+          Result.point(Nil)
+      } yield (a, b)
 
-    lazy val unit: Result[(Int => Char), Nothing, Unit] =
+    lazy val unit: Result[(Int => Char), Nothing, E] =
       (for {
         _ <- token("(")
-        _ <- cut
+        a <- cut
         _ <- token(")")
-      } yield ()) ++ identifier.map(_ => ())
+      } yield a) ++ identifier.map(E.vari)
 
     cut
   }
-
 }
