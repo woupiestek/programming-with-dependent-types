@@ -81,4 +81,84 @@ object Grammar {
 
     cut
   }
+
+  sealed abstract class Type
+  case class TypeOf(position: Int) extends Type
+  case class Arrow(tail: Type, head: Type) extends Type
+
+  case class Sequent(
+      equations: List[(Type, Type)],
+      context: Map[String, Type],
+      value: Type
+  )
+
+  def types: Result[(Int => Char), Nothing, Sequent] = {
+    lazy val cut: Result[(Int => Char), Nothing, Sequent] =
+      (for {
+        _ <- token("[")
+        a <- identifier
+        _ <- token("=")
+        b <- cut
+        _ <- token("]")
+        c <- cut
+      } yield
+        Sequent(
+          b.equations ++ c.equations ++ c.context
+            .get(a)
+            .map((_, b.value)),
+          b.context ++ (c.context - a),
+          c.value
+        )) ++ intro
+
+    lazy val intro: Result[(Int => Char), Nothing, Sequent] =
+      (for {
+        a <- Result.position[(Int => Char), Nothing]
+        b <- identifier
+        _ <- token("->")
+        d <- cut
+      } yield {
+        val area = TypeOf(a)
+        Sequent(
+          d.equations ++ d.context.get(b).map((area, _)),
+          d.context - b,
+          Arrow(area, d.value)
+        )
+      }) ++ elim.map {
+        case (c, d) =>
+          val equations = c.equations ++ d.flatMap(_.equations)
+          val context = c.context ++ d.flatMap(_.context)
+          val value = d.foldLeft(c.value)(
+            (typ, seq) => Arrow(seq.value, typ)
+          )
+          Sequent(equations, context, value)
+      }
+
+    lazy val elim: Result[
+      (Int => Char),
+      Nothing,
+      (Sequent, List[Sequent])
+    ] =
+      for {
+        a <- unit
+        c <- elim.map { case (c, d) => c :: d } ++
+          Result.point(Nil)
+      } yield (a, c)
+
+    lazy val unit: Result[(Int => Char), Nothing, Sequent] =
+      (for {
+        _ <- token("(")
+        a <- cut
+        _ <- token(")")
+      } yield a) ++
+        (for {
+          a <- Result.position[(Int => Char), Nothing]
+          b <- identifier
+        } yield {
+          val area = TypeOf(a)
+          Sequent(Nil, Map(b -> area), area)
+        })
+
+    cut
+  }
+
 }
