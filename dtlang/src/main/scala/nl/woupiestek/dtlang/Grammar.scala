@@ -37,9 +37,9 @@ object Grammar {
 
   trait Expression[E] {
     def let(x: String, y: E, z: E): E
-    def abst(x: String, y: E): E
-    def appl(x: E, y: List[E]): E
-    def vari(x: String): E
+    def abst(x: Int, y: String, z: E): E
+    def appl(x: E, y: E): E
+    def vari(x: Int, y: String): E
   }
 
   def expression[E](
@@ -57,11 +57,12 @@ object Grammar {
 
     lazy val intro: Result[(Int => Char), Nothing, E] =
       (for {
-        a <- identifier
+        a <- Result.position[(Int => Char), Nothing]
+        b <- identifier
         _ <- token("->")
-        b <- cut
-      } yield E.abst(a, b)) ++ elim.map {
-        case (c, d) => E.appl(c, d)
+        c <- cut
+      } yield E.abst(a, b, c)) ++ elim.map {
+        case (c, d) => d.foldLeft(c)(E.appl)
       }
 
     lazy val elim
@@ -77,7 +78,11 @@ object Grammar {
         _ <- token("(")
         a <- cut
         _ <- token(")")
-      } yield a) ++ identifier.map(E.vari)
+      } yield a) ++
+        (for {
+          a <- Result.position[(Int => Char), Nothing]
+          b <- identifier
+        } yield E.vari(a, b))
 
     cut
   }
@@ -85,45 +90,6 @@ object Grammar {
   sealed abstract class Type
   case class TypeOf(position: Int) extends Type
   case class Arrow(tail: Type, head: Type) extends Type
-
-  case class Sequent(
-      model: Model,
-      context: Map[String, Int],
-      value: Type
-  ) {
-    def weaken(a: String, b: Int) =
-      context.get(a) match {
-        case None    => copy(context = context + (a -> b))
-        case Some(c) => copy(model = model.add(c, TypeOf(b)))
-      }
-  }
-
-  def let(a: String, b: Sequent, c: Sequent): Sequent = {
-    val model1 = b.model.addAll(c.model)
-    (c.context - a).foldLeft(
-      Sequent(
-        c.context
-          .get(a)
-          .map(model1.add(_, b.value))
-          .getOrElse(model1),
-        b.context,
-        c.value
-      )
-    ) {
-      case (d, (e, f)) => d.weaken(e, f)
-    }
-  }
-
-  def appl(c: Sequent, d: Sequent): Sequent =
-    c.context.foldLeft(
-      Sequent(
-        c.model.addAll(d.model),
-        c.context,
-        Arrow(d.value, c.value)
-      )
-    ) {
-      case (seq, (e, f)) => seq.weaken(e, f)
-    }
 
   case class Model(types: Map[Int, Type] = Map.empty)
       extends AnyVal {
@@ -152,24 +118,22 @@ object Grammar {
     }
   }
 
-  def types: Result[(Int => Char), Nothing, Sequent] = {
-    lazy val cut: Result[(Int => Char), Nothing, Sequent] =
-      (for {
-        _ <- token("[")
-        a <- identifier
-        _ <- token("=")
-        b <- cut
-        _ <- token("]")
-        c <- cut
-      } yield let(a, b, c)) ++ intro
+  case class Sequent(
+      model: Model,
+      context: Map[String, Int],
+      value: Type
+  ) {
 
-    lazy val intro: Result[(Int => Char), Nothing, Sequent] =
-      (for {
-        a <- Result.position[(Int => Char), Nothing]
-        b <- identifier
-        _ <- token("->")
-        d <- cut
-      } yield {
+    def weaken(a: String, b: Int) =
+      context.get(a) match {
+        case None    => copy(context = context + (a -> b))
+        case Some(c) => copy(model = model.add(c, TypeOf(b)))
+      }
+  }
+
+  val asExpression: Expression[Sequent] =
+    new Expression[Sequent] {
+      def abst(a: Int, b: String, d: Sequent): Sequent = {
         val area = TypeOf(a)
         Sequent(
           d.context
@@ -179,31 +143,36 @@ object Grammar {
           d.context - b,
           Arrow(area, d.value)
         )
-      }) ++ elim.map { case (c, d) => d.foldLeft(c)(appl) }
+      }
 
-    lazy val elim: Result[
-      (Int => Char),
-      Nothing,
-      (Sequent, List[Sequent])
-    ] =
-      for {
-        a <- unit
-        c <- elim.map { case (c, d) => c :: d } ++
-          Result.point(Nil)
-      } yield (a, c)
+      def appl(c: Sequent, d: Sequent): Sequent =
+        c.context.foldLeft(
+          Sequent(
+            c.model.addAll(d.model),
+            c.context,
+            Arrow(d.value, c.value)
+          )
+        ) {
+          case (seq, (e, f)) => seq.weaken(e, f)
+        }
 
-    lazy val unit: Result[(Int => Char), Nothing, Sequent] =
-      (for {
-        _ <- token("(")
-        a <- cut
-        _ <- token(")")
-      } yield a) ++
-        (for {
-          a <- Result.position[(Int => Char), Nothing]
-          b <- identifier
-        } yield Sequent(Model(), Map(b -> a), TypeOf(a)))
+      def let(a: String, b: Sequent, c: Sequent): Sequent = {
+        val model1 = b.model.addAll(c.model)
+        (c.context - a).foldLeft(
+          Sequent(
+            c.context
+              .get(a)
+              .map(model1.add(_, b.value))
+              .getOrElse(model1),
+            b.context,
+            c.value
+          )
+        ) {
+          case (d, (e, f)) => d.weaken(e, f)
+        }
+      }
 
-    cut
-  }
-
+      def vari(a: Int, b: String): Sequent =
+        Sequent(Model(), Map(b -> a), TypeOf(a))
+    }
 }

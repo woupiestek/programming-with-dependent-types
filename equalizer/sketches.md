@@ -49,7 +49,7 @@ being folded or unfolded explicitly. This ambiguity is undesirable.
 ## types explored again
 Function types are strictly necessary. Distinct cartesian products are really
 nice to have, and possibly not optional in a language that isn't generic. 
-Then the recrusive types are supposed to solve a lot of problem generically,
+Then the recursive types are supposed to solve a lot of problem generically,
 rather than having to come up with separate solutions every time.
 ```
 Gamma, x: A |- M: B
