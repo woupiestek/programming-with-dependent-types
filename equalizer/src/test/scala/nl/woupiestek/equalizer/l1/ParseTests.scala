@@ -76,7 +76,8 @@ class ParseTests extends FunSpec {
           "x = y; x",
           "x -> x",
           "x @ x",
-          "x -> x x"
+          "x -> x x",
+          "f -> (x -> f(x x))(x -> f(x x))"
         )
       val results =
         testStrings.filterNot(
@@ -139,7 +140,8 @@ class ParseTests extends FunSpec {
           "x = y; x",
           "x -> x",
           "x @ x",
-          "x -> x x"
+          "x -> x x",
+          "f -> (x -> f(x x))(x -> f(x x))"
         )
       val results =
         testStrings.filterNot(
@@ -212,7 +214,8 @@ class ParseTests extends FunSpec {
           "x = y; x",
           "x -> x",
           "x @ x",
-          "x -> x x"
+          "x -> x x",
+          "f -> (x -> f(x x))(x -> f(x x))"
         )
       val results =
         testStrings.filterNot(
@@ -288,7 +291,8 @@ class ParseTests extends FunSpec {
           "x = y; x",
           "x -> x",
           "x @ x",
-          "x -> x x"
+          "x -> x x",
+          "f -> (x -> f(x x))(x -> f(x x))"
         )
       val results =
         testStrings.filterNot(

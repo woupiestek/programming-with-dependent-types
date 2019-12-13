@@ -1,30 +1,15 @@
 package nl.woupiestek.dtlang
 
 import Result._
+import scala.collection.mutable
 
-case class Result[R, E, A](
-    run: (R, Int) => Option[(Either[E, A], Int)]
+case class Result[R, A](
+    run: (R, Int) => Option[(A, Int)]
 ) extends AnyVal {
 
   def flatMap[B](
-      f: A => Result[R, E, B]
-  ): Result[R, E, B] =
-    follow {
-      case Right(a) => f(a)
-      case Left(e)  => fail(e)
-    }
-
-  def recover[B](
-      f: E => Result[R, E, A]
-  ): Result[R, E, A] =
-    follow {
-      case Right(a) => point(a)
-      case Left(e)  => f(e)
-    }
-
-  def follow[B](
-      f: Either[E, A] => Result[R, E, B]
-  ): Result[R, E, B] =
+      f: A => Result[R, B]
+  ): Result[R, B] =
     Result(
       (r, i) =>
         run(r, i) flatMap {
@@ -32,58 +17,79 @@ case class Result[R, E, A](
         }
     )
 
-  def map[B](f: A => B): Result[R, E, B] =
+  def map[B](f: A => B): Result[R, B] =
     Result(
       (r, i) =>
         run(r, i) map {
-          case (v, j) => (v.map(f), j)
+          case (v, j) => (f(v), j)
         }
     )
 
-  def ap[B](f: Result[R, E, A => B]): Result[R, E, B] =
+  def ap[B](f: Result[R, A => B]): Result[R, B] =
     Result(
       (r, i) =>
         run(r, i) flatMap {
           case (b, j) =>
             f.run(r, j) map {
-              case (g, k) => (b.flatMap(c => g.map(_(c))), k)
+              case (g, k) => (g(b), k)
             }
         }
     )
 
-  def **[B](f: Result[R, E, A => B]): Result[R, E, B] = ap(f)
+  def **[B](f: Result[R, A => B]): Result[R, B] = ap(f)
 
-  def filter(f: A => Boolean): Result[R, E, A] =
-    flatMap(a => if (f(a)) point(a) else empty[R, E, A])
+  def filter(f: A => Boolean): Result[R, A] =
+    flatMap(a => if (f(a)) point(a) else empty[R, A])
 
-  def plus(p: Result[R, E, A]): Result[R, E, A] =
+  def plus(p: Result[R, A]): Result[R, A] =
     Result((r, i) => run(r, i) orElse p.run(r, i))
 
-  def ++(p: Result[R, E, A]) = plus(p)
+  def ++(p: Result[R, A]) = plus(p)
 
-  def local[S](f: S => R): Result[S, E, A] =
+  def local[S](f: S => R): Result[S, A] =
     Result((s, i) => run(f(s), i))
 
-  def move(i: Int): Result[R, E, A] = Result(
+  def move(i: Int): Result[R, A] = Result(
     (r, j) =>
       run(r, j).map {
         case (e, k) => (e, k + i)
       }
   )
 
+  def memoized: Result[R, A] = {
+    val visited: mutable.Set[(R, Int)] =
+      new mutable.HashSet[(R, Int)]
+    val memo: mutable.Map[(R, Int), (A, Int)] =
+      new mutable.HashMap()
+
+    def runMemoized(
+        r: R,
+        i: Int
+    ): Option[(A, Int)] = {
+      if (visited((r, i))) {
+        memo.get((r, i))
+      } else {
+        visited.add((r, i))
+        val o = run(r, i)
+        o.foreach {
+          case (a, j) => memo.put((r, i), (a, j))
+        }
+        o
+      }
+    }
+    Result(runMemoized)
+  }
 }
 
 object Result {
-  def empty[R, E, A]: Result[R, E, A] =
+  def empty[R, A]: Result[R, A] =
     Result((_: R, _) => None)
-  def point[R, E, A](a: A): Result[R, E, A] =
-    Result[R, E, A]((_, i) => Some((Right(a), i)))
-  def fail[R, E, A](e: E): Result[R, E, A] =
-    Result[R, E, A]((_, i) => Some((Left(e), i)))
-  def context[R, E]: Result[R, E, R] =
-    Result((r: R, i) => Some((Right(r), i)))
-  def read[R, E, A](f: R => A): Result[R, E, A] =
-    Result((r: R, i) => Some((Right(f(r)), i)))
-  def position[R, E]: Result[R, E, Int] =
-    Result((_: R, i) => Some((Right(i), i)))
+  def point[R, A](a: A): Result[R, A] =
+    Result[R, A]((_, i) => Some((a, i)))
+  def context[R, E]: Result[R, R] =
+    Result((r: R, i) => Some((r, i)))
+  def read[R, A](f: R => A): Result[R, A] =
+    Result((r: R, i) => Some((f(r), i)))
+  def position[R, E]: Result[R, Int] =
+    Result((_: R, i) => Some((i, i)))
 }
