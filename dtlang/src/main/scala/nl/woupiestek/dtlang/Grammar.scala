@@ -46,9 +46,11 @@ object Grammar {
             || ('A' <= c && c <= 'Z'),
         i
       )
-      if(j == i) {None} else {
-      val k = advance(r, Character.isWhitespace, j)
-      Some(((i until j).map(r).mkString, k))
+      if (j == i) {
+        None
+      } else {
+        val k = advance(r, Character.isWhitespace, j)
+        Some(((i until j).map(r).mkString, k))
       }
     }).memoized
 
@@ -115,8 +117,8 @@ object Grammar {
       def abst(
           y: String,
           z: Int => (Int, Model)
-      ): Int => (Int, Model) = {
-        (i: Int) => {
+      ): Int => (Int, Model) = { (i: Int) =>
+        {
           val (j, m) = z(i)
           val types = solve(
             (TypeOf(j + 1), Arrow(TypeOf(j), TypeOf(j - 1))) ::
@@ -134,8 +136,8 @@ object Grammar {
       def appl(
           y: Int => (Int, Model),
           z: Int => (Int, Model)
-      ): Int => (Int, Model) = {
-        (i: Int) => {
+      ): Int => (Int, Model) = { (i: Int) =>
+        {
           val (j, m) = y(i)
           val (k, n) = z(j)
           val types = solve(
@@ -157,8 +159,8 @@ object Grammar {
           x: String,
           y: Int => (Int, Model),
           z: Int => (Int, Model)
-      ): Int => (Int, Model) = {
-        (i: Int) => {
+      ): Int => (Int, Model) = { (i: Int) =>
+        {
           val (j, m) = y(i)
           val (k, n) = z(j)
           val equations: List[(Type, Type)] = m.types.toList
@@ -175,8 +177,8 @@ object Grammar {
         }
       }
 
-      def vari(x: String): Int => (Int, Model) = {
-        i => (i + 1, Model(Map.empty, Map(x -> i)))
+      def vari(x: String): Int => (Int, Model) = { i =>
+        (i + 1, Model(Map.empty, Map(x -> i)))
       }
     }
 
@@ -210,24 +212,85 @@ object Grammar {
   }
 
   //add parenteses based on context precedence...
-  val asString: Expression[Int => String] = new Expression[Int => String] {
-    def abst(y: String,z: Int => String): Int => String = {
-      val w = s"$y -> ${z(2)}"
-      i => if(i >= 2) w else s"($w)"
-    }
-    def appl(y: Int => String, z: Int => String): Int => String = {      
-      val w = s"${y(1)}${z(0)}"
-      i => if(i >= 1) w else s"($w)"
-    }
-  
-    def let(x: String,y: Int => String,z: Int => String): Int => String = 
-      {
-        val w = s"[$x = ${y(3)}]${z(3)}"
-        i => if(i == 3) w else s"($w)"
+  val asString: Expression[Int => String] =
+    new Expression[Int => String] {
+      def abst(y: String, z: Int => String): Int => String = {
+        val w = s"$y -> ${z(2)}"
+        i => if (i >= 2) w else s"($w)"
       }
-    def vari(x: String): Int => String = i => if(i > 0) x else " "+x
-  }
+      def appl(
+          y: Int => String,
+          z: Int => String
+      ): Int => String = {
+        val w = s"${y(1)}${z(0)}"
+        i => if (i >= 1) w else s"($w)"
+      }
 
+      def let(
+          x: String,
+          y: Int => String,
+          z: Int => String
+      ): Int => String = {
+        val w = s"[$x = ${y(3)}]${z(3)}"
+        i => if (i == 3) w else s"($w)"
+      }
+      def vari(x: String): Int => String =
+        i => if (i > 0) x else " " + x
+    }
 
+  case class IntersectionModel(
+      arrows: Set[(Int, Set[Int], Int)],
+      context: Set[(String, Int)]
+  )
 
+  val asIntersection
+      : Expression[Int => (IntersectionModel, Int)] =
+    new Expression[Int => (IntersectionModel, Int)] {
+      def abst(
+          y: String,
+          z: Int => (IntersectionModel, Int)
+      ): Int => (IntersectionModel, Int) = { (i: Int) =>
+        {
+          val (m, j) = z(i)
+          val a =
+            m.arrows + ((j, m.context.collect {
+              case (s, k) if s == y => k
+            }, j - 1))
+          val b = m.context.filterNot(_._1 == y)
+          (IntersectionModel(a, b), j + 1)
+        }
+      }
+
+      def appl(
+          y: Int => (IntersectionModel, Int),
+          z: Int => (IntersectionModel, Int)
+      ): Int => (IntersectionModel, Int) = { (i: Int) =>
+        {
+          val (m, j) = y(i)
+          val (n, k) = z(j)
+          val a = m.arrows ++ n.arrows + (
+            (
+              j - 1,
+              Set(k - 1),
+              k
+            )
+          )
+          (IntersectionModel(a, m.context ++ n.context), k + 1)
+        }
+      }
+
+      def let(
+          x: String,
+          y: Int => (IntersectionModel, Int),
+          z: Int => (IntersectionModel, Int)
+      ): Int => (IntersectionModel, Int) = 
+        appl(abst(x,z), y)
+
+      def vari(x: String): Int => (IntersectionModel, Int) = {
+        (i: Int) =>
+          {
+            (IntersectionModel(Set.empty, Set((x, i))), i + 1)
+          }
+      }
+    }
 }

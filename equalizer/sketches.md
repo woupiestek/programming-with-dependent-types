@@ -1,4 +1,263 @@
 
+# 2/3/20
+
+## Thinking from the tree
+
+The best opportunities for parsing in parallel are searching
+through the space of all abstract syntax trees. Considering what
+the nodes would look like, I get something like this: 
+
+```json
+{
+  "product": {
+    "times": "${sum} (\\* ${sum})*"
+  },
+  "sum": {
+    "plus": "${type2} (\\+ ${type2})*"
+  },
+  "number": {
+    "digits": "[0-9]+",    
+  }
+}
+```
+
+Names for the nodes in the grammar. Some support for repeaters
+so the nodes can have arrays of children instead of single
+elements, though this doesn't actually add any power. The types
+should be optional. On the other hand, perhaps the repeaters
+should apply to the types, with an eye on producting trees 
+efficiently.
+
+```json
+{
+  "parenthetical": {
+    "times": "\\(${list}\\)"
+  },
+  "list": {
+    "empty": "",
+    "one": "${elt}",
+    "more": "${elt},${list}" 
+  },
+}
+```
+Of course, from here on the type can be even more complex.
+
+The core of the idea is that the space of ASTs is a fibred 
+W-type for a finite communative triangle. I guess special 
+support would only be needed for the non final variants,
+in particular to have infinite lists of rules.
+
+That rules are sequences of characters and holes, and that holes
+and rules can be connected by types to simplify searching the 
+trees. 
+
+Another twist would be to take advantage of operations on the
+character set: mainly having types that represent ranges of
+characters.
+
+For the parallel search, the crucial thing is the ordering of
+the rules: each thread just consider the higher priority paths
+that have not yet been ruled out.
+
+# 21/12/19
+Simplified oo/js: everything is an object and in case of doubt
+the empty object is returned. Well, methods are in their own 
+category and need conversion. 
+
+## compiling to jvm with asm
+The hard part is generating the methods.
+
+As an exercise, just do a functional version of
+standard methods. i.e. `if` and `while` expressions,
+perhaps `try` expressions as well, whatever that means.
+Some other control structures.
+
+- `if B F G` ~ pick one of two options
+- `while B F X ~ if (B X) (while B F (F X)) X`
+- `try F G X` ~ think of 'attempt'
+
+
+# 19/12/19
+The `the` solution may make sense when dealing with data,
+but for the functions operating on the data it makes much less
+sense to be referred to by their type. Especially if lots of 
+functions operate on a limited number of data types.
+
+Its that it doesn't make much sense to introduce aliases
+for `Double -> Double` for each function in a mathematics
+library, even if those aliases are free.
+
+Perhaps it is not about types but about comple time information.
+So static functions might as well
+
+`type Square = Double -> Double`
+
+Back to inference, somewhat:
+`%Square = %Double * %Double <- Double`
+That is assuming this is statement is meant to define a type 
+and a value at the same time.
+
+Maybe I should give it a shot: just naming types, never values.
+
+# 18/12/19
+Go the other way with a language where variables are eliminated 
+in favor of types. It could work with a `the` operator, that
+refers to the value of a type in the context. That should always
+work as long as there is one element of each type.
+
+`[ % A | M =% A; N | M N | A -> M ]` 
+
+# 16/12/19
+What enables type inference is that types are patterens that
+can be matched. With the product-projection example, I run into
+a situation where no neat pattern seem to be formed, but it
+doesn't have to be that way.
+
+I am thinking of row polymorphism now. A 'pattern' like
+`{ a: t }` can match a pattern like `{ b: u }`, because of 
+implicit row variables: `{ a: t } ~= { a: t, R }` and
+`{ b: u } ~= { b: u, S }`. 
+
+## Further analysis
+Injectives are closed under products and transfinite composition
+in one direction. My concern is that such types cannot be
+reconstructed for expressions that have no explicit type 
+annotations. Now I have several solutions:
+
+- Come up with a language that has type annotations.
+  I thought I was working on a kind of compile time script where
+  type annotations would be explicit assertions, however.
+- Find a solution with intersection types
+  This solution simply collects a number of constraints, and
+  only finds a type mistmatch if these constraints cannot be
+  unified.
+- Find a solution with row types. A refined version of the above
+  What does that buy us?
+- Baked in recursive product types? This one seems by far the 
+  simplest...
+
+The idea was that the dependent types and programs form a
+category with enough injectives. The subcategory of injectives 
+doesn't need to be closed under all the structure of the
+dependently typed supercategory. The products and transfinite
+compositions should be there, and to support local cartesian
+closure, the category of injective should at least be 
+cartesian closed. What more do we ask? Mostly just structure to
+help to get the other types back from just the injectives.
+Weak colimits could be part of that mix, just like weak limits
+are for projectives.
+
+## backing in recursives
+Mimic Javascript and have a type `any` which is a sum of 
+other types, like `string`, `integer`, `object = string -> any`,
+`array = integer -> any` and `function = any -> any`.
+Maybe it should be a product instead of a sum...
+Actually `any ~ type -> any` wouldn't work, would it?
+
+We can introduce a universal type `any` and let the others be
+retracts of this type. I cannot tell what happens to the
+functions whose types we derived more carefully however.
+
+## the type ocean
+Let there be a sum of all types `any`. There is an inclusion
+`t -> any` from any concrete type `t` that adds a type tag to
+each label. As huge sum type, the elimination rule is quite
+epic, since it has to offer solutions for each type tag it 
+finds. What could help here, is pattern matching on types, to 
+cover large numbers of options easily. Another helpful aspect is
+that every type is injective, so there is a way to extend
+partial functions to the whole of every type.
+
+It makes sense to define functions from the any type using
+switches that match types:
+
+- `[x0: p0 = M] N0 || [x1: p1 = M] N1 || ...`
+- `M = x0: p0 -> N0 || x1: p1 -> N1 ||  ...`
+- `{ x0: p0 -> N0, x1: p1 -> N1, ... }`
+
+If we go here, then maybe it makes sense to add the entire
+universe `typeOf: any -> type`.
+
+## acknowlegde product differences
+Records can be eliminated through destructuring. This
+can provide a precise match between keys, and make products safe
+to work with. This is just a matter of treating products as
+adjoints of function types.
+
+Destructering can be done in function arguments as well as
+on the left had side of equations, to safe space.
+
+## back up
+My wishlist contained recursive types because they are a
+challenge for the solvers, that needs to be solved for most of
+the practical applications I already had in mind. Introducing
+such types without actually having a language for types is
+diffucult, however. The option I am considering here is 
+creating a sum of all types, which seems a bit awkward...
+
+The `any` type doesn't actually have to be absolutely any of 
+course. It could be limited to a subset of all types and so on,
+though that would make the parallel tothe universe of small
+type more powerful. Hmm...
+
+The purpose of `any` is that objects can be defined as functions
+`string -> any` and arrays as `int -> any`. That takes care of
+two kind of products, and possibly recursive products as well.
+Of course, if we go for the `any` is a sum of types solution,
+then in order to access a member, we need to specify its type...
+it would be missing from the definition.
+
+The destructuring solution now seems more elegant now, though it
+technically has the wrong type of product.
+
+Shifting to a more type based approach means completely
+different expression to solve equations between.
+
+This is not the nice little challenge I can fill an idle 
+afternoon with.
+
+# 15/12/19
+The alternative of just using record types doesn't really work.
+The problem is not getting rid of keys that aren't accepted,
+but finding types for keys that aren't used. I am afraid that
+there is no other solution than providing this data explicitly.
+
+## Intersections
+What could we do with intersection and type inequalities?
+
+It looks like we can bascially give every expression a type,
+without ruling anything out, unless some intersections are
+empty in some circumstances. That could work though: everything
+has a type, so the real work is in the intersections.
+
+# 14/12/19
+
+I am wondering about adding products and coinductives to
+the calculus.
+
+The destructors generally give to little information to tell
+the type reconstructor what to do. It gives a type inequality,
+instead of the equation we normally use.
+
+I can think of a couple of options: stick with generic arrays
+and records etc. and get the type safty back through the
+equations. Or, add the required information to either methods
+or inputs.
+
+## Targets
+I wanted a language that looks dynamic, but is dependently types
+mostely behind the screen. Since more advance type systems
+require more information, I hoped to supply this data with
+mere equations. This is connected to the idea of needing finite
+limits to do the coolest things.
+
+Other ideas came in, like using this as an intermediate target
+for many purposes: compile to this language, typecheck, then
+compile to somthing else. 
+
+Another idea: unusual sytax based on category theory. Could be
+fun to have a language that is point free.
+
 # 6/10/19
 
 Big map solution: use position to identify each bit of source
