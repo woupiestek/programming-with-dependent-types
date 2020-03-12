@@ -1,4 +1,46 @@
 
+# 12/3/20
+
+
+
+# 10/3/20
+
+The type `A* -> B` is basically all we need. It is the fixpoint
+of `W -> B × (A -> W)`, which covers the greatest fixpoint of
+the polynomial functor `P_f` for every `A -> B`. Since there
+already are functions spaces, the free monoid functor is 
+sufficient.
+
+Functions and arrays are all we need to get us started.
+
+# 9/3/20
+
+For any parser functor:
+
+- Monoid-valued is a way to get nondeterminism, but this may not
+  be expressive enough.
+- Applicative works given choices based on characters, monad
+  can do with a simple read next function. 
+
+# 7/3/20
+
+Reasoning from the tree comes eerily close to the applicative
+functor ideas I had before. It is a different way to write down
+similar sets of rules. Bottom up parsers shows that reasoning 
+from the tree can go in other directions.
+
+# 4/3/20
+
+The very basic version just have a list of constructors...
+but terminals have te be added. So, characters, strings with
+holes. The guard against left recursion is that if the 
+template starts with a hole, only constructors donwstream
+will be considered to fill that hole.
+
+The second level groups constructors by type, and works with
+typed holes. This limits the choice of constructors considered
+at each stages of the search. 
+
 # 2/3/20
 
 ## Thinking from the tree

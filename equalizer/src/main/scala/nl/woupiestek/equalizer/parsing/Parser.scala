@@ -3,7 +3,6 @@ import nl.woupiestek.equalizer.parsing.Parser._
 import scala.collection.mutable
 
 sealed abstract class Parser[-I, +E, +A] {
-
   final def flatMap[I0 <: I, E0 >: E, A0 >: A, B](
       f: A0 => Parser[I0, E0, B]
   ): Parser[I0, E0, B] = this match {
@@ -38,7 +37,6 @@ sealed abstract class Parser[-I, +E, +A] {
 }
 
 object Parser {
-
   private final case class Derive[I, +E, +A](
       d: I => Parser[I, E, A]
   ) extends Parser[I, E, A]
@@ -61,6 +59,97 @@ object Parser {
   def error[I, E, A](e: E): Parser[I, E, A] = Error(e)
   def point[I, E, A](a: A): Parser[I, E, A] = Point(a)
   def read[I, E]: Parser[I, E, I] = Derive(Point(_: I))
+
+  def parse[I, E, A](
+      parser: Parser[I, E, A],
+      input: Int => I,
+      index: Int
+  ): Option[(Int, Either[E, A])] = {
+    var stack: List[(Parser[I, E, A], Int)] = Nil
+
+    def _parse(
+        parser: Parser[I, E, A],
+        index: Int
+    ): Option[(Int, Either[E, A])] =
+      parser match {
+        case Derive(d) => _parse(d(input(index)), index + 1)
+        case Empty =>
+          stack match {
+            case Nil => None
+            case (head0, head1) :: next =>
+              stack = next
+              _parse(head0, head1)
+          }
+        case Error(e) => Some((index, Left(e)))
+        case FlatMap(pa, f) =>
+          pa match {
+            case Derive(d) =>
+              _parse(d(input(index)).flatMap(f), index + 1)
+            case Empty    => None
+            case Error(e) => Some((index, Left(e)))
+            case fm: FlatMap[I, E, a, b] =>
+              _parse(
+                fm.pa.flatMap(fm.f(_: a).flatMap(f)),
+                index
+              )
+            case Plus(l, r) =>
+              _parse(l.flatMap(f) ++ r.flatMap(f), index)
+            case Point(a) => _parse(f(a), index)
+          }
+        case Plus(l, r) =>
+          stack ::= (r, index)
+          _parse(l, index)
+        case Point(a) => Some((index, Right(a)))
+      }
+
+    _parse(parser, index)
+  }
+
+  def parse2[I, E, A](
+      parser: Parser[I, E, A],
+      input: Int => I,
+      index: Int
+  ): List[(Int, Either[E, A])] = {
+    var stack: List[(Parser[I, E, A], Int)] = Nil
+    var results: List[(Int, Either[E, A])] = Nil
+    def _parse(
+        parsers: List[(Int, Parser[I, E, A])]
+    ): Unit = {
+      var ps: List[(Int, Parser[I, E, A])] = Nil
+      parsers.foreach {
+        case (i, p) =>
+          p match {
+            case Derive(d) =>
+              ps ::= (index + 1, d(input(index)))
+            case Empty    => ()
+            case Error(e) => results ::= (index, Left(e))
+            case FlatMap(pa, f) =>
+              pa match {
+                case Derive(d) =>
+                  ps ::= (index + 1, d(input(index)).flatMap(f))
+                case Empty    => ()
+                case Error(e) => results ::= (index, Left(e))
+                case fm: FlatMap[I, E, a, b] =>
+                  ps ::= (
+                    index,
+                    fm.pa.flatMap(fm.f(_: a).flatMap(f))
+                  )
+                case Plus(l, r) =>
+                  ps ::= (index, l.flatMap(f))
+                  ps ::= (index, r.flatMap(f))
+                case Point(a) => ps ::= (index, f(a))
+              }
+            case Plus(l, r) =>
+              ps ::= (index, l)
+              ps ::= (index, r)
+            case Point(a) => results ::= (index, Right(a))
+          }
+      }
+      if (results.isEmpty && ps.nonEmpty) _parse(ps.reverse)
+    }
+    _parse(List((index, parser)))
+    results.reverse
+  }
 
   def parser3[I, E, A](
       parser: Parser[I, E, A]
@@ -98,7 +187,6 @@ object Parser {
           .asInstanceOf[Option[(Int, Either[E, B])]]
 
       alternative(parser, _)
-
     }
   }
 }

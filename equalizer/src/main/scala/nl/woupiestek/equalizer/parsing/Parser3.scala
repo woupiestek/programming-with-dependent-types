@@ -1,6 +1,10 @@
 package nl.woupiestek.equalizer.parsing
 import scala.collection.mutable
 
+/*
+ * This is essentially recursive decscent reimagined as parser 
+ * combinators.
+ */
 case class Parser3[I, A](
     run: (Int => I) => Int => Option[(Int, A)]
 ) extends AnyVal {
@@ -62,12 +66,7 @@ object Parser3 {
     private val memory: mutable.Map[Int, Option[(Int, B)]] =
       new mutable.HashMap[Int, Option[(Int, B)]]
 
-    def apply(a: Int): Option[(Int, B)] = {
-      memory.getOrElse(a, {
-        val b = f(a)
-        memory.put(a, b)
-        b
-      })
-    }
+    def apply(a: Int): Option[(Int, B)] = 
+      memory.getOrElseUpdate(a, f(a))    
   }
 }

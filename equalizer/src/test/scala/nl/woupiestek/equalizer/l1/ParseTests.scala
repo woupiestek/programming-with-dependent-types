@@ -4,14 +4,13 @@ import org.scalatest._
 import nl.woupiestek.equalizer.parsing._
 
 class ParseTests extends FunSpec {
-
   object TestDef extends AST.Def[String] {
     def abstraction(name: String, body: String): String =
-      name + "->" + body
+      "(" + name + "->" + body + ")"
     def application(
         operator: String,
         operand: String
-    ): String = "(" + operator + ")" + operand
+    ): String = "(" + operator + " " + operand + ")"
     def fix(name: String, body: String): String =
       name + "@" + body
     def let(
@@ -27,9 +26,25 @@ class ParseTests extends FunSpec {
     def variable(name: String): String = name
   }
 
+  def timed[X](x: => X): X = {
+    val t = System.nanoTime()
+    val y = x
+    info((System.nanoTime() - t).toString() + " nanos")
+    y
+  }
+
   def parse[X](
       parser: Parser[Char, String, X]
-  ): String => Boolean = parse3(Parser.parser3(parser))
+  ): String => Boolean =
+    input =>
+      timed(
+        Parser
+          .parse(parser, function(input), 0)
+      ).flatMap(_._2.toOption)
+        .map(x => info(String.valueOf(x)))
+        .nonEmpty
+
+  //parse3(Parser.parser3(parser))
 
   describe("parse") {
     it("parses whitespace") {
@@ -131,7 +146,7 @@ class ParseTests extends FunSpec {
     }
 
     it("parses defs") {
-      val testStrings =
+      val testStrings = //failed
         List(
           "x",
           "much_longer_identifier",
@@ -159,9 +174,10 @@ class ParseTests extends FunSpec {
   )(
       input: String
   ): Boolean =
-    parser
-      .run(function(input))(0)
-      .map(x => info(String.valueOf(x)))
+    timed(
+      parser
+        .run(function(input))(0)
+    ).map(x => info(String.valueOf(x)))
       .nonEmpty
 
   describe("parse3") {
@@ -236,10 +252,10 @@ class ParseTests extends FunSpec {
       input: String
   ): Boolean =
     try {
-      parser
-        .run(Input.fromString(input))
-        .map { case (_, x) => info(String.valueOf(x)) }
-        .nonEmpty
+      timed(
+        parser
+          .run(Input.fromString(input))
+      ).map { case (_, x) => info(String.valueOf(x)) }.nonEmpty
     } catch {
       case e: Throwable =>
         e.printStackTrace()
@@ -309,5 +325,4 @@ class ParseTests extends FunSpec {
     (i: Int) =>
       if (i >= 0 && i < input.length) input.charAt(i)
       else (-1).toChar
-
 }

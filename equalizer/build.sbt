@@ -1,4 +1,4 @@
-scalaVersion := "2.13.1"
+scalaVersion := "2.12.10"
 
 libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.2.28",
@@ -7,3 +7,4 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
 
+addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
