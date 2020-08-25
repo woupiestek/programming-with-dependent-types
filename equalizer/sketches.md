@@ -1,7 +1,221 @@
 
-# 12/3/20
+# 1/6/20
 
+It has been a long break.
 
+## Rehearsal
+
+Dependent types are most naturally modelled using a locally
+cartesian closed category. Sadly, type checking could be quite 
+complex, if it relies on comparing members of nested arrows 
+types. Hence this idea of approximating the more difficult types 
+with partial equivalences over types of a simpler subcategory.
+
+A locally cartesian closed category has finite limits and
+polynomial functors. The latter are the functors:
+`P(f)(A) = sum{y: cod f} {x: dom f | f(x) = y} -> A`
+for each morphism `f`. The idea now is that because every 
+morphism is an algorithm that can also be applied to input 
+that doesn't satisfy the equations, every morphism
+`{x: dom f | f(x) = y} -> A` is a restriction of a morphism
+`dom f -> A` (I am starting to see a problem here, but let's 
+continue). The `dom f` can be an injective resolution of the 
+fibres of `f` and hence `cod f * (dom f -> A)` can cover the
+more complicated type above.
+
+Here is the flaw: if `A = {z:Z| E}` is a restriction, then 
+`dom f -> A` would exclude morphisms that leave `A` in cases 
+where `f(x) = y` doesn't hold.
+
+So, there may be a benefit to only having weak polynomials,
+because that allow comp-lex type to be usbsets of simpler types,
+but we still would have to deal with complex propositions.
+
+Just consider equations level 0, and implications `a -> b` to be
+of level `max(level(a)+1, level(b)}`
+To properly cover polynomials, at any level, the following is 
+needed:
+`{ <a,b> | forall x: dom f. f(x) = a -> E(b(x)) }`
+On one hand, predicates have to be at least level 1 to take 
+`f(x) = a` into consideration. But if `dom f` is defined by a 
+level 1 predicate, we are forced up another level, and then 
+another and so on, aren't we?
+
+The point of covering `P(f)(A)` with a subset `Q(f)(A)`
+of `|cod f| * |dom f| -> |A|` is to simplify comparisons of 
+functions. So while `a,b:Q(f)(A)` depends on satisfying 
+constraints of `A` relative to `dom f`, `a = b` should ignore 
+these constraints.
+
+## retrace steps
+
+I want to let go of extensional equivalence to simplify type
+checking, but were do we see the advantages? So the idea is that
+when comparing `a` and `b` of `Q(f)(A)`, restrictions on the
+domains of `a` and `b` no longer count.
+This helps with limits: the equalizer of `g, h: B -> Q(f)(A)`
+only contains those elements `b` where `g b x = h b x` for all
+`x : |dom f|`, no just those in a domain. This is therefore
+no source of level escalation anymore. It help with polynomials 
+as well: if `f: dom f -> Q(g)(B)`, then 
+`forall x: dom f.f(x) = a -> E(b(x))` doesn't necessarily exceed 
+level 1, since the equation `f(x) = a` doesn't bring along 
+further restrictions.
+
+Maybe this way of letting go of extensional equivalence just
+isn't that useful.
+
+We need the equalizers, can we have those while weaking the
+equivalence of morphisms? The greatest danger is losing the 
+uniqueness of the equalizers themselves, but when would that 
+happen? Does this actually help?
+
+## Just play the game?
+
+Ultimately there seems no way out of searching proofs for
+at least a large subset of first order propositions.
+
+Why are we doing this again?
+
+I think I am just carefully considering what dependent type 
+checking actually involves, while trying to keep it real...
+
+When higher level formulas show up, as in the definition of
+basically any arrow and especially any polynominal type, 
+that seems cause for including evidence of equality and 
+membership. So where do we go off track?
+
+The clearest case is perhaps `P(f)(A)`. Instead of ignoring
+`[a,b,c]: P(f)(A)` consist of `a: cod f`, `b: |dom f| -> |A|`
+and `c: forall x: dom f. f(x) = a -> b(a): A`...
+Have I solved any problem here?
+
+The point is that the equality type of lambda terms in non
+trivial. The type `{M = N}` must explain how to prove the 
+equality.
+
+What I am really saying is not that there are path types, but
+that equalizers tend to be weak here. Maybe that can be excused 
+by the nature of the types.
+
+It is so singular. Non trivial equality types just show up.
+
+## Hierarchy
+
+Simple types at the bottom. These might as well be 
+0-dimensional if inhabited. Then there are equalizers of simple 
+types. Functions can be applied and the results can be 
+evaluated. At this point there is 1-dimension already, which 
+starts to explain the math. Then the space of functions between
+equalizers is 3-dimensional already. There aren't just paths,
+but deformations of paths to deal with, though the latter should
+be of simple type.
+
+These dimension relate to the number of points in the simplicial
+set, but are always off by one. I don't really know what to
+expect from the dimensions of functions spaces based on this.
+The space of morphisms from an m-simplex to and n-simplex has 
+what dimension? `mn+m+n`? Okay, that is somwhat plausible.
+
+Something is off. Products of equalizer are equalizers, but
+products of 1-dimensional spaces have higher dimensions. If 
+equalizers are considered 0-dimensional however, then we don't
+get off the ground.
+
+Not a good metaphore then.
+
+I suppose we need to say that evidence for `{M = N}` is used in
+the prove that `{P = Q}`, with an certain context. Usually this
+means `M=\r.sT`, and that occurences of `s` in `{P = Q}` can be 
+eliminated with pattern matching. Yeah, if `s` occurs with 
+at least as many arguments, then by putting constraints on 
+the variables `r` the whole subexpression can be replaced by 
+`Q`. Weaken using assumption `exists r. T = U`, and replace `sU`
+with `sT = Nr`. That is what the proof terms could look like:
+A combination of weakening and using substitution with 
+equivalents.
+
+Yeah. Rules like `{M = N} * phi[M] -> phi[N]` could be the 
+morphisms that rule equivalences of lambda terms. And this
+starts to look like homotopy type theory.
+
+## Too much
+
+Comonadic io `Promise`, `Ref`/`Var`. 
+
+```
+$.tailRec: (a -> m(a || b)) -> a -> (m b)
+$.await: ((a -> (m 1)) -> (m 1)) -> (m a)
+$.async: (((a -> (m 1)) -> (m 1)) -> (m b)) -> a -> (m b)
+$.catch: (e -> (io $ e' a)) -> (io $' e a') -> (io ($ && $') e' (a || a'))
+$.raise: e -> (io 1 e 0)
+$.rebase: (io r 0 r') -> (io (r && r') e a) -> (io r e a)
+$.ref<a>: (a -> (io 1 0 1)) && (io 1 0 a)
+$.js: string -> (io 1 0 top)
+```
+
+Maybe go back to something more useful. 
+
+# 15/3/20
+
+Let's go over the rules again.
+
+Basically I am now assuming that types can be fully implicit,
+and are constructed for type varaibles using only function 
+spaces `a -> b` and array spaces `a*`. Those arrays are a way 
+to get recursive types. This is just a start, because I think
+more types are needed. The idea now, is that more general types 
+are partial equivalences over these simple type.
+
+Yeah. The type checker should look use pattern matching to find
+a counter model for a certain system of equations. The 
+strategies seem rather obvious, though.
+
+It strickes me that messing with fixpoint types can help: the 
+least fixpoint is the open one that allows existential
+quantification, while the greatest fixpoint is the compact one
+that allows universal quantification. What I am talking about
+is an assymetric strategy, where either the falsifier or the
+verifier wins by default.
+
+## All the reductions
+
+There are layers, where the ultimate dependent type theory is
+about equivalence relations in an extensional type theory,
+which in turn is about predicates in a simple type theory.
+`ITT > ETT > STT`
+The typechecker is concerned with the extensional type theory,
+so it worries about how equalities between simple functions 
+imply each other.
+
+Here is the hard part: the type `{x:A|P(x)} -> {y:B|Q(y)}`
+doesn't exist on the extentional level. Instead,
+`{f:A -> B| forall (x:A). Q(f(x))}` serves to cover (for) it.
+Or is it more like `{f:A -> B| forall (x:A). P(x) -> Q(f(x))}`?
+I think we are going to need the more powerful version.
+
+I guess what I am mostly worried about is introducing some base
+types like `String`, and then finding it impossible to deal with
+equalities of `String`-values functions. What will happen in 
+practice, however, is that such expressions won't always be 
+considered equal if there a extensionally, at least not on the 
+existential level of the type checker. Instead there'd be a type
+of `String`-valued-expressions, with few expressions considered
+equal. It is up to the intensional layer to fix this.
+
+## Induction
+
+Induction is needed to prove properties about arrays. Okay,
+maybe we won't notice that, because, in a way, we are just
+putting labels on lambda terms the type checker had to give
+special treatment.
+
+# 14/3/20
+
+One further reduction of recursive types: take the second
+projection `{<=} -> N`. Now `A*` is the fibred exponential,
+which is covered by `N * ({<=} -> A)` which turns `A* -> B` 
+into a subtype of `N -> ({<=} -> A) -> B`.
 
 # 10/3/20
 

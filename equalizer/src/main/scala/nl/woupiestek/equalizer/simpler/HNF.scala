@@ -129,10 +129,10 @@ object HNF {
       operator: Either[String, Int],
       stack: List[Task]
   ): Trampoline[HNF] =
-    (eqs
+    Apply[Trampoline].apply2(eqs
       .traverse {
         case (b, c) =>
-          (b.value(arity) |@| c.value(arity))(
+          Apply[Trampoline].apply2 (b.value(arity) , c.value(arity))(
             (a, b) =>
               CNF(a.snf, b.snf, a.eqs ++ b.eqs) ::
                 a.eqs
@@ -140,8 +140,7 @@ object HNF {
                 b.eqs.map(f => f.copy(args = f.args ++ a.eqs))
           )
       }
-      .map(_.flatten) |@|
-      stack.traverse(_.value(arity)))(
+      .map(_.flatten) , stack.traverse(_.value(arity)))(
       HNF(arity, _, operator, _)
     )
 }
